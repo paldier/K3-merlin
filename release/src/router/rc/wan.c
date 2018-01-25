@@ -2235,8 +2235,8 @@ int update_resolvconf(void)
 	dnsstrict = write_vpn_resolv(fp);
 	// If dns not set to exclusive
 	if (dnsstrict != 3)
-#endif
 	{
+#endif
 		for (unit = WAN_UNIT_FIRST; unit < WAN_UNIT_MAX; unit++) {
 		char *wan_xdns, *wan_xdomain;
 

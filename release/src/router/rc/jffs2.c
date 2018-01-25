@@ -19,10 +19,11 @@
 //	#define TEST_INTEGRITY
 
 #ifdef RTCONFIG_JFFSV1
-#define JFFS_NAME	"jffs"
+#define JFFS_NAME	"yaffs"
 #else
-#define JFFS_NAME	"jffs2"
+#define JFFS_NAME	"yaffs"
 #endif
+#define JFFS_V	"yaffs2"
 
 #ifdef RTCONFIG_BRCM_NAND_JFFS2
 #define JFFS2_PARTITION	"brcmnand"
@@ -217,7 +218,7 @@ void start_jffs2(void)
 		else i++;
 
 		if(i>=10) {
-			_dprintf("Mount jffs2 failed!");
+			_dprintf("Mount yaffs2 failed!");
 			return;
 		}
 	}
@@ -225,7 +226,7 @@ void start_jffs2(void)
 	if (!mtd_getinfo(JFFS2_PARTITION, &part, &size)) return;
 
 	model = get_model();
-	_dprintf("start jffs2: %d, %d\n", part, size);
+	_dprintf("start yaffs2: %d, %d\n", part, size);
 	if (nvram_match("jffs2_format", "1")) {
 		nvram_set("jffs2_format", "0");
 		nvram_commit_x();
@@ -261,7 +262,7 @@ void start_jffs2(void)
 	modprobe(JFFS_NAME);
 	sprintf(s, MTD_BLKDEV(%d), part);
 
-	if (mount(s, "/jffs", JFFS_NAME, MS_NOATIME, "") != 0) {
+	if (mount(s, "/jffs", JFFS_V, MS_NOATIME, "tags-ecc-off") != 0) {
 		if (mtd_erase(JFFS2_MTD_NAME)) {
 			jffs2_fail = 1;
                         error("formatting");
@@ -269,8 +270,8 @@ void start_jffs2(void)
                 }
 
 		format = 1;
-		if (mount(s, "/jffs", JFFS_NAME, MS_NOATIME, "") != 0) {
-			_dprintf("*** jffs2 2-nd mount error\n");
+		if (mount(s, "/jffs", JFFS_V, MS_NOATIME, "tags-ecc-off") != 0) {
+			_dprintf("*** yaffs2 2-nd mount error\n");
 			//modprobe_r(JFFS_NAME);
 			error("mounting");
 			jffs2_fail = 1;
@@ -279,7 +280,7 @@ void start_jffs2(void)
 	}
 
 	if(nvram_match("force_erase_jffs2", "1")) {
-		_dprintf("\n*** force erase jffs2 ***\n");
+		_dprintf("\n*** force erase yaffs2 ***\n");
 		mtd_erase(JFFS2_MTD_NAME);
 		nvram_set("jffs2_clean_fs", "1");
 		nvram_commit();
@@ -320,6 +321,8 @@ void start_jffs2(void)
 	run_userfile("/jffs", ".asusrouter", "/jffs", 3);
 
 	if (!check_if_dir_exist("/jffs/scripts/")) mkdir("/jffs/scripts/", 0755);
+	if (!check_if_dir_exist("/jffs/toolscript/")) mkdir("/jffs/toolscript/", 0755);
+	if (!check_if_dir_exist("/jffs/opt/")) mkdir("/jffs/opt/", 0755);
 	if (!check_if_dir_exist("/jffs/configs/")) mkdir("/jffs/configs/", 0755);
 	if (!check_if_dir_exist("/jffs/ssl/")) mkdir("/jffs/ssl/", 0755);
 }

@@ -965,7 +965,18 @@ function regen_auto_option(obj){
 						</select>				
 			   	</td>
 			 	</tr>
-				<!-- ac channel -->			  
+				<!-- ac channel -->
+				<tr id="wl_country_field">
+			   	<th><#Manual_Setting_contry#></th>
+			   	<td>				    			
+						<select name="wl_country_code" class="input_option">
+							<option class="content_input_fd" value="ALL" <% nvram_match("wl_country_code", "ALL","selected"); %>>全地区</option>
+							<option class="content_input_fd" value="CN" <% nvram_match("wl_country_code", "CN","selected"); %>>中国</option>
+							<option class="content_input_fd" value="US" <% nvram_match("wl_country_code", "US","selected"); %>>美国</option>
+							<option class="content_input_fd" value="AU" <% nvram_match("wl_country_code", "AU","selected"); %>>澳大利亚</option>
+						</select>				
+			   	</td>
+			 	</tr>
 				<tr>
 					<th>						
 						<a id="wl_channel_select" class="hintstyle" href="javascript:void(0);" onClick="openHint(0, 3);"><#WLANConfig11b_Channel_itemname#></a>						
@@ -976,7 +987,7 @@ function regen_auto_option(obj){
 						<span id="dfs_checkbox" style="display:none"><input type="checkbox" onClick="check_DFS_support(this);" name="acs_dfs_checkbox" <% nvram_match("acs_dfs", "1", "checked"); %>><#WLANConfig11b_EChannel_dfs#></input></span>
 						<span id="acs_band1_checkbox" style="display:none;"><input type="checkbox" onClick="check_acs_band1_support(this);" <% nvram_match("acs_band1", "1", "checked"); %>><#WLANConfig11b_EChannel_band1#></input></span>
 						<span id="acs_band3_checkbox" style="display:none;"><input type="checkbox" onClick="check_acs_band3_support(this);" <% nvram_match("acs_band3", "1", "checked"); %>><#WLANConfig11b_EChannel_band3#></input></span>
-						<span id="acs_ch13_checkbox" style="display:none;"><input type="checkbox" onClick="check_acs_ch13_support(this);" <% nvram_match("acs_ch13", "1", "checked"); %>>Auto select channel including channel 12, 13</input></span>
+						<span id="acs_ch13_checkbox" style="display:none;"><input type="checkbox" onClick="check_acs_ch13_support(this);" <% nvram_match("acs_ch13", "1", "checked"); %>><#WLANConfig11b_EChannel_acs_ch13#></input></span>
 					</td>
 			  </tr> 
 		  	<!-- end -->

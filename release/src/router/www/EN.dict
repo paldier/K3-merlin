@@ -2372,6 +2372,7 @@ WLANConfig11b_display41_sectiondesc=You are currently using the Auto channel ban
 WLANConfig11b_display42_sectiondesc=You are currently using the Auto channel. Click <a style="font-size:13px;font-family: Lucida Console;color:#FC0;text-decoration:underline;" href="/Advanced_Wireless_Content.asp?af=wl_channel">Here</a> to modify.
 WLANConfig11b_display5_sectiondesc=Wireless Professional Setting allows you to set up additional parameters for wireless. But default values are recommended.
 WLANConfig11b_display6_sectiondesc=WPS (Wi-Fi Protected Setup) provides easy and secure establishment of a wireless network. You can configure WPS here via the PIN code or the WPS buttton.
+WLANConfig11b_EChannel_acs_ch13=Auto select channel including channel 12, 13
 WLANConfig11b_EChannel_band1=Auto select channel including band 1 channels
 WLANConfig11b_EChannel_band3=Auto select channel including band 3 channels
 WLANConfig11b_EChannel_dfs=Auto select channel including DFS channels

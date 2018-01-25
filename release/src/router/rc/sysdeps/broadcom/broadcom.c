@@ -230,7 +230,7 @@ ResetDefault(void)
 int
 GetPhyStatus(int verbose)
 {
-	int ports[5];
+	int ports[4];
 #if defined(RTCONFIG_EXT_RTL8365MB) || defined(RTCONFIG_EXT_RTL8370MB)
 	int ext = 0;
 #endif
@@ -239,73 +239,11 @@ GetPhyStatus(int verbose)
 
 	model = get_model();
 	switch(model) {
-	case MODEL_RTN14UHP:
-		/* WAN L1 L2 L3 L4 */
-		ports[0]=4; ports[1]=0; ports[2]=1, ports[3]=2; ports[4]=3;
-		break;
-	case MODEL_RTN53:
-	case MODEL_RTN15U:
-	case MODEL_RTN12:
-	case MODEL_RTN12B1:
-	case MODEL_RTN12C1:
-	case MODEL_RTN12D1:
-	case MODEL_RTN12VP:
-	case MODEL_RTN12HP:
-	case MODEL_RTN12HP_B1:
-	case MODEL_APN12HP:
-	case MODEL_RTN10P:
-	case MODEL_RTN10D1:
-	case MODEL_RTN10PV2:
-		/* WAN L1 L2 L3 L4 */
-		ports[0]=4; ports[1]=3; ports[2]=2, ports[3]=1; ports[4]=0;
-		break;
-	case MODEL_RTN16:
-	case MODEL_RTN10U:
-	case MODEL_RTAC3200:
-		/* WAN L1 L2 L3 L4 */
-		ports[0]=0; ports[1]=4; ports[2]=3, ports[3]=2; ports[4]=1;
-		break;
 	case MODEL_RTAC88U:
 	case MODEL_RTAC3100:
 		/* WAN L1 L2 L3 L4 */
-		ports[0]=4; ports[1]=3; ports[2]=2; ports[3]=1; ports[4]=0;
-#if defined(RTCONFIG_EXT_RTL8365MB) || defined(RTCONFIG_EXT_RTL8370MB)
-		ext = 1;
-#endif
-		break;
-	case MODEL_RTAC56S:
-	case MODEL_RTAC56U:
-		/* WAN L1 L2 L3 L4 */
-		ports[0]=4; ports[1]=0; ports[2]=1; ports[3]=2; ports[4]=3;
-		break;
-
-	case MODEL_RTAC87U:
-		/* WAN L1 L2 L3 L4 */
-		ports[0]=0; ports[1]=5; ports[2]=3; ports[3]=2; ports[4]=1;
-		break;
-
-	case MODEL_DSLAC68U:
-	case MODEL_RPAC68U:
-	case MODEL_RTAC68U:
-	case MODEL_RTN18U:
-	case MODEL_RTAC53U:
-	case MODEL_RTN66U:
-	case MODEL_RTAC66U:
-	case MODEL_RTAC1200G:
-	case MODEL_RTAC1200GP:
-		/* WAN L1 L2 L3 L4 */
-		ports[0]=0; ports[1]=1; ports[2]=2; ports[3]=3; ports[4]=4;
-		break;
-	case MODEL_RTAC5300:
-		/* WAN L1 L2 L3 L4 */
-		ports[0]=0; ports[1]=1; ports[2]=2; ports[3]=3; ports[4]=4;
-#ifdef RTCONFIG_EXT_RTL8365MB
-		ext = 1;
-#endif
-		break;
-	case MODEL_RTAC5300R:
-		/* WAN L8 L4 TRUNK2 TRUNK1 */
-		ports[0]=0; ports[1]=4; ports[2]=3; ports[3]=2; ports[4]=1;
+		//ports[0]=3; ports[1]=1; ports[2]=0; ports[3]=2; ports[4]=4;
+		ports[0]=3; ports[1]=1; ports[2]=0; ports[3]=2;
 #if defined(RTCONFIG_EXT_RTL8365MB) || defined(RTCONFIG_EXT_RTL8370MB)
 		ext = 1;
 #endif
@@ -317,7 +255,7 @@ GetPhyStatus(int verbose)
 #endif
 
 	memset(out_buf, 0, 30);
-	for (i=0; i<5; i++) {
+	for (i=0; i<4; i++) {
 		mask = 0;
 		mask |= 0x0001<<ports[i];
 		if (get_phy_status(mask)==0) {/*Disconnect*/

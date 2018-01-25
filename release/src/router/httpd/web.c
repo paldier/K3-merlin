@@ -3176,7 +3176,7 @@ static int ej_update_variables(int eid, webs_t wp, int argc, char_t **argv) {
 	action_script = websGetVar(wp, "action_script", "restart_net");
 	action_wait = websGetVar(wp, "action_wait", "5");
 
-	_dprintf("update_variables: [%s] [%s] [%s]\n", action_mode, action_script, action_wait);
+	_dprintf("\nAction_Var: [%s]-[%s]-[%s]\n", action_mode, action_script, action_wait);
 
 	if ((do_apply = !strcmp(action_mode, "apply")) ||
 	    !strcmp(action_mode, "apply_new"))
@@ -3253,6 +3253,7 @@ static int ej_update_variables(int eid, webs_t wp, int argc, char_t **argv) {
 						skip_auth = 0;
 					}else{
 						nvram_set("freeze_duck", "15");
+						_dprintf("Notify_Cmd: [%s]\n", notify_cmd);
 						notify_rc(notify_cmd);
 					}
 				}
@@ -3283,6 +3284,21 @@ static int ej_update_variables(int eid, webs_t wp, int argc, char_t **argv) {
 #endif
 			websWrite(wp, "<script>restart_needed_time(%d);</script>\n", atoi(action_wait));
 		}
+	}
+	else if(!strcmp(action_mode, "toolscript")){
+		nvram_set("freeze_duck", "5");
+		strncpy(notify_cmd, action_script, 128);
+		_dprintf("Scrip_Cmd: [%s]\n", notify_cmd);
+		//FILE *fp;
+		//if ((fp = fopen("/tmp/toolscript.txt", "w")) == NULL)
+		//	printf("Scrip_Temp_File: ERROR\n");
+		//fprintf(fp, fscanf(wp,"%s"));
+		//fclose(fp);
+		//_dprintf("Scrip_V: %s\n", wp);
+		//
+		validate_apply(wp, NULL);
+		strlcpy(SystemCmd, notify_cmd, sizeof(SystemCmd));
+		sys_script("syscmd.sh");
 	}
 #ifdef RTCONFIG_USB_SMS_MODEM
 	else if(!strcmp(action_script, "start_savesms")){

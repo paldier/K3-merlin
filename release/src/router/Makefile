@@ -1080,6 +1080,7 @@ endif
 	for dir in $(wildcard $(patsubst %,$(INSTALLDIR)/%,$(obj-y))) ; do \
 		(cd $${dir} && tar cpf - .) | (cd $(TARGETDIR) && tar xpf -) \
 	done
+	@echo 1---
 
 ifneq ($(RTCONFIG_L7),y)
 	rm -f $(TARGETDIR)/usr/lib/iptables/libipt_layer7.so
@@ -1107,7 +1108,7 @@ ifneq ($(RTCONFIG_OPTIMIZE_SHARED_LIBS),y)
 endif
 
 	@cd $(TARGETDIR) && $(TOP)/others/rootprep${BCMEX}.sh
-	@echo ---
+	@echo 2---
 
 ifeq ($(RTCONFIG_QCA),y)
 	#FIXME
@@ -1238,7 +1239,7 @@ endif
 	$(if $(RTCONFIG_L7),@cp -f,@mv) $(TARGETDIR)/lib/modules/*/kernel/net/ipv4/netfilter/ipt_layer7.*o $(PLATFORMDIR)/extras/ || true
 	$(if $(RTCONFIG_L7),@cp -f,@mv) $(TARGETDIR)/lib/modules/*/kernel/net/netfilter/xt_layer7.*o $(PLATFORMDIR)/extras/ || true
 
-	@mkdir -p $(TARGETDIR)/asus_jffs
+#	@mkdir -p $(TARGETDIR)/asus_jffs
 	@mkdir -p $(PLATFORMDIR)/extras/apps
 	@mkdir -p $(PLATFORMDIR)/extras/lib
 
@@ -1297,7 +1298,7 @@ ifeq ($(RTCONFIG_CFEZ),y)
 endif
 endif
 
-	@echo ---
+	@echo 3---
 
 	@rm -f $(TARGETDIR)/lib/modules/*/build
 
@@ -3873,8 +3874,7 @@ usbclient-clean:
 
 ##strongswan/IPSEC
 strongswan-5.2.1/stamp-h1:
-	cd strongswan-5.2.1 && \
-	touch configure.ac aclocal.m4 configure Makefile.am Makefile.in  && \
+	cd strongswan-5.2.1 && autoreconf -i -f && \
 	$(CONFIGURE) CC=$(CC) \
 	--prefix=/usr/ --sysconfdir=/etc/ --localstatedir=/var/ \
 	--bindir=/usr/sbin --libdir=/usr/lib \

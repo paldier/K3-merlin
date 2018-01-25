@@ -5,7 +5,7 @@ all:
 install:
 	install -d $(INSTALLDIR)/sbin
 	install -d $(INSTALLDIR)/usr/sbin
-	install -d $(INSTALLDIR)/lib
+	install -d $(INSTALLDIR)/lib/k3screenctrl
 
 ifeq ($(TCONFIG_USB),y)
 # Optware perl symlink
@@ -36,7 +36,24 @@ ifeq ($(RTCONFIG_OPENVPN),y)
 	install -m 0700 -D vpnrouting.sh $(INSTALLDIR)/usr/sbin
 endif
 
+# K3screenctrl setup script
+	install -m 0700 k3screenctrl $(INSTALLDIR)/usr/sbin
+	install -m 0700 basic.sh $(INSTALLDIR)/lib/k3screenctrl
+	install -m 0700 host.sh $(INSTALLDIR)/lib/k3screenctrl
+	install -m 0700 port.sh $(INSTALLDIR)/lib/k3screenctrl
+	install -m 0700 wan.sh $(INSTALLDIR)/lib/k3screenctrl
+	install -m 0700 wifi.sh $(INSTALLDIR)/lib/k3screenctrl
+
+# K3 nvram & wl setup script
+	install -m 0700 k3nv.sh $(INSTALLDIR)/usr/sbin
+	install -m 0700 k3wl $(INSTALLDIR)/usr/sbin
+
+# K3 lostlonger
+	install -m 0700 base64 $(INSTALLDIR)/usr/sbin
+	install -m 0700 vlmcsd $(INSTALLDIR)/usr/sbin
+
 # Entware setup script
+	install -m 0700 entware_install.sh $(INSTALLDIR)/usr/sbin
 	install -m 0700 entware-setup.sh $(INSTALLDIR)/usr/sbin
 
 # Postconf helper script

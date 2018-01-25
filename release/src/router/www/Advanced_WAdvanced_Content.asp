@@ -87,6 +87,15 @@
 	border-bottom-right-radius: 1px;
 }
 #slider .ui-slider-handle { border-color: #93E7FF; }
+#slider1 .ui-slider-range {
+	background: #93E7FF; 
+	border-top-left-radius: 3px;
+	border-top-right-radius: 1px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 1px;
+}
+#slider1 .ui-slider-handle { border-color: #93E7FF; }
+
 .parental_th{
 	color:white;
 	background:#2F3A3E;
@@ -397,8 +406,10 @@ function initial(){
 		inputCtrl(document.form.wl_wme, 1);
 		inputCtrl(document.form.wl_wme_no_ack, 1);
 	}	
-		
-	adjust_tx_power();	
+
+	adjust_tx_power();
+	adjust_custom_power();
+	
 	if(svc_ready == "0")
 		document.getElementById('svc_hint_div').style.display = "";	
 	
@@ -494,32 +505,20 @@ function initial(){
 }
 
 function adjust_tx_power(){
-	var power_value_old = document.form.wl_TxPower.value;	//old nvram not exist now (value)
+	var custompower = parseInt(document.form.wl_cpenable.value);
 	var power_value_new = document.form.wl_txpower.value;	//current nvram now (percentage)
 	var translated_value = 0;
 	
-	if(!power_support){
+	//window.alert(typeof(power_value_old));
+	
+	if(custompower == 1){
 		document.getElementById("wl_txPower_field").style.display = "none";
 	}
 	else{
-		if(power_value_old != ""){
-			translated_value = parseInt(power_value_old/80*100);
-			if(translated_value >=100){
-				translated_value = 100;
-			}
-			else if(translated_value <=1){
-				translated_value = 1;			
-			}
-
-			document.getElementById('slider').children[0].style.width = translated_value + "%";
-			document.getElementById('slider').children[1].style.left = translated_value + "%";
-			document.form.wl_txpower.value = translated_value;
-		}
-		else{
-			document.getElementById('slider').children[0].style.width = power_value_new + "%";
-			document.getElementById('slider').children[1].style.left = power_value_new + "%";
-			document.form.wl_txpower.value = power_value_new;
-		}
+		document.form.wl_txpower.disabled = false;
+		document.getElementById('slider').children[0].style.width = power_value_new + "%";
+		document.getElementById('slider').children[1].style.left = power_value_new + "%";
+		document.form.wl_txpower.value = power_value_new;
 		
 		if(document.form.wl_txpower.value < 25){
 			document.getElementById('slider').children[0].style.width = "0%";
@@ -552,6 +551,33 @@ function adjust_tx_power(){
 			document.getElementById("tx_power_desc").innerHTML = power_table_desc[4];
 		}		
 	}
+}
+
+function adjust_custom_power(){
+	var custompower = parseInt(document.form.wl_cpenable.value);
+	var power_value = parseInt(document.form.wl_custompower.value);
+
+	//window.alert(custompower);
+		
+	if(custompower == 0){
+		document.getElementById("wl_custompower_field").style.display = "none";
+	}
+	else{
+		document.form.wl_custompower.disabled = false;
+		document.getElementById('slider1').children[0].style.width = (power_value * 100 / 31) + "%";
+		document.getElementById('slider1').children[1].style.left = (power_value * 100 / 31) + "%";
+		document.form.wl_custompower.value = power_value;
+		document.getElementById("tx_power1_desc").innerHTML = power_value + "dbm " + Math.round(Math.pow(10,( power_value / 10 )))+ "mW ";
+	}
+}
+
+function handle_chpower(){
+	document.getElementById("wl_txPower_field").style.display = "";
+	document.getElementById("wl_custompower_field").style.display = "";
+	document.form.wl_custompower.disabled = true;
+	document.form.wl_txpower.disabled = true;
+	adjust_tx_power();
+	adjust_custom_power();
 }
 
 function changeRSSI(_switch){
@@ -708,7 +734,8 @@ function check_ampdu_rts(){
 		document.getElementById('ampdu_rts_tr').style.display = "none";
 	}
 }
-power_table_desc = ["Power Saving", "Fair", "Balance", "Good", "Performance"];
+//power_table_desc = ["Power Saving", "Fair", "Balance", "Good", "Performance"];
+power_table_desc = ["省电", "弱", "平衡", "强", "最大"];
 //power_table_desc = ["省電", "弱", "平衡", "強", "效能"];
 function register_event(){
 	
@@ -724,6 +751,22 @@ function register_event(){
 			},
 			stop:function(event, ui){
 				set_power(ui.value);	  
+			}
+		}); 
+	});
+	
+	$(function() {
+		$( "#slider1" ).slider({
+			orientation: "horizontal",
+			range: "min",
+			min:0,
+			max: 31,
+			value:26,
+			slide:function(event, ui){
+				document.getElementById('tx_power1_desc').innerHTML = ui.value + "dbm " + Math.round(Math.pow(10,( ui.value / 10 )))+ "mW ";
+			},
+			stop:function(event, ui){
+				document.form.wl_custompower.value = ui.value;
 			}
 		}); 
 	});
@@ -1264,7 +1307,8 @@ function handle_beamforming(value){
 <input type="hidden" name="acs_dfs" value="<% nvram_get("acs_dfs"); %>">
 <input type="hidden" name="w_Setting" value="1">
 <input type="hidden" name="wl_sched" value="<% nvram_get("wl_sched"); %>">
-<input type="hidden" name="wl_txpower" value="<% nvram_get("wl_txpower"); %>">
+<input type="hidden" name="wl_txpower" value="<% nvram_get("wl_txpower"); %>" disabled>
+<input type="hidden" name="wl_custompower" value="<% nvram_get("wl_custompower"); %>" disabled>
 <table class="content" align="center" cellpadding="0" cellspacing="0">
 	<tr>
 		<td width="17">&nbsp;</td>
@@ -1651,6 +1695,15 @@ function handle_beamforming(value){
 							</select>
 						</td>
 					</tr>
+					<tr id="wl_chPower_field">
+						<th>功率调整方式</th>
+						<td>
+							<select name="wl_cpenable" class="input_option" onchange="handle_chpower()">
+								<option value="0" <% nvram_match("wl_cpenable", "0","selected"); %>>官方功率定义：%</option>
+								<option value="1" <% nvram_match("wl_cpenable", "1","selected"); %>>自定义功率：dbm</option>
+							</select>
+						</td>
+					</tr>
 					<tr id="wl_txPower_field">
 						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(0, 16);"><#WLANConfig11b_TxPower_itemname#></a></th>
 						<td>
@@ -1658,10 +1711,28 @@ function handle_beamforming(value){
 								<table>
 									<tr>
 										<td style="border:0px;padding-left:0px;">
-											<div id="slider" style="width:80px;"></div>
+											<div id="slider" style="width:200px;"></div>
 										</td>									
 										<td style="border:0px;width:60px;">
 											<div id="tx_power_desc" style="width:150px;font-size:14px;"></div>
+										</td>					
+
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+					<tr id="wl_custompower_field">
+						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(0, 16);"><#WLANConfig11b_TxPower_itemname#></a></th>
+						<td>
+							<div>
+								<table>
+									<tr>
+										<td style="border:0px;padding-left:0px;">
+											<div id="slider1" style="width:300px;"></div>
+										</td>									
+										<td style="border:0px;width:60px;">
+											<div id="tx_power1_desc" style="width:150px;font-size:14px;"></div>
 										</td>					
 
 									</tr>

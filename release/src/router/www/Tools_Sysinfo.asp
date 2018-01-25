@@ -127,12 +127,10 @@ function hwaccel_state(){
 		}
 	} else if (hwacc == "0") {
 		code = "<span>Enabled";
-		if (ctf_fa != "") {
-                        if (ctf_fa != "0")
+                        if (ctf_fa == "1")
                                 code += " (CTF + FA)";
                         else
                                 code += " (CTF only)";
-                }
 		code += "</span>";
 	} else {
 		code = "<span>N/A</span>";
@@ -218,7 +216,7 @@ function show_etherstate(){
 				}
 			}
 			if (port == "0") {
-				wan_array = [ "WAN", (line[7] & 0xFFF), state2, devicename];
+				// wan_array = [ "WAN", (line[7] & 0xFFF), state2, devicename];
 				continue;
 			} else if (port > 4) {
 				continue;	// Internal port
@@ -227,9 +225,9 @@ function show_etherstate(){
 			}
 
 			if (reversed)
-				port_array.unshift(["LAN "+ port, (line[7] & 0xFFF), state2, devicename]);
+				port_array.unshift(["PHY "+ port, (line[7] & 0xFFF), state2, devicename]);
 			else
-				port_array.push(["LAN " + port, (line[7] & 0xFFF), state2, devicename]);
+				port_array.push(["PHY " + port, (line[7] & 0xFFF), state2, devicename]);
 
 		}
 	}
@@ -249,7 +247,7 @@ function show_etherstate(){
 	}
 
 	/* Add WAN last, so it can be always at the top */
-	port_array.unshift(wan_array);
+	//port_array.unshift(wan_array);
 
 	var tableStruct = {
 		data: port_array,
@@ -257,7 +255,7 @@ function show_etherstate(){
 		header: [
 			{
 				"title" : "Port",
-				"width" : "15%"
+				"width" : "20%"
 			},
 			{
 				"title" : "VLAN",
@@ -269,7 +267,7 @@ function show_etherstate(){
 			},
 			{
 				"title" : "Last Device Seen",
-				"width" : "45%"
+				"width" : "35%"
 			}
 		]
 	}
@@ -392,34 +390,34 @@ function update_sysinfo(e){
                 <tr bgcolor="#4D595D">
                 <td valign="top">
                 <div>&nbsp;</div>
-                <div class="formfonttitle">Tools - System Information</div>
+                <div class="formfonttitle">工具箱 - 系统信息</div>
                 <div style="margin-left:5px;margin-top:10px;margin-bottom:10px"><img src="/images/New_ui/export/line_export.png"></div>
 
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3"  class="FormTable">
 					<thead>
 						<tr>
-							<td colspan="2">Router</td>
+							<td colspan="2">路由器</td>
 						</tr>
 					</thead>
 					<tr>
-						<th>Model</th>
+						<th>产品型号</th>
 							<td id="model_id"><% nvram_get("productid"); %></td>
 					</tr>
 					<tr>
-						<th>Firmware Version</th>
+						<th>固件版本</th>
 						<td id="fwver"></td>
 					</tr>
 
 					<tr>
-						<th>Firmware Build</th>
+						<th>固件构建时间</th>
 						<td><% nvram_get("buildinfo"); %></td>
 					</tr>
 					<tr>
-						<th>Bootloader (CFE)</th>
-						<td><% sysinfo("cfe_version"); %></td>
+						<th>CFE 版本</th>
+						<td><% nvram_get("pmon_ver"); %></td>
 					</tr>
 					<tr>
-						<th>Driver version</th>
+						<th>驱动版本</th>
 						<td><% sysinfo("driver_version"); %></td>
 					</tr>
 					<tr id="qtn_version" style="display:none;">
@@ -427,7 +425,7 @@ function update_sysinfo(e){
 						<td><% sysinfo("qtn_version"); %></td>
 					</tr>
 					<tr>
-						<th>Features</th>
+						<th>包含特性</th>
 						<td id="rc_td"></td>
 					</tr>
 					<tr>
@@ -436,7 +434,7 @@ function update_sysinfo(e){
 					</tr>
 
 					<tr>
-						<th>Temperatures</th>
+						<th>芯片温度</th>
 						<td id="temp_td"></td>
 					</tr>
 				</table>
@@ -444,20 +442,20 @@ function update_sysinfo(e){
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3"  class="FormTable">
 					<thead>
 						<tr>
-							<td colspan="2">CPU</td>
+							<td colspan="2">处理器</td>
 						</tr>
 					</thead>
 
 					<tr>
-						<th>CPU Model</th>
+						<th>CPU 构架</th>
 						<td><% sysinfo("cpu.model"); %>	</td>
 					</tr>
 					<tr>
-						<th>CPU Frequency</th>
+						<th>CPU 频率</th>
 						<td><% sysinfo("cpu.freq"); %> MHz</td>
 					</tr>
 					<tr>
-						<th>CPU Load Average (1, 5, 15 mins)</th>
+						<th>CPU 负载 (1, 5, 15 分)</th>
 						<td id="cpu_stats_td"></td>
 					</tr>
 
@@ -466,31 +464,31 @@ function update_sysinfo(e){
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3"  class="FormTable">
 					<thead>
 						<tr>
-							<td colspan="2">Memory</td>
+							<td colspan="2">内存</td>
 						</tr>
 					</thead>
 					<tr>
-						<th>Total</th>
+						<th>总内存</th>
 						<td id="mem_total_td"></td>
 					</tr>
 
 					<tr>
-						<th>Free</th>
+						<th>可用数</th>
 						<td id="mem_free_td"></td>
 					</tr>
 
 					<tr>
-						<th>Buffers</th>
+						<th>缓冲区</th>
 						<td id="mem_buffer_td"></td>
 					</tr>
 
 					<tr>
-						<th>Cache</th>
+						<th>缓存</th>
 						<td id="mem_cache_td"></td>
 					</tr>
 
 					<tr>
-						<th>Swap</th>
+						<th>交换区域</th>
 						<td id="mem_swap_td"></td>
 					</tr>
 				</table>
@@ -498,15 +496,15 @@ function update_sysinfo(e){
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0"bordercolor="#6b8fa3"  class="FormTable">
 					<thead>
 						<tr>
-							<td colspan="2">Internal Storage</td>
+							<td colspan="2">内部存储空间</td>
 						</tr>
 					</thead>
 					<tr>
-						<th>NVRAM usage</th>
+						<th>NVRAM 空间</th>
 						<td id="nvram_td"></td>
 					</tr>
 					<tr>
-						<th>JFFS</th>
+						<th>用户存储空间</th>
 						<td id="jffs_td"></td>
 					</tr>
 				</table>
@@ -514,37 +512,37 @@ function update_sysinfo(e){
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0"bordercolor="#6b8fa3"  class="FormTable">
 					<thead>
 						<tr>
-							<td colspan="2">Network</td>
+							<td colspan="2">网络</td>
 						</tr>
 					</thead>
 					<tr>
-						<th>HW acceleration</th>
+						<th>硬件加速</th>
 						<td id="hwaccel"></td>
 					</tr>
 					<tr>
-						<th>Connections</th>
+						<th>连接数</th>
 						<td id="conn_td"></td>
 					</tr>
 					<tr>
-						<th>Ethernet Ports</th>
+						<th>有线网端口</th>
 						<td>
 							<div id="tableContainer" style="margin-top:-10px;"></div>
 						</td>
 					</tr>
 					<tr>
-						<th>Wireless clients (2.4 GHz)</th>
+						<th>无线客户端连接数 (2.4 GHz)</th>
 						<td id="wlc_24_td"></td>
 					</tr>
 					<tr id="wifi5_clients_tr" style="display:none;">
-						<th id="wifi51_clients_th">Wireless clients (5 GHz)</th>
+						<th id="wifi51_clients_th">无线客户端连接数 (5 GHz)</th>
 						<td id="wlc_51_td"></td>
 					</tr>
 					<tr id="wifi5_2_clients_tr" style="display:none;">
-						<th>Wireless clients (5 GHz-2)</th>
+						<th>无线客户端连接数 (5 GHz-2)</th>
 						<td id="wlc_52_td"></td>
 					</tr>
 					<tr id="wifi5_clients_tr_qtn" style="display:none;">
-						<th>Wireless clients (5 GHz)</th>
+						<th>无线客户端连接数 (5 GHz)</th>
 						<td id="wlc_5qtn_td"></td>
 					</tr>
 				</table>

@@ -706,21 +706,21 @@ function done_validating(action){
                 <tr bgcolor="#4D595D">
                 <td valign="top">
 			<div>&nbsp;</div>
-			<div class="formfonttitle">Tools - Other Settings</div>
+			<div class="formfonttitle">工具箱-其他设置</div>
 			<div style="margin-left:5px;margin-top:10px;margin-bottom:10px"><img src="/images/New_ui/export/line_export.png"></div>
 
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3"  class="FormTable">
 					<thead>
 						<tr>
-							<td colspan="2">Traffic Monitoring</td>
+							<td colspan="2">流量监控</td>
 						</tr>
 					</thead>
 					<tr>
-						<th>Traffic history location</th>
+						<th>流量记录存储位置</th>
 						<td>
 							<select name="rstats_location" class="input_option" onchange="hide_rstats_storage(this.value);">
-								<option value="0">RAM (Default)</option>
-								<option value="1">Custom location</option>
+								<option value="0">RAM (缺省)</option>
+								<option value="1">用户指定</option>
 								<option value="2">NVRAM</option>
 							</select>
 							<span id="invalid_location" style="display:none;" class="formfontdesc">Cannot use NVRAM if IPTraffic is enabled!</span>
@@ -728,63 +728,63 @@ function done_validating(action){
 					</tr>
 
 					<tr id="rstats_stime_tr">
-						<th>Save frequency</th>
+						<th>记录频率</th>
 						<td>
 							<select name="rstats_stime" class="input_option" >
-								<option value="1" <% nvram_match("rstats_stime", "1","selected"); %>>Every 1 hour</option>
-								<option value="6" <% nvram_match("rstats_stime", "6","selected"); %>>Every 6 hours</option>
-								<option value="12" <% nvram_match("rstats_stime", "12","selected"); %>>Every 12 hours</option>
-								<option value="24" <% nvram_match("rstats_stime", "24","selected"); %>>Every 1 day</option>
-								<option value="72" <% nvram_match("rstats_stime", "72","selected"); %>>Every 3 days</option>
-								<option value="168" <% nvram_match("rstats_stime", "168","selected"); %>>Every 1 week</option>
+								<option value="1" <% nvram_match("rstats_stime", "1","selected"); %>>每1个小时</option>
+								<option value="6" <% nvram_match("rstats_stime", "6","selected"); %>>每6个小时</option>
+								<option value="12" <% nvram_match("rstats_stime", "12","selected"); %>>每12个小时</option>
+								<option value="24" <% nvram_match("rstats_stime", "24","selected"); %>>每1天</option>
+								<option value="72" <% nvram_match("rstats_stime", "72","selected"); %>>每3天</option>
+								<option value="168" <% nvram_match("rstats_stime", "168","selected"); %>>每1周</option>
 							</select>
 						</td>
 					</tr>
 					<tr id="rstats_path_tr">
-						<th>Save history location<br><i>Directory must end with a '/'.</i></th>
+						<th>记录保存位置<br><i>目录名必须以'/'结尾。</i></th>
 						<td><input type="text" id="rstats_path" size=32 maxlength=90 name="rstats_path" class="input_32_table" value="<% nvram_get("rstats_path"); %>">
-						<button id="pathPicker" onclick="get_disk_tree(); return false;">Select...</button></td>
+						<button id="pathPicker" onclick="get_disk_tree(); return false;">选择...</button></td>
 					</tr>
 					<tr id="rstats_new_tr">
-						<th>Create or reset data files:<br><i>Enable if using a new location</i></th>
+						<th>新建或重置数据文件：<br><i>使用新保存位置时有效</i></th>
 						<td>
 							<input type="radio" name="rstats_new" class="input" value="1" <% nvram_match_x("", "rstats_new", "1", "checked"); %>><#checkbox_Yes#>
 							<input type="radio" name="rstats_new" class="input" value="0" <% nvram_match_x("", "rstats_new", "0", "checked"); %>><#checkbox_No#>
 						</td>
 					</tr>
 					<tr>
-						<th>Starting day of monthly cycle</th>
+						<th>每个月的开始日期</th>
 						<td><input type="text" maxlength="2" class="input_3_table" name="rstats_offset" onKeyPress="return validator.isNumber(this,event);" onblur="validate_number_range(this, 1, 31)" value="<% nvram_get("rstats_offset"); %>"></td>
 					</tr>
 					<tr id="cstats_enable_tr">
-						<th>Enable IPTraffic (per IP monitoring)</i></th>
+						<th>Enable IPTraffic (按IP记录)</i></th>
 						<td>
 							<input type="radio" name="cstats_enable" class="input" value="1" <% nvram_match_x("", "cstats_enable", "1", "checked"); %> onclick="hide_cstats(this.value);"><#checkbox_Yes#>
 							<input type="radio" name="cstats_enable" class="input" value="0" <% nvram_match_x("", "cstats_enable", "0", "checked"); %> onclick="hide_cstats(this.value);"><#checkbox_No#>
 						</td>
 					</tr>
 					<tr id="cstats_1_tr">
-						<th>Create or reset IPTraffic data files</th>
+						<th>新建或重置 IPTraffic 数据文件</th>
 						<td>
 							<input type="radio" name="cstats_new" class="input" value="1" <% nvram_match_x("", "cstats_new", "1", "checked"); %>><#checkbox_Yes#>
 							<input type="radio" name="cstats_new" class="input" value="0" <% nvram_match_x("", "cstats_new", "0", "checked"); %>><#checkbox_No#>
 						</td>
 					</tr>
 					<tr id="cstats_2_tr">
-						<th>Monitor all IPs by default</th>
+						<th>缺省监测所有IP</th>
 						<td>
 							<input type="radio" name="cstats_all" class="input" value="1" <% nvram_match_x("", "cstats_all", "1", "checked"); %> onclick="hide_cstats_ip(this.value);"><#checkbox_Yes#>
 							<input type="radio" name="cstats_all" class="input" value="0" <% nvram_match_x("", "cstats_all", "0", "checked"); %> onclick="hide_cstats_ip(this.value);"><#checkbox_No#>
 						</td>
 					</tr>
 					<tr id="cstats_inc_tr">
-						<th>List of IPs to monitor (comma-separated):</th>
+						<th>监测IP列表（用逗号分隔）:</th>
 						<td>
 							<input type="text" maxlength="512" class="input_32_table" name="cstats_include" onKeyPress="return validator.ipList(this,event);" onchange="update_filter(this,this.value);" value="<% nvram_get("cstats_include"); %>">
 						</td>
 					</tr>
 					<tr id="cstats_exc_tr">
-						<th>List of IPs to exclude (comma-separated):</th>
+						<th>不监测IP列表（用逗号分隔）:</th>
 						<td>
 							<input type="text" maxlength="512" class="input_32_table" name="cstats_exclude" onKeyPress="return validator.ipList(this,event);" onchange="update_filter(this,this.value);" value="<% nvram_get("cstats_exclude"); %>">
 						</td>
@@ -795,12 +795,12 @@ function done_validating(action){
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3"  class="FormTable">
                                         <thead>
 						<tr>
-							<td colspan="2">Miscellaneous Options</td>
+							<td colspan="2">杂项</td>
 						</tr>
 					</thead>
 
 					<tr>
-						<th>Resolve IPs on active connections list:<br><i>Can considerably slow down the display</i></th>
+						<th>在活动连接列表中解析IP:<br><i>会降低显示速度</i></th>
 						<td>
 							<input type="radio" name="webui_resolve_conn" class="input" value="1" <% nvram_match_x("", "webui_resolve_conn", "1", "checked"); %>><#checkbox_Yes#>
 							<input type="radio" name="webui_resolve_conn" class="input" value="0" <% nvram_match_x("", "webui_resolve_conn", "0", "checked"); %>><#checkbox_No#>
@@ -808,13 +808,13 @@ function done_validating(action){
 	                                </tr>
 
 					<tr>
-						<th>Disk spindown idle time (in seconds)<br><i>0 = disable feature</i></th>
+						<th>硬盘空闲休眠时间(秒)<br><i>0 表示不休眠</i></th>
 						<td>
 							<input type="text" maxlength="6" class="input_12_table"name="usb_idle_timeout" onKeyPress="return validator.isNumber(this,event);" onblur="validate_number_range(this, 0, 43200)"value="<% nvram_get("usb_idle_timeout"); %>">
 						</td>
 					</tr>
 					<tr>
-						<th>Exclude the following drives from spinning down</th>
+						<th>不休眠的硬盘选择</th>
 						<td>
 							<input type="checkbox" name="usb_idle_exclude_a">sda</input>
 							<input type="checkbox" name="usb_idle_exclude_b">sdb</input>
@@ -828,7 +828,7 @@ function done_validating(action){
 						</td>
 					</tr>
 					<tr>
-						<th>Stealth Mode (disable all LEDs)</th>
+						<th>隐形模式（关闭所有LED）</th>
 						<td>
 							<input type="radio" name="led_disable" class="input" value="1" <% nvram_match_x("", "led_disable", "1", "checked"); %>><#checkbox_Yes#>
 							<input type="radio" name="led_disable" class="input" value="0" <% nvram_match_x("", "led_disable", "0", "checked"); %>><#checkbox_No#>
@@ -847,7 +847,7 @@ function done_validating(action){
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3"  class="FormTable">
 					<thead>
 						<tr>
-							<td colspan="2">TCP/IP settings</td>
+							<td colspan="2">TCP/IP 设置</td>
 						</tr>
 					</thead>
 					<tr>
@@ -941,32 +941,32 @@ function done_validating(action){
 				<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" bordercolor="#6b8fa3"  class="FormTable">
                                         <thead>
 						<tr>
-							<td colspan="2">Advanced Tweaks and Hacks</td>
+							<td colspan="2">高级设置</td>
 						</tr>
 					</thead>
 					<tr id="memory_mgmt_tr" style="display:none;">
-						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,2);">Memory Management: Regularly flush caches (default: Yes)</a></th>
+						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,2);">内存管理：定期刷新缓存(默认: 是)</a></th>
 						<td>
 							<input type="radio" name="drop_caches" class="input" value="1" <% nvram_match_x("", "drop_caches", "1", "checked"); %>><#checkbox_Yes#>
 							<input type="radio" name="drop_caches" class="input" value="0" <% nvram_match_x("", "drop_caches", "0", "checked"); %>><#checkbox_No#>
 						</td>
 					</tr>
 					<tr>
-						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,3);">Miniupnp: Enable secure mode (default: Yes)</a></th>
+						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,3);">Miniupnp: 启用安全模式 (默认: 是)</a></th>
 						<td>
 							<input type="radio" name="upnp_secure" class="input" value="1" <% nvram_match_x("", "upnp_secure", "1", "checked"); %>><#checkbox_Yes#>
 							<input type="radio" name="upnp_secure" class="input" value="0" <% nvram_match_x("", "upnp_secure", "0", "checked"); %>><#checkbox_No#>
 						</td>
 					</tr>
 					<tr>
-						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,4);">Firewall: Drop IPv6 neighbour solicitation broadcasts (default: No)</a></th>
+						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,4);">防火墙: 丢弃 IPv6 邻居请求广播 (默认: 否)</a></th>
 						<td>
 							<input type="radio" name="ipv6_ns_drop" class="input" value="1" <% nvram_match_x("", "ipv6_ns_drop", "1", "checked"); %>><#checkbox_Yes#>
 							<input type="radio" name="ipv6_ns_drop" class="input" value="0" <% nvram_match_x("", "ipv6_ns_drop", "0", "checked"); %>><#checkbox_No#>
 						</td>
 					</tr>
 					<tr>
-						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,18);">Wan: Use DNS probes to determine if WAN is up (default: Yes)</a></th>
+						<th><a class="hintstyle" href="javascript:void(0);" onClick="openHint(50,18);">Wan: 使用dns探测检测WAN口是否正常 (默认: 是)</a></th>
 						<td>
 							<input type="radio" name="dns_probe" class="input" value="1"><#checkbox_Yes#>
 							<input type="radio" name="dns_probe" class="input" value="0"><#checkbox_No#>

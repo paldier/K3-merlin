@@ -2845,7 +2845,14 @@ start_acsd()
 #endif
 
 	stop_acsd();
-
+	if (nvram_match("wl0_cpenable","1")){
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 1 -------------------------------------\n");
+		eval("k3wl","-i","eth1","txpwr1","-o","-d",nvram_safe_get("wl0_custompower"));
+	}
+	if (nvram_match("wl1_cpenable","1")){
+		printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set custom power 2 -------------------------------------\n");
+		eval("k3wl","-i","eth2","txpwr1","-o","-d",nvram_safe_get("wl1_custompower"));
+	}
 	if (!restore_defaults_g && strlen(nvram_safe_get("acs_ifnames")))
 		ret = eval("/usr/sbin/acsd");
 

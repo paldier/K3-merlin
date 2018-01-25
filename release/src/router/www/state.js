@@ -1517,73 +1517,9 @@ function show_footer(){
 			href_lang = "/";	//global only
 			
 	footer_code = '<div align="center" class="bottom-image"></div>\n';
-	footer_code +='<div align="center" class="copyright"><#footer_copyright_desc#></div><br>';
 
 	// FAQ searching bar{
-	footer_code += '<div style="margin-top:-75px;margin-left:205px;"><table width="765px" border="0" align="center" cellpadding="0" cellspacing="0"><tr>';
-	footer_code += '<td width="20" align="right"><div id="bottom_help_icon" style="margin-right:3px;"></div></td><td width="110" id="bottom_help_title" align="left"><#Help#> & <#Support#></td>';
-
-	var tracing_path_Manual	= "/HelpDesk_Manual/?utm_source=asus-product&utm_medium=referral&utm_campaign=router";
-	var tracing_path_Utility = "/HelpDesk_Download/?utm_source=asus-product&utm_medium=referral&utm_campaign=router";
-	var model_name_supportsite = supportsite_model(support_site_modelid, hw_ver);	// @ /js/support_site.js	
-			
-	footer_code += "<td width=\"335\" id=\"bottom_help_link\" align=\"left\"><a style=\"font-weight: bolder;text-decoration:underline;cursor:pointer;\" href=\"http://www.asus.com"+ href_lang +"Networking/"+ model_name_supportsite + tracing_path_Manual +"\" target=\"_blank\"><#Manual#></a>&nbsp|&nbsp<a style=\"font-weight: bolder;text-decoration:underline;cursor:pointer;\" href=\"http://www.asus.com"+ href_lang +"Networking/" + model_name_supportsite + tracing_path_Utility +"\" target=\"_blank\"><#Utility#></a>";
-
-	if(dsl_support && feedback_support){
-		footer_code += '&nbsp|&nbsp<a id="fb_link" href="/Advanced_Feedback.asp" target="_self" style="font-weight: bolder;text-decoration:underline;cursor:pointer;"><#menu_feedback#></a>';
-	}
-	else if(feedback_support){
-		var header_info = [<% get_header_info(); %>];
-		var location_href = '/Advanced_Feedback.asp?origPage=' + header_info[0].current_page;
-		footer_code += '&nbsp|&nbsp<a id="fb_link" href="'+location_href+'" target="_blank" style="font-weight: bolder;text-decoration:underline;cursor:pointer;"><#menu_feedback#></a>';
-	}
-	
-	footer_code += '&nbsp|&nbsp<a id="registration_link" target="_blank" href="https://account.asus.com/" target="_self" style="font-weight: bolder;text-decoration:underline;cursor:pointer;"><#Product_Registration#></a>';
-	
-	//APP Link
-	if(app_support){
-		footer_code +='&nbsp;|&nbsp;<span id="app_icon" style="font-weight:bolder;text-decoration:underline;cursor:pointer;">App</span>';
-		footer_code +='<div id="app_link_table" style="display:none;width:325px;height:360px;position:relative;top:-380px;background-color:rgb(35, 38, 41);z-index:10;margin-top:13px;margin-left:-170px;;border-radius:5px;box-shadow:3px 3px 4px #000;opacity:.95">';
-		footer_code +='<div style="padding:10px;">';
-		footer_code +='<div id="cancel_app" style="width:20px;height:20px;background:url(\'images/button-close.png\') no-repeat;position:absolute;right:10px;"></div>';
-		footer_code +='</div>';
-		//ASUS Router icon
-		footer_code +='<div style="padding:10px;border-bottom:1px solid #666;">';
-		footer_code +='<div style="display:table-cell;vertical-align:middle;padding-left:10px;">';
-		footer_code +='<div style="width:75px;height:75px;background:url(\'images/New_ui/asus_router.png\') no-repeat;"></div>';
-		footer_code +='</div>';
-		footer_code +='<div style="display:table-cell;">';
-		footer_code +='<div style="padding:5px 0 5px 15px;font-size:22px;">ASUS Router</div>';
-		footer_code +='<div style="padding:5px 0 5px 15px;font-size:14px;color:#BDBDBD">ASUS Router is a mobile app for managing your home network.</div>';
-		footer_code +='</div>';
-		footer_code +='</div>';
-		//Play Store
-		footer_code +='<div style="padding:20px 10px;">';
-		footer_code +='<div style="display:table-cell;vertical-align:middle;padding-left:10px;">';
-		footer_code +='<div><img src="images/New_ui/asus_router_android_qr.png" style="width:75px;height:75px;"></div>';
-		footer_code +='</div>';
-		footer_code +='<div style="display:table-cell;vertical-align:middle;width:100%;text-align:center">';
-		footer_code +='<div style="padding-left: 30px;"><a href="https://play.google.com/store/apps/details?id=com.asus.aihome" target="_blank"><div style="width:172px;height:60px;background:url(\'images/cloudsync/googleplay.png\') no-repeat;"></div></a></div>';
-		footer_code +='</div>';	
-		footer_code +='</div>';
-		//AppStore
-		footer_code +='<div style="padding:20px 10px;">';
-		footer_code +='<div style="display:table-cell;vertical-align:middle;padding-left:10px;">';
-		footer_code +='<div><img src="images/New_ui/asus_router_ios_qr.png" style="width:75px;height:75px;"></div>';
-		footer_code +='</div>';
-		footer_code +='<div style="display:table-cell;vertical-align:middle;width:100%;text-align:center">';
-		footer_code +='<div style="padding-left: 30px;"><a href="https://itunes.apple.com/tw/app/asus-router/id1033794044" target="_blank"><div style="width:172px;height:51px;background:url(\'images/cloudsync/AppStore.png\') no-repeat;"></div></a></div>';
-		footer_code +='</div>';	
-		footer_code +='</div>';
-		
-		footer_code +='</div>';
-	}
-	// APP Link End
-
-	footer_code += '</td>';
-	footer_code += '<td width="270" id="bottom_help_FAQ" align="right" style="font-family:Arial, Helvetica, sans-serif;">FAQ&nbsp&nbsp<input type="text" id="FAQ_input" class="input_FAQ_table" maxlength="40" onKeyPress="submitenter(this,event);" autocorrect="off" autocapitalize="off"></td>';
-	footer_code += '<td width="30" align="left"><div id="bottom_help_FAQ_icon" class="bottom_help_FAQ_icon" style="cursor:pointer;margin-left:3px;" target="_blank" onClick="search_supportsite();"></div></td>';
-	footer_code += '</tr></table></div>\n';
+	footer_code += '<div style="margin-top:-40px;margin-left:205px;"><table width="765px" border="0" align="center" cellpadding="0" cellspacing="0"><tr><td align="right">版权所无，Lostlonger，2017</td><td width="10px"></td></tr></table></div>\n';
 	//}
 
 	document.getElementById("footer").innerHTML = footer_code;

@@ -139,11 +139,12 @@
 				] 
 			},
 			{
-				menuName: "Tools",
+				menuName: "工具箱",
 				index: "menu_Tools",
 				tab: [
-					{url: "Tools_Sysinfo.asp", tabName: "Sysinfo"},
-					{url: "Tools_OtherSettings.asp", tabName: "Other Settings"},
+					{url: "Tools_Sysinfo.asp", tabName: "系统信息"},
+					{url: "Tools_OtherSettings.asp", tabName: "其他设置"},
+					{url: "Tools_customSc.asp", tabName: "用户脚本"},
 					{url: "NULL", tabName: "__INHERIT__"}
 				]
 			},

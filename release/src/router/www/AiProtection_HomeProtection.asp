@@ -999,14 +999,14 @@ function check_smtp_server_type(){
 													<div style="text-align:center;background: url('/images/New_ui/AiProtection.png');width:130px;height:130px;margin-left:30px;"></div>	
 												</td>
 												 <td width="6px">
-													<div><img src="/images/cloudsync/line.png"></div>
+													<div><img src="/images/line.png"></div>
 												</td>
 												<td style="padding:10px;">
 													<div style="font-size:18px;text-shadow:1px 1px 0px black;"><#AiProtection_scan#></div>
 													<div style="font-style: italic;font-size: 14px;color:#FC0;height:auto;padding-top:5px;"><#AiProtection_scan_desc#></div>
 												</td>
 												 <td width="6px">
-													<div><img src="/images/cloudsync/line.png"></div>
+													<div><img src="/images/line.png"></div>
 												</td>
 												<td style="width:20%;border-radius:0px 10px 10px 0px;">
 													<div>
@@ -1021,7 +1021,7 @@ function check_smtp_server_type(){
 													<div style="text-align:center;background: url('/images/New_ui/AiProtection.png');width:130px;height:130px;margin-left:30px;background-position:0px -187px;"></div>	
 												</td>
 												 <td width="6px">
-													<div style="background:url('/images/cloudsync/line.png') no-repeat;width:6px;height:185px;background-size:4px 185px;";></div>
+													<div style="background:url('/images/line.png') no-repeat;width:6px;height:185px;background-size:4px 185px;";></div>
 												</td>
 												<td style="padding:10px;">
 													<div>
@@ -1042,7 +1042,7 @@ function check_smtp_server_type(){
 													</div>								
 												</td>
 												 <td width="6px">
-													<div style="background:url('/images/cloudsync/line.png') no-repeat;width:6px;height:185px;background-size:4px 185px;";></div>
+													<div style="background:url('/images/line.png') no-repeat;width:6px;height:185px;background-size:4px 185px;";></div>
 												</td>
 												<td style="width:20%;border-radius:0px 10px 10px 0px;">
 													<div>
@@ -1107,14 +1107,14 @@ function check_smtp_server_type(){
 													<div style="text-align:center;background: url('/images/New_ui/AiProtection.png');width:130px;height:140px;margin-left:30px;background-position:0px -385px";></div>	
 												</td>
 												 <td width="6px">
-													<div><img src="/images/cloudsync/line.png"></div>
+													<div><img src="/images/line.png"></div>
 												</td>
 												<td style="padding:10px;">
 													<div style="font-size:18px;text-shadow:1px 1px 0px black;"><#AiProtection_detection_blocking#></div>
 													<div style="font-style: italic;font-size: 14px;color:#FC0;height:auto;;padding-top:5px;"><#AiProtection_detection_block_desc#></div>
 												</td>
 												 <td width="6px">
-													<div><img src="/images/cloudsync/line.png"></div>
+													<div><img src="/images/line.png"></div>
 												</td>
 												<td style="width:20%;border-radius:0px 10px 10px 0px;">
 													<div align="center" class="left" style="width:94px; float:left; cursor:pointer;" id="radio_cc_enable"></div>

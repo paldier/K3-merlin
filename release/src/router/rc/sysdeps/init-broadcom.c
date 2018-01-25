@@ -55,10 +55,12 @@ int wan_phyid = -1;
 
 void init_devs(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 }
 
 void generate_switch_para(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int model, cfg;
 	char lan[SWCFG_BUFSIZE], wan[SWCFG_BUFSIZE];
 #ifdef RTCONFIG_GMAC3
@@ -1275,7 +1277,7 @@ void generate_switch_para(void)
 			hw_name = "et1";
 #else	// RTCONFIG_EXT_RTL8365MB
 			/* WAN L1 L2 L3 L4 CPU */	/*vision: WAN L1 L2 L3 L4 */
-			int ports[SWPORT_COUNT] = { 4, 3, 2, 1, 0, 5 };
+			int ports[SWPORT_COUNT] = { 3, 1, 0, 2, 4, 5 };
 			hw_name = "et0";
 #endif
 			int wancfg = (!nvram_match("switch_wantag", "none")&&!nvram_match("switch_wantag", "")&&!nvram_match("switch_wantag", "hinet")) ? SWCFG_DEFAULT : cfg;
@@ -1513,6 +1515,7 @@ void generate_switch_para(void)
 
 void enable_jumbo_frame(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int enable = nvram_get_int("jumbo_frame_enable");
 
 	if (!nvram_contains_word("rc_support", "switchctrl"))
@@ -1535,6 +1538,7 @@ void enable_jumbo_frame(void)
 
 void ether_led()
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int model;
 
 	model = get_model();
@@ -1558,6 +1562,7 @@ void ether_led()
 
 void init_switch()
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	generate_switch_para();
 
 #if defined(RTCONFIG_EXT_RTL8365MB) || defined(RTCONFIG_EXT_RTL8370MB)
@@ -1701,6 +1706,7 @@ void init_switch()
 int
 switch_exist(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int ret = 1;
 
 	if (get_switch() == SWITCH_UNKNOWN) {
@@ -1713,22 +1719,27 @@ switch_exist(void)
 
 void config_switch(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	generate_switch_para();
 
 }
 
-#ifdef RTCONFIG_BCMWL6
+#if 0
 extern struct nvram_tuple bcm4360ac_defaults[];
 
 static void
 set_bcm4360ac_vars(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	struct nvram_tuple *t;
-
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> set_bcm4360ac_vars -------------------------------------\n");
 	/* Restore defaults */
 	for (t = bcm4360ac_defaults; t->name; t++) {
-		if (!nvram_get(t->name))
+		printf(">>>>>>>>>>>>>>>Get %s %s\n",t->name, t->value);
+		if (!nvram_get(t->name)){
+			printf(">>>>>>>>>>>>>>>Set %s %s\n",t->name, t->value);
 			nvram_set(t->name, t->value);
+		}
 	}
 }
 #endif
@@ -1736,6 +1747,7 @@ set_bcm4360ac_vars(void)
 static void
 reset_mssid_hwaddr(int unit)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char word[256], *next;
 	char macaddr_str[18], macbuf[13];
 	char *macaddr_strp;
@@ -1853,33 +1865,26 @@ reset_mssid_hwaddr(int unit)
 	}
 }
 
-#if defined(RTCONFIG_BCMWL6) && defined(RTCONFIG_BCMARM) && defined(RTCONFIG_PROXYSTA)
 void
-reset_psr_hwaddr()
+reset_psr_hwaddr(int unit)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char macaddr_name[10], macaddr_str[18], macbuf[13];
 	char *macaddr_p;
 	unsigned char mac_binary[6];
 	unsigned long long macvalue;
 	unsigned char *macp;
-	int model = get_model();
-	int unit = 0;
-
-	if (!(is_psr(nvram_get_int("wlc_band")) && !nvram_get_int("wlc_band")))
-		return;
+	int model;
+	model = get_model();
+	//int unit = 2;
 
 	memset(mac_binary, 0x0, 6);
 	memset(macbuf, 0x0, 13);
 
-	switch(model) {
-		case MODEL_RTAC3200:
-			unit = 1;
-			break;
-	}
 
 	snprintf(macaddr_name, sizeof(macaddr_name), "%d:macaddr", unit);
 
-	macaddr_p = cfe_nvram_get(macaddr_name);
+	macaddr_p = nvram_get(macaddr_name);
 	if (macaddr_p)
 	{
 		ether_atoe(macaddr_p, mac_binary);
@@ -1891,7 +1896,7 @@ reset_psr_hwaddr()
 				mac_binary[4],
 				mac_binary[5]);
 		macvalue = strtoll(macbuf, (char **) NULL, 16);
-		macvalue++;
+		macvalue +=3;
 
 		macp = (unsigned char*) &macvalue;
 		memset(macaddr_str, 0, sizeof(macaddr_str));
@@ -1899,12 +1904,12 @@ reset_psr_hwaddr()
 		nvram_set(macaddr_name, macaddr_str);
 	}
 }
-#endif
 
 #if defined(RTCONFIG_BCM7) || defined(RTCONFIG_BCM_7114)
 static int
 net_dev_exist(const char *ifname)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	DIR *dir_to_open = NULL;
 	char tmpstr[128];
 
@@ -1924,6 +1929,7 @@ static int first_load = 1;
 
 void load_wl_war()
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	first_load = 0;
 
 	eval("insmod", "wl");
@@ -1940,6 +1946,7 @@ void load_wl_war()
 
 void load_wl()
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char module[80], *modules, *next;
 #ifdef RTCONFIG_NOWL
 #ifdef RTCONFIG_DPSTA
@@ -1968,10 +1975,16 @@ void load_wl()
 	char instance_base[128];
 #ifndef RTCONFIG_NOWL
 #ifndef RTCONFIG_DPSTA
-	if (first_load) load_wl_war();
+	if (first_load){
+		//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> load_wl_first_load load_wl_war -------------------------------------\n");
+		load_wl_war();
+	}
 #endif
 #endif
+	
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> load_wl [ %s ] -------------------------------------\n",modules);
 	foreach(module, modules, next) {
+		//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> load_wl [ %d ] -------------------------------------\n",DEV_NUMIFS);
 		if ((strcmp(module, "dhd") == 0) || (strcmp(module, "wl") == 0)) {
 			/* Search for existing wl devices and the max unit number used */
 			for (i = 1; i <= DEV_NUMIFS; i++) {
@@ -1989,19 +2002,25 @@ void load_wl()
 			if (strcmp(module, "dhd") == 0)
 			snprintf(instance_base, sizeof(instance_base), "%s dhd_msg_level=%d", instance_base, nvram_get_int("dhd_msg_level"));
 #endif
+			//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> load dhd/wl [ %s ]-[ %s ] -------------------------------------\n", module, instance_base);
 			eval("insmod", module, instance_base);
 		}
 		else {
+			//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> load_wl [ %s ] -------------------------------------\n",module);
 			eval("insmod", module);
 #ifndef RTCONFIG_NOWL
 #ifdef RTCONFIG_DPSTA
-			if (first_load) load_wl_war();
+			if (first_load){
+				//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> load_wl_first_load [ %s ] -------------------------------------\n",module);
+				load_wl_war();
+			}
 #endif
 #endif
 		}
 	}
 #ifdef WLCLMLOAD
 	//if (strcmp(module, "wl") == 0) {
+		//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> load_wl download_clmblob_files -------------------------------------\n");
 		download_clmblob_files();
 	//}
 #endif /* WLCLMLOAD */
@@ -2010,11 +2029,12 @@ void load_wl()
 
 void init_wl(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 #ifdef RTCONFIG_EMF
 	modprobe("emf");
 	modprobe("igs");
 #endif
-#ifdef RTCONFIG_BCMWL6
+#if 0
 	switch(get_model()) {
 		case MODEL_DSLAC68U:
 		case MODEL_RTAC1200G:
@@ -2026,15 +2046,29 @@ void init_wl(void)
 		case MODEL_RTAC66U:
 		case MODEL_RTAC68U:
 		case MODEL_RTAC88U:
-			set_bcm4360ac_vars();
+			//set_bcm4360ac_vars();
 			break;
 	}
 #endif
-	check_wl_country();
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> init_wl country power -------------------------------------\n");
+	//check_wl_country();
+	nvram_set("1:ccode",nvram_get("wl0_country_code"));
+	//nvram_set_int("1:regrev",1);
+	nvram_set("2:ccode",nvram_get("wl1_country_code"));
+	//nvram_set_int("2:regrev",1);
+	//nvram_set("wl0_country_code","CN");
+	//nvram_set_int("wl0_country_rev",1);
+	//nvram_set("wl1_country_code","CN");
+	//nvram_set_int("wl1_country_rev",1);
+	check_wl_territory_code();
 #if defined(RTAC3200) || defined(RTAC68U) || defined(RTAC5300) || defined(RTAC5300R) || defined(RTAC88U) || defined(RTAC3100)
 	wl_disband5grp();
 #endif
-	set_wltxpower();
+	if(nvram_match("wl0_cpenable","1"))
+		nvram_set("wl0_txpower","100");
+	if(nvram_match("wl1_cpenable","1"))
+		nvram_set("wl1_txpower","100");
+	//set_wltxpower();
 #if defined(RTCONFIG_BCM7) || defined(RTCONFIG_BCM_7114)
 	load_wl();
 #else
@@ -2123,6 +2157,7 @@ void init_wl(void)
 
 void init_wl_compact(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int model = get_model();
 
 	if (nvram_get_int("init_wl_re") == 0)
@@ -2135,7 +2170,7 @@ void init_wl_compact(void)
 	modprobe("emf");
 	modprobe("igs");
 #endif
-#ifdef RTCONFIG_BCMWL6
+#if 0
 	switch(model) {
 		case MODEL_DSLAC68U:
 		case MODEL_RTAC1200G:
@@ -2147,11 +2182,21 @@ void init_wl_compact(void)
 		case MODEL_RTAC66U:
 		case MODEL_RTAC68U:
 		case MODEL_RTAC88U:
-			set_bcm4360ac_vars();
+			//set_bcm4360ac_vars();
 			break;
 	}
 #endif
-	check_wl_country();
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> init_wl_compact country power -------------------------------------\n");
+	//check_wl_country();
+	nvram_set("1:ccode",nvram_get("wl0_country_code"));
+	//nvram_set_int("1:regrev",1);
+	nvram_set("2:ccode",nvram_get("wl1_country_code"));
+	//nvram_set_int("1:regrev",1);
+	//nvram_set("wl0_country_code","CN");
+	//nvram_set_int("wl0_country_rev",1);
+	//nvram_set("wl1_country_code","CN");
+	//nvram_set_int("wl1_country_rev",1);
+	check_wl_territory_code();
 #ifndef RTCONFIG_BRCM_USBAP
 	if ((model == MODEL_DSLAC68U) ||
 		(model == MODEL_RPAC68U) ||
@@ -2174,7 +2219,11 @@ void init_wl_compact(void)
 #if defined(RTAC3200) || defined(RTAC68U) || defined(RTAC5300) || defined(RTAC5300R)
 		wl_disband5grp();
 #endif
-		set_wltxpower();
+		if(nvram_match("wl0_cpenable","1"))
+			nvram_set("wl0_txpower","100");
+		if(nvram_match("wl1_cpenable","1"))
+			nvram_set("wl1_txpower","100");
+		//set_wltxpower();
 #if defined(RTCONFIG_BCM7) || defined(RTCONFIG_BCM_7114)
 		load_wl();
 #else
@@ -2194,6 +2243,7 @@ void init_wl_compact(void)
 
 void fini_wl(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int model = get_model();
 
 #if defined(RTAC3200) || defined(RTCONFIG_BCM9)
@@ -2233,6 +2283,7 @@ void fini_wl(void)
 
 void init_syspara(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char *ptr;
 	int model;
 
@@ -2420,6 +2471,7 @@ void init_syspara(void)
 #endif
 void tweak_smp_affinity(int enable_samba)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 #ifndef RTCONFIG_BCM7
 	if (nvram_get_int("stop_tweak_wl") == 1)
 #endif
@@ -2445,6 +2497,7 @@ void tweak_smp_affinity(int enable_samba)
 
 void init_others(void)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 #ifdef SMP
 	int fd;
 
@@ -2557,6 +2610,7 @@ void init_others(void)
 
 void chanspec_fix_5g(int unit)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char tmp[100], prefix[]="wlXXXXXXX_";
 	int channel;
 
@@ -2578,6 +2632,7 @@ void chanspec_fix_5g(int unit)
 // this function is used to jutisfy which band(unit) to be forced connected.
 int is_ure(int unit)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	// forced to connect to which band
 	// is it suitable
 	if (nvram_get_int("sw_mode") == SW_MODE_REPEATER) {
@@ -2588,6 +2643,7 @@ int is_ure(int unit)
 
 int wl_max_no_vifs(int unit)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char nv_interface[NVRAM_MAX_PARAM_LEN];
 	char cap[WLC_IOCTL_SMLEN];
 	char caps[WLC_IOCTL_SMLEN];
@@ -2631,6 +2687,7 @@ int wl_max_no_vifs(int unit)
 
 int get_bsd_nonvht_status(int unit)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char tmp[100], prefix[]="wlXXXXXXX_";
 	char *str;
 	int num;
@@ -2668,6 +2725,7 @@ int get_bsd_nonvht_status(int unit)
 
 void generate_wl_para(char *ifname, int unit, int subunit)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	dbG("unit %d subunit %d\n", unit, subunit);
 
 	char tmp[100], prefix[]="wlXXXXXXX_";
@@ -3568,6 +3626,7 @@ void generate_wl_para(char *ifname, int unit, int subunit)
 
 void
 set_wan_tag(char *interface) {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int model, wan_vid, iptv_vid, voip_vid, wan_prio, iptv_prio, voip_prio, switch_stb;
 	char wan_dev[sizeof("vlan4096")], port_id[7];
 	char tag_register[sizeof("0xffffffff")], vlan_entry[sizeof("0xffffffff")];
@@ -5967,6 +6026,7 @@ _dprintf("*** Multicast IPTV: config Singtel TR069 on wan port ***\n");
 
 char *get_wlifname(int unit, int subunit, int subunit_x, char *buf)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	sprintf(buf, "wl%d.%d", unit, subunit);
 
 	return buf;
@@ -5975,6 +6035,7 @@ char *get_wlifname(int unit, int subunit, int subunit_x, char *buf)
 int
 wl_exist(char *ifname, int band)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int unit = -1;
 	int bandtype;
 
@@ -6010,6 +6071,7 @@ ERROR:
 
 void set_acs_ifnames()
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char acs_ifnames[64];
 	char word[256], *next;
 	char tmp[128], prefix[] = "wlXXXXXXXXXX_";
@@ -6115,6 +6177,7 @@ void set_acs_ifnames()
 #ifdef RTCONFIG_PORT_BASED_VLAN
 int check_used_stb_voip_port(int lan)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int used = 0;
 	int used_port = 0;
 
@@ -6168,6 +6231,7 @@ int check_used_stb_voip_port(int lan)
 
 unsigned int convert_vlan_entry(int tag_enable, int portset, char *tag_reg_val)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int real_portset = 0;
 	int model, i;
 	int port_shift_bit[] = { 0, 0, 0, 0};	/* shift bit for LAN X */
@@ -6255,6 +6319,7 @@ unsigned int convert_vlan_entry(int tag_enable, int portset, char *tag_reg_val)
 
 unsigned int convert_vlan_entry_bcm5325(int tag_enable, int portset, char *tag_reg_val)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	int real_portset = 0;
 	int model, i;
 	int port_shift_bit[] = { 0, 0, 0, 0};	/* shift bit for LAN X */
@@ -6327,6 +6392,7 @@ unsigned int convert_vlan_entry_bcm5325(int tag_enable, int portset, char *tag_r
 
 void set_port_based_vlan_config(char *interface)
 {
+	//printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> [ %s ] 0:mcs11poexp=%s -------------------------------------\n",__func__,nvram_get("0:mcs11poexp"));
 	char *nv, *nvp, *b;
 	//char *enable, *vid, *priority, *portset, *wlmap, *subnet_name;
 	//char *portset, *wlmap, *subnet_name;

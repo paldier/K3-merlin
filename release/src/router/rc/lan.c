@@ -1422,6 +1422,7 @@ void start_lan(void)
 #endif
 
 #ifdef CONFIG_BCMWL5
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>start_lan init_wl_compact -------------------------------------\n");
 	init_wl_compact();
 	wlconf_pre();
 
@@ -3243,6 +3244,7 @@ void start_lan_wl(void)
 #endif
 
 #ifdef CONFIG_BCMWL5
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>start_lan_wl init_wl_compact -------------------------------------\n");
 	init_wl_compact();
 	wlconf_pre();
 

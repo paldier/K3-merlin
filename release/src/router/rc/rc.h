@@ -400,9 +400,7 @@ extern int is_ure(int unit);
 extern void led_bh_prep(int post);
 extern int wl_check_chanspec();
 extern void wl_check_5g_band_group();
-#if defined(RTCONFIG_BCMARM) && defined(RTCONFIG_PROXYSTA)
-extern void reset_psr_hwaddr();
-#endif
+extern void reset_psr_hwaddr(int unit);
 #endif
 #if defined(RTAC88U) || defined(RTAC3100) || defined(RTAC5300) || defined(RTAC5300R)
 extern void ldo_patch();
@@ -431,6 +429,7 @@ extern int getRegrev_2G(void);
 extern int getRegrev_5G(void);
 extern int getSSID(int unit);
 extern void check_wl_country();
+extern void check_wl_territory_code();
 extern void wl_dfs_support(int unit);
 #if defined(RTAC3200) || defined(RTAC68U) || defined(RTAC5300) || defined(RTAC5300R) || defined(RTAC88U) || defined(RTAC3100)
 extern void wl_disband5grp();

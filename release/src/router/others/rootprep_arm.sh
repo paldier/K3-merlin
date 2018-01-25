@@ -6,10 +6,10 @@ mkdir -p -m 0755 dev
 mkdir -p -m 0755 proc
 mkdir -p -m 0755 sys
 mkdir -p -m 0755 jffs
-mkdir -p -m 0755 cifs1
-mkdir -p -m 0755 cifs2
+# mkdir -p -m 0755 cifs1
+# mkdir -p -m 0755 cifs2
 mkdir -p -m 0755 sysroot
-ln -sf tmp/opt opt
+ln -sf /jffs/opt opt
 
 # tmp
 mkdir -p -m 0755 tmp

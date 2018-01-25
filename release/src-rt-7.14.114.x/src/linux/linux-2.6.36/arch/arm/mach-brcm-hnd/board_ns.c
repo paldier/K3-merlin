@@ -313,9 +313,9 @@ static int __init rootfs_mtdblock(void)
 		if (img_boot && simple_strtol(img_boot, NULL, 10))
 			return 5;
 		else
-			return 3;
+			return 4;
 #else
-		return 3;
+		return 4;
 #endif
 	}
 
@@ -1034,11 +1034,27 @@ init_nflash_mtd_partitions(hndnand_t *nfl, struct mtd_info *mtd, size_t size)
 
 		/* Setup NVRAM MTD partition */
 		bcm947xx_nflash_parts[nparts].name = "nvram";
+		bcm947xx_nflash_parts[nparts].size = 0x100000;
+		bcm947xx_nflash_parts[nparts].offset = offset;
+
+		offset += bcm947xx_nflash_parts[nparts].size;
+		nparts++;
+
+		/* Setup phicomm partition */
+		bcm947xx_nflash_parts[nparts].name = "phicomm";
 		bcm947xx_nflash_parts[nparts].size = nfl_boot_size(nfl) - offset;
 		bcm947xx_nflash_parts[nparts].offset = offset;
 
 		offset = nfl_boot_size(nfl);
 		nparts++;
+
+		/* Setup NVRAM partition */
+		//bcm947xx_nflash_parts[nparts].name = "nvram";
+		//bcm947xx_nflash_parts[nparts].size = nfl_boot_size(nfl) - offset;
+		//bcm947xx_nflash_parts[nparts].offset = offset;
+
+		//offset = nfl_boot_size(nfl);
+		//nparts++;
 	}
 
 	if (knldev == SOC_KNLDEV_NANDFLASH) {
