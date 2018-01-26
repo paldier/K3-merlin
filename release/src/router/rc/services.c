@@ -1002,6 +1002,7 @@ void start_dnsmasq(void)
 	fprintf(fp, "pid-file=/var/run/dnsmasq.pid\n"
 		    "user=nobody\n"
 		    "bind-dynamic\n"		// listen only on interface & lo
+			"conf-dir=/etc/dnsmasq.user\n"
 		);
 
 #if defined(RTCONFIG_REDIRECT_DNAME)

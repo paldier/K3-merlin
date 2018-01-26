@@ -92,11 +92,9 @@
 				] 
 			},
 			{
-				menuName: "<#Menu_usb_application#>",
+				menuName: "<#Servers_Center#>",
 				index: "menu_APP", 
 				tab: [
-					{url: "APP_Installation.asp", tabName: "__HIDE__"},
-					{url: "aidisk.asp", tabName: "__INHERIT__"},
 					{url: "mediaserver.asp", tabName: "<#UPnPMediaServer#>"},
 					{url: "Advanced_AiDisk_samba.asp", tabName: "<#menu5_4_1#>".concat(WebDav_support?" / <#Cloud_Disk#>":"")},
 					{url: "Advanced_AiDisk_NFS.asp", tabName: "NFS Exports"},

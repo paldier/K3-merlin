@@ -809,7 +809,7 @@ obj-y += zlib
 obj-y += libevent-2.0.21
 obj-y += tor
 endif
-
+obj-y += pcre-8.31
 #For TR-069 agent
 obj-$(RTCONFIG_TR069) += openssl
 obj-$(RTCONFIG_TR069) += tr069
