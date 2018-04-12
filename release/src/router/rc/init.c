@@ -3412,7 +3412,7 @@ static void sysinit(void)
 		closedir(d);
 	}
 	symlink("/proc/mounts", "/etc/mtab");
-
+	mkdir("/etc/dnsmasq.user", 0755);// for k3
 	/* /etc/resolv.conf compatibility */
 	unlink("/etc/resolv.conf");
 	symlink("/tmp/resolv.conf", "/etc/resolv.conf");
