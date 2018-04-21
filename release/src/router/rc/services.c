@@ -935,6 +935,7 @@ void start_dnsmasq(void)
 		fclose(fp);
 		use_custom_config("hosts", "/etc/hosts");
 		run_postconf("hosts","/etc/hosts");
+		chmod("/etc/hosts", 0644);
 	} else
 		perror("/etc/hosts");
 
@@ -1316,12 +1317,13 @@ void start_dnsmasq(void)
 
 	use_custom_config("dnsmasq.conf","/etc/dnsmasq.conf");
 	run_postconf("dnsmasq","/etc/dnsmasq.conf");
+	chmod("/etc/dnsmasq.conf", 0644);
 
 	/* Create resolv.conf with empty nameserver list */
-	f_write(dmresolv, NULL, 0, FW_APPEND, 0666);
+	f_write(dmresolv, NULL, 0, FW_APPEND, 0644);
 
 	/* Create resolv.dnsmasq with empty server list */
-	f_write(dmservers, NULL, 0, FW_APPEND, 0666);
+	f_write(dmservers, NULL, 0, FW_APPEND, 0644);
 
 #if (defined(RTCONFIG_TR069) && !defined(RTCONFIG_TR181))
 	eval("dnsmasq", "--log-async", "-6", "/sbin/dhcpc_lease");
@@ -5627,8 +5629,6 @@ start_services(void)
 
 	start_ecoguard();
 
-	run_custom_script("services-start", NULL);
-
 //	start_upnp();
 
 	sanity_logs();
@@ -5636,6 +5636,8 @@ start_services(void)
 #if !(defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK) || defined(RTCONFIG_REALTEK))
 	start_erp_monitor();
 #endif
+
+	run_custom_script("services-start", NULL);
 
 	return 0;
 }
