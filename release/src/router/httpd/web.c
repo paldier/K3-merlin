@@ -1362,6 +1362,11 @@ ej_dump(int eid, webs_t wp, int argc, char_t **argv)
 		sprintf(filename, "/tmp/%s", file);
 		ret += dump_file(wp, filename);
 	}
+//K3:tools log
+	else {
+		sprintf(filename, "/tmp/%s", file);
+		ret += dump_file(wp, filename);	
+	}
 
 	return ret;
 }
