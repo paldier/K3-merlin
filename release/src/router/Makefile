@@ -411,6 +411,9 @@ endif
 obj-y += rc
 obj-y += rom
 obj-y += others
+ifeq ($(RTCONFIG_SOFTCENTER),y)
+obj-y += skipdbv2 libev-4.22 softcenter
+endif
 obj-y += httpd json-c
 obj-y += www
 obj-y += bridge
@@ -1978,6 +1981,53 @@ endif
 iptables-1.4.x-clean:
 	[ ! -f iptables-1.4.x/Makefile ] || $(MAKE) -C iptables-1.4.x KERNEL_DIR=$(LINUXDIR) distclean
 	@rm -f iptables-1.4.x/Makefile
+
+ifeq ($(RTCONFIG_SOFTCENTER),y)
+libev-4.22/configure:
+	cd libev-4.22 && ./autogen.sh
+
+libev-4.22/Makefile: libev-4.22/configure
+	cd libev-4.22 && $(CONFIGURE)\
+		--target=mips-openwrt-linux --host=mips-openwrt-linux --build=x86_64-linux-gnu --program-prefix= --program-suffix= \
+		--prefix=/usr --exec-prefix=/usr --bindir=/usr/bin --sbindir=/usr/sbin --libexecdir=/usr/lib --sysconfdir=/etc \
+		--datadir=/usr/share --localstatedir=/var --mandir=/usr/man --infodir=/usr/info --disable-nls --enable-shared --enable-static
+
+libev-4.22: libev-4.22/Makefile
+	$(MAKE) -C $@ && $(MAKE) $@-stage
+
+libev-4.22-clean:
+	[ ! -f libev-4.22/Makefile ] || $(MAKE) -C libev-4.22 distclean
+
+libev-4.22-install:
+	install -D $(STAGEDIR)/usr/lib/libev.so.4.0.0 $(INSTALLDIR)/libev-4.22/usr/lib/libev.so.4.0.0
+	$(STRIP) $(INSTALLDIR)/libev-4.22/usr/lib/libev.so.4.0.0
+	cd $(INSTALLDIR)/libev-4.22/usr/lib && \
+		ln -sf libev.so.4.0.0 libev.so.4 && \
+		ln -sf libev.so.4.0.0 libev.so
+
+skipdbv2/Makefile: skipdbv2/CMakeLists.txt
+	cd skipdbv2 && cmake -DCMAKE_INSTALL_PREFIX=/usr \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_EXE_LINKER_FLAGS="-L$(STAGEDIR)/usr/lib -lev" 
+
+skipdbv2: libev-4.22 skipdbv2/Makefile
+	$(MAKE) -C $@
+
+skipdbv2-clean:
+	[ ! -f skipdbv2/Makefile ] || $(MAKE) -C skipdbv2 clean
+	@rm -rf skipdbv2/bin
+	@rm -rf skipdbv2/lib
+	@rm -rf skipdbv2/CMakeFiles
+	@rm -f skipdbv2/CMakeCache.txt
+	@rm -f skipdbv2/cmake_install.cmake
+	@rm -f skipdbv2/Makefile
+
+skipdbv2-install: skipdbv2
+	install -D skipdbv2/bin/skipd $(INSTALLDIR)/skipdbv2/usr/sbin/skipd
+	install -D skipdbv2/bin/dbus $(INSTALLDIR)/skipdbv2/usr/sbin/dbus
+	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/skipd
+	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/dbus
+endif
 
 libnfnetlink/stamp-h1:
 	cd $(TOP)/libnfnetlink && CC=$(CC) STRIP=$(STRIP) \

@@ -59,6 +59,9 @@ OBJS += web.o common.o nvram_f.o
 OBJS += aspbw.o initial_web_hook.o
 OBJS += apps.o
 OBJS += sysinfo.o data_arrays.o
+ifeq ($(RTCONFIG_SOFTCENTER),y)
+OBJS += dbapi.o
+endif
 
 ifeq ($(CONFIG_RALINK),y)
 OBJS += web-ralink.o

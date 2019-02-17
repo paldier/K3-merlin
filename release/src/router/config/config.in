@@ -1300,3 +1300,6 @@ config RTCONFIG_WLCEVENTD
 	bool "BRCM WLC_E event monitor"
 	depends on RTCONFIG_BCMARM && RTCONFIG_BCMWL6
 	default n
+config RTCONFIG_SOFTCENTER
+	bool "softcenter"
+	default n

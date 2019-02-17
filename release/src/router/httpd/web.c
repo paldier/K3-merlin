@@ -112,6 +112,9 @@ typedef unsigned long long u64;
 #include <sys/sysinfo.h>
 
 #include "sysinfo.h"
+#ifdef RTCONFIG_SOFTCENTER
+#include "dbapi.h"
+#endif
 #include "data_arrays.h"
 
 #ifdef RTCONFIG_QTN
@@ -569,7 +572,92 @@ void websApply(webs_t wp, char_t *url)
 #endif
 }
 
+#ifdef RTCONFIG_SOFTCENTER
+static int
+ej_dbus_get(int eid, webs_t wp, int argc, char_t **argv)
+{
+	char *name, c[512];
+	int ret = 0;
 
+	if (ejArgs(argc, argv, "%s", &name) < 1) {
+		websError(wp, 400, "Insufficient args\n");
+		return -1;
+	}
+	doSystem("dbus get %s > /tmp/dbusxxx", name);
+	char *buffer = read_whole_file("/tmp/dbusxxx");
+	if (buffer) {
+		sscanf(buffer, "%[^\n]", c);
+		free(buffer);
+	} else {
+		strcpy(c, "");
+	}
+	unlink("/tmp/dbusxxx");
+
+	ret += websWrite(wp, c);
+
+	return ret;
+}
+
+
+static int
+ej_dbus_get_def(int eid, webs_t wp, int argc, char_t **argv)
+{
+	char *name, c[512], *output;
+	int ret = 0;
+//	char sid_dummy = "",
+
+	if (ejArgs(argc, argv, "%s %s", &name, &output) < 2) {
+		websError(wp, 400, "Insufficient args\n");
+		return -1;
+	}
+	doSystem("dbus get %s > /tmp/dbusxxx", name);
+	char *buffer = read_whole_file("/tmp/dbusxxx");
+	if (buffer) {
+		sscanf(buffer, "%[^\n]", c);
+		if (strcasecmp(c, ""))
+			ret += websWrite(wp, c);
+		else
+			ret += websWrite(wp, output);
+		free(buffer);
+	} else {
+		ret += websWrite(wp, output);
+	}
+	unlink("/tmp/dbusxxx");
+	//doSystem("rm -rf /tmp/dbusxxx");
+	//for (; *c; c++) {
+			//ret += websWrite(wp, c);
+	//}
+
+	return ret;
+}
+
+static int
+ej_dbus_match(int eid, webs_t wp, int argc, char_t **argv)
+{
+	char c[512], *name, *match, *output;
+
+	if (ejArgs(argc, argv, "%s %s %s", &name, &match, &output) < 3) {
+		websError(wp, 400, "Insufficient args\n");
+		return -1;
+	}
+	doSystem("dbus get %s > /tmp/dbusxxx", name);
+	char *buffer = read_whole_file("/tmp/dbusxxx");
+	if (buffer) {
+		sscanf(buffer, "%[^\n]", c);
+		free(buffer);
+	} else {
+		strcpy(c, "");
+	}
+	unlink("/tmp/dbusxxx");
+	//doSystem("rm -rf /tmp/dbusxxx");
+	if (strcmp(c,match) == 0)
+	{
+		return websWrite(wp, output);
+	}
+
+	return 0;
+}
+#endif
 /*
  * Example:
  * lan_ipaddr=192.168.1.1
@@ -8173,7 +8261,204 @@ do_apply_cgi(char *url, FILE *stream)
 {
     apply_cgi(stream, NULL, NULL, 0, url, NULL, NULL);
 }
+#ifdef RTCONFIG_SOFTCENTER
+static int
+applydb_cgi(webs_t wp, char_t *urlPrefix, char_t *webDir, int arg,
+		char_t *url, char_t *path, char_t *query)
+{
+	char *action_mode;
+	char *action_script;
+	char dbjson[100][2048];
+	char dbvar[2048];
+	char dbval[2048];
+	char notify_cmd[128];
+	int i, j;
+	char *result = NULL;
+	char *temp = NULL;
+	char *name = websGetVar(wp, "p","");
+	char *userm = strstr(url, "use_rm=1");
+	char scPath[128];
+	char *post_db_buf = post_json_buf;
 
+	action_mode = websGetVar(wp, "action_mode", "");
+	action_script = websGetVar(wp, "action_script", "");
+	
+	dbclient client;
+	dbclient_start(&client);
+	if (strlen(name) <= 0) {
+		printf("No \"name\"!\n");
+	}
+	if ( !strcmp("", post_db_buf)){
+		//get
+		sprintf(post_db_buf, "%s", post_buf_backup+1);
+		unescape(post_db_buf);
+		//logmessage("HTTPD", "url: %s,%s", post_db_buf, name);
+		strcpy(post_json_buf, post_db_buf);
+		result = strtok( post_json_buf, "&" );
+		i =0;
+	while( result != NULL )
+	{
+		if (result!=NULL)
+		{
+		strcpy(dbjson[i], result);
+		i++;
+			result = strtok( NULL, "&" );
+		}
+	}
+	for (j =0; j < i; j++)
+	{
+		if(!strncasecmp(dbjson[j], name, strlen(name))){
+
+		temp = strtok( dbjson[j], "=" );
+		strcpy (dbvar, temp);
+		while( temp != NULL ) {
+			strcpy(dbval, temp);
+			//logmessage("HTTPD", "name: %s post: %s", dbvar, dbval);
+			temp = strtok(NULL,"=");
+		}
+			if(userm)
+				doSystem("dbus remove %s", dbvar);
+			else
+				dbclient_bulk(&client, "set", dbvar, strlen(dbvar), dbval, strlen(dbval));
+		}
+	}
+	} else {
+	//post
+	unescape(post_db_buf);
+	//logmessage("HTTPD", "name: %s post: %s", name, post_json_buf);
+	//logmessage("HTTPD", "name: %s post: %s", name, post_db_buf);
+	strcpy(post_json_buf, post_db_buf);
+	result = strtok( post_json_buf, "&" );
+	i =0;
+	while( result != NULL )
+	{
+		if (result!=NULL)
+		{
+		strcpy(dbjson[i], result);
+		i++;
+			result = strtok( NULL, "&" );
+		}
+	}
+	for (j =0; j < i; j++)
+	{
+		if(!strncasecmp(dbjson[j], name, strlen(name))){
+
+		temp = strtok( dbjson[j], "=" );
+		strcpy (dbvar, temp);
+		while( temp != NULL ) {
+			strcpy(dbval, temp);
+			//logmessage("HTTPD", "name: %s post: %s", dbvar, dbval);
+			temp = strtok(NULL,"=");
+		}
+			if(userm)
+				doSystem("dbus remove %s", dbvar);
+			else
+				dbclient_bulk(&client, "set", dbvar, strlen(dbvar), dbval, strlen(dbval));
+		}
+	}
+	}
+	dbclient_end(&client);
+	if(!strcmp(action_mode, "toolscript")){
+		snprintf(scPath, sizeof(scPath), "/jffs/softcenter/scripts/");
+		strncpy(notify_cmd, action_script, 128);
+		strcat(scPath, notify_cmd);
+		strlcpy(SystemCmd, scPath, sizeof(SystemCmd));
+		sys_script("syscmd.sh");
+	}
+	else if(!strcmp(action_mode, " Refresh ")){
+		snprintf(scPath, sizeof(scPath), "/jffs/softcenter/scripts/");
+		strncpy(notify_cmd, action_script, 128);
+		strcat(scPath, notify_cmd);
+		strlcpy(SystemCmd, scPath, sizeof(SystemCmd));
+		sys_script("syscmd.sh");
+	}
+	websWrite(wp,"<script>parent.done_validating('', '');</script>\n" );
+	return 0;
+}
+
+static void
+do_applydb_cgi(char *url, FILE *stream)
+{
+    applydb_cgi(stream, NULL, NULL, 0, url, NULL, NULL);
+}
+
+static void
+do_dbconf(char *url, FILE *stream)
+{
+	char substr[2048];
+	char dbvar[2048];
+	char dbval[2048];
+	FILE *fp;
+	char *name = NULL;
+	char * delim = ",";
+	char *pattern = websGetVar(wp, "p","");
+	char *dup_pattern = strdup(pattern);
+	char *sepstr = dup_pattern;
+	if(strstr(sepstr,delim)) {
+		for(name = strsep(&sepstr, delim); name != NULL; name = strsep(&sepstr, delim)) {
+			//logmessage("HTTPD", "dbconf: %s name: %s", pattern, name);
+			websWrite(stream,"var db_%s=(function() {\nvar o={};\n", name);
+			doSystem("dbus list %s > /tmp/dbusxxx", name);
+			if((fp = fopen("/tmp/dbusxxx", "r")) == NULL)
+				printf("No \"name\"!\n");
+			while(fgets(substr, sizeof(substr),fp) != NULL)
+			{
+				char *result = NULL;
+				result = strtok( substr, "=" );
+				strcpy (dbvar, result);
+				while( result != NULL ) {
+					strcpy(dbval, result);
+					dbval[strlen(dbval)-1]='\0';
+					result = strtok(NULL,"***");
+				}
+				websWrite(stream,"o['%s']='%s';\n", dbvar, dbval );
+			}
+			fclose(fp);
+			websWrite(stream,"return o;\n})();\n" );
+		}
+	} else {
+		name= strdup(pattern);
+		websWrite(stream,"var db_%s=(function() {\nvar o={};\n", name);
+		doSystem("dbus list %s > /tmp/dbusxxx", name);
+		if((fp = fopen("/tmp/dbusxxx", "r")) == NULL)
+			printf("No \"name\"!\n");
+		while(fgets(substr, sizeof(substr),fp) != NULL)
+		{
+			char *result = NULL;
+			result = strtok( substr, "=" );
+			strcpy (dbvar, result);
+			while( result != NULL ) {
+				strcpy(dbval, result);
+				dbval[strlen(dbval)-1]='\0';
+				result = strtok(NULL,"***");
+			}
+			websWrite(stream,"o['%s']='%s';\n", dbvar, dbval );
+		}
+		fclose(fp);
+		websWrite(stream,"return o;\n})();\n" );
+	}
+	free(dup_pattern);
+}
+
+static void
+do_ss_status(char *url, FILE *stream)
+{
+
+	if(check_if_file_exist("/jffs/softcenter/ss/cru/china.sh"))
+	{
+		doSystem("sh /jffs/softcenter/ss/cru/china.sh &");
+		doSystem("sh /jffs/softcenter/ss/cru/foreign.sh &");
+	}
+	else
+	{
+		nvram_set("ss_foreign_state", "USB Problem detected!");
+		nvram_set("ss_china_state", "USB Problem detected!");
+	}
+	sleep(1);
+	websWrite(stream,"[\"%s\", ", nvram_get("ss_foreign_state") );
+	websWrite(stream,"\"%s\"]", nvram_get("ss_china_state") );
+}
+#endif
 /* Look for unquoted character within a string */
 char *
 unqstrstr_t(char *haystack, char *needle)
@@ -9089,7 +9374,145 @@ do_upload_cert_key_cgi(char *url, FILE *stream)
 	_dprintf("do_upload_cert_key_cgi\n");
 }
 #endif
+#ifdef RTCONFIG_SOFTCENTER
+static int ssupload = 0;
+static void
+do_ssupload_post(char *url, FILE *stream, int len, char *boundary)
+{
+	do_html_get(url, len, boundary);
+	char *name = websGetVar(wp, "a","");
+	char upload_fifo[64];
+	memset(upload_fifo, 0, 64);
+	strcpy(upload_fifo, name);
+	FILE *fifo = NULL;
+	char buf[4096];
+	int ch, ret = EINVAL;
+	int count, cnt;
+	long filelen;
+	int offset;
+	char cmpHeader;
 
+	/* Look for our part */
+	while (len > 0)
+	{
+		if (!fgets(buf, MIN(len + 1, sizeof(buf)), stream))
+		{
+			goto err;
+		}
+
+		len -= strlen(buf);
+
+		if (!strncasecmp(buf, "Content-Disposition:", 20) && strstr(buf, "name=\"file\""))
+			break;
+	}
+
+	/* Skip boundary and headers */
+	while (len > 0) {
+		if (!fgets(buf, MIN(len + 1, sizeof(buf)), stream))
+		{
+			goto err;
+		}
+		len -= strlen(buf);
+		if (!strcmp(buf, "\n") || !strcmp(buf, "\r\n"))
+		{
+			break;
+		}
+	}
+
+
+	if (!(fifo = fopen(upload_fifo, "a+"))) goto err;
+	filelen = len;
+	cnt = 0;
+	offset = 0;
+
+	/* Pipe the rest to the FIFO */
+	while (len>0 && filelen>0)
+	{
+
+#ifdef RTCONFIG_HTTPS
+		if(do_ssl){
+			if (waitfor(ssl_stream_fd, (len >= 0x4000)? 3 : 1) <= 0)
+				break;
+		}
+		else{
+			if (waitfor (fileno(stream), 10) <= 0)
+			{
+				break;
+			}
+		}
+#else
+		if (waitfor (fileno(stream), 10) <= 0)
+		{
+			break;
+		}
+#endif
+
+		count = fread(buf + offset, 1, MIN(len, sizeof(buf)-offset), stream);
+
+		if(count <= 0)
+			goto err;
+
+		len -= count;
+
+		if(cnt==0) {
+			if(count + offset < 8)
+			{
+				offset += count;
+				continue;
+			}
+
+			count += offset;
+			offset = 0;
+			_dprintf("read from stream: %d\n", count);
+			cnt++;
+		}
+		filelen-=count;
+		fwrite(buf, 1, count, fifo);
+	}
+
+	/* Slurp anything remaining in the request */
+	while (len-- > 0)
+	{
+		if((ch = fgetc(stream)) == EOF)
+			break;
+
+		if (filelen>0)
+		{
+			fputc(ch, fifo);
+			filelen--;
+		}
+	}
+	fclose(fifo);
+	fifo = NULL;
+	ssupload = 1;
+err:
+	if (fifo)
+		fclose(fifo);
+
+	/* Slurp anything remaining in the request */
+	while (len-- > 0)
+		if((ch = fgetc(stream)) == EOF)
+			break;
+}
+
+
+static void
+do_ssupload_cgi(char *url, FILE *stream)
+{
+	int i;
+	for (i=0; i<10; i++)
+	{
+		if(ssupload == 1)
+		{
+			websWrite(stream,"<script>parent.upload_ok(1);</script>\n" );
+			break;
+		} else
+			sleep(1);
+	}
+	if (i == 10)
+		websWrite(stream,"<script>parent.upload_ok(0);</script>\n" );
+}
+#endif
 // Viz 2010.08
 static void
 do_update_cgi(char *url, FILE *stream)
@@ -10177,6 +10600,12 @@ struct mime_handler mime_handlers[] = {
 	{ "appGet_image_path.cgi", "text/html", no_cache_IE7, do_html_post_and_get, do_appGet_image_path_cgi, NULL },
 	{ "login.cgi", "text/html", no_cache_IE7, do_html_post_and_get, do_login_cgi, NULL },
 	{ "update_clients.asp", "text/html", no_cache_IE7, do_html_post_and_get, do_ej, NULL },
+#ifdef RTCONFIG_SOFTCENTER
+	{ "dbconf", "text/javascript", no_cache_IE7 , do_html_post_and_get, do_dbconf, NULL },
+	{ "ss_status", "text/javascript", no_cache_IE7 , do_html_post_and_get , do_ss_status, NULL },
+	{ "applydb.cgi*", "text/html", no_cache_IE7, do_html_post_and_get, do_applydb_cgi, do_auth },
+	{ "ssupload.cgi*", "text/html", no_cache_IE7, do_ssupload_post, do_ssupload_cgi, do_auth },
+#endif
 	{ "manifest.appcache", "text/html", no_cache_IE7, do_html_post_and_get, do_ej, NULL },
 	{ "offline.htm", "text/html", no_cache_IE7, do_html_post_and_get, do_ej, NULL },
 	{ "wcdma_list.js", "text/html", no_cache_IE7, do_html_post_and_get, do_ej, NULL },
@@ -10284,6 +10713,9 @@ struct except_mime_handler except_mime_handlers[] = {
 	{ "QIS_default.cgi", MIME_EXCEPTION_NOAUTH_FIRST|MIME_EXCEPTION_NORESETTIME},
 	{ "images/New_ui/login_bg.png", MIME_EXCEPTION_MAINPAGE},
 	{ "images/New_ui/icon_titleName.png", MIME_EXCEPTION_MAINPAGE},
+#ifdef RTCONFIG_SOFTCENTER
+	{ "applydb.cgi", MIME_EXCEPTION_NOAUTH_FIRST},
+#endif
 #if 0
 	{ "QIS_*", MIME_EXCEPTION_NOAUTH_FIRST|MIME_EXCEPTION_NORESETTIME},
 	{ "qis/*", MIME_EXCEPTION_NOAUTH_FIRST|MIME_EXCEPTION_NORESETTIME},
@@ -15613,6 +16045,11 @@ struct ej_handler ej_handlers[] = {
 	{ "rel_index_page", ej_rel_index_page},
 	{ "networkmap_page", ej_networkmap_page},
 	{ "abs_networkmap_page", ej_abs_networkmap_page},
+#ifdef RTCONFIG_SOFTCENTER
+	{ "dbus_get", ej_dbus_get},
+	{ "dbus_get_def", ej_dbus_get_def},
+	{ "dbus_match", ej_dbus_match},
+#endif
 	{ NULL, NULL }
 };
 

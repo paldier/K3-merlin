@@ -2572,3 +2572,4 @@ Facebook_WiFi_unit_hint0=All 2.4 GHz guest networks are used, if you want to use
 Facebook_WiFi_unit_hint1=All 5 GHz guest networks are used, if you want to use 5 GHz band for Facebook Wi-Fi, please remove one 5 GHz guest network<br>
 Facebook_WiFi_unit_hint2=All 5 GHz-2 guest networks are used, if you want to use 5 GHz band for Facebook Wi-Fi, please remove one 5 GHz-2 guest network
 Facebook_WiFi_unit_hint_all=All guest networks are used now, please remove at least one guest network then try to enable Facebook Wi-Fi again.
+Softcenter=软件中心

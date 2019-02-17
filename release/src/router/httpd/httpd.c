@@ -1182,7 +1182,31 @@ handle_request(void)
 
 	//printf("httpd url: %s file: %s\n", url, file);
 	//_dprintf("httpd url: %s file: %s\n", url, file);
-
+#ifdef RTCONFIG_SOFTCENTER
+	char scPath[128];
+	if ((strncmp(file, "Main_S", 6)==0) || (strncmp(file, "Module_", 7)==0))
+	{
+		snprintf(scPath, sizeof(scPath), "/jffs/softcenter/webs/");
+		strcat(scPath, file);
+	//logmessage("[httpd] ### GET ### scPath: %s\n", scPath);
+    	if(check_if_file_exist(scPath)){
+	//snprintf(scPath, 128, "/jffs/softcenter/webs/");
+	//strcat(scPath, file);
+			file = scPath;
+		}
+	}
+	if ((strncmp(file, "res/icon-", 9)==0) || (strncmp(file, "res/upgrade.png", 15)==0) || strstr(url, "icon-") || strstr(url, "upgrade.png") || strstr(url, "res"))
+	{
+		if(!check_if_file_exist(file)){
+		snprintf(scPath, sizeof(scPath), "/jffs/softcenter/");
+		strcat(scPath, file);
+		//logmessage("HTTPD","[httpd] ### GET ### scPath: %s\n", scPath);
+		if(check_if_file_exist(scPath)){
+			file = scPath;
+		}
+		}
+	}
+#endif
 	mime_exception = 0;
 	do_referer = 0;
 

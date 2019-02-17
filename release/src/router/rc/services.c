@@ -3053,6 +3053,21 @@ stop_telnetd(void)
 		killall_tk("telnetd");
 }
 
+#ifdef RTCONFIG_SOFTCENTER
+int
+start_skipd(void)
+{
+	logmessage(LOGNAME, "start skipd");
+	doSystem("/usr/sbin/skipd");
+}
+
+void
+stop_skipd(void)
+{
+	if (pids("skipd"))
+		killall_tk("skipd");
+}
+#endif
 void
 start_httpd(void)
 {
@@ -5636,7 +5651,9 @@ start_services(void)
 #if !(defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK) || defined(RTCONFIG_REALTEK))
 	start_erp_monitor();
 #endif
-
+#ifdef RTCONFIG_SOFTCENTER
+	start_skipd();
+#endif
 	run_custom_script("services-start", NULL);
 
 	return 0;
@@ -5771,6 +5788,9 @@ stop_logger(void)
 void
 stop_services(void)
 {
+#ifdef RTCONFIG_SOFTCENTER
+	stop_skipd();
+#endif
 #if !(defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK) || defined(RTCONFIG_REALTEK))
 	stop_erp_monitor();
 #endif
