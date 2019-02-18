@@ -1988,7 +1988,7 @@ libev-4.22/configure:
 
 libev-4.22/Makefile: libev-4.22/configure
 	cd libev-4.22 && $(CONFIGURE)\
-		--target=mips-openwrt-linux --host=mips-openwrt-linux --build=x86_64-linux-gnu --program-prefix= --program-suffix= \
+		--target=arm-linux --host=arm-linux --build=x86_64-linux-gnu --program-prefix= --program-suffix= \
 		--prefix=/usr --exec-prefix=/usr --bindir=/usr/bin --sbindir=/usr/sbin --libexecdir=/usr/lib --sysconfdir=/etc \
 		--datadir=/usr/share --localstatedir=/var --mandir=/usr/man --infodir=/usr/info --disable-nls --enable-shared --enable-static
 
