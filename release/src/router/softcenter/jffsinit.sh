@@ -26,7 +26,7 @@ for d in "/rom/etc/softcenter/"* ; do
 done
 
 
-if [ ! -f "/softcenter/init.d/S10softcenter.sh" ]; then
+if [ ! -f "/jffs/softcenter/init.d/S10softcenter.sh" ]; then
 	cp /rom/etc/softcenter/scripts/* /jffs/softcenter/scripts/
 	cp /rom/etc/softcenter/res/* /jffs/softcenter/res/
 	cp /rom/etc/softcenter/webs/* /jffs/softcenter/webs/
@@ -113,5 +113,3 @@ else
     robocfg vlans reset vlan 2 ports "3 8u" vlan 1 ports "0 1 2 5u 7 8t"
     service net_restart
 fi
-sleep 5
-k3screen &

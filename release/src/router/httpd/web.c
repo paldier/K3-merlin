@@ -1933,6 +1933,26 @@ static void do_html_post_and_get(char *url, FILE *stream, int len, char *boundar
 	init_cgi(post_buf);
 }
 
+static void do_html_get(char *url, int len, char *boundary){
+	char *query = NULL;
+
+	init_cgi(NULL);
+
+	memset(post_buf, 0, sizeof(post_buf));
+	memset(post_buf_backup, 0, sizeof(post_buf));
+	memset(post_json_buf, 0, sizeof(post_json_buf));
+
+	query = url;
+	strsep(&query, "?");
+
+	if (query && strlen(query) > 0){
+		unescape(query);
+		sprintf(post_buf_backup, "?%s", query);
+		sprintf(post_buf, "%s", post_buf_backup+1);
+	}
+	//websScan(post_buf_backup);
+	init_cgi(post_buf);
+}
 extern struct nvram_tuple router_defaults[];
 extern struct nvram_tuple router_state_defaults[];
 

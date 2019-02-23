@@ -3,6 +3,7 @@ include ../common.mak
 install:
 	install -d $(INSTALLDIR)/usr/sbin
 	install -d $(INSTALLDIR)/usr/bin
+	install -d $(INSTALLDIR)/usr/share
 	install -d $(INSTALLDIR)/etc/softcenter/bin
 	install -d $(INSTALLDIR)/etc/softcenter/res
 	install -d $(INSTALLDIR)/etc/softcenter/webs
@@ -33,13 +34,14 @@ install:
 	install -m 0755 softcenter/scripts/ks_tar_intall.sh $(INSTALLDIR)/etc/softcenter/scripts
 	install -m 0755 softcenter/scripts/pluginbase.sh $(INSTALLDIR)/etc/softcenter/scripts
 	install -m 0755 jffsinit.sh $(INSTALLDIR)/usr/sbin
-	install -m 0755 k3screen $(INSTALLDIR)/usr/sbin
-	install -m 0755 k3screen.sh $(INSTALLDIR)/usr/sbin
+	#install -m 0755 k3screen $(INSTALLDIR)/usr/sbin
+	#install -m 0755 k3screen.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 phi_speed $(INSTALLDIR)/usr/sbin
 	install -m 0755 plugin.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 uqmi $(INSTALLDIR)/usr/sbin
 	install -m 0755 weather $(INSTALLDIR)/usr/sbin
 	install -m 0755 wl_cr $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
+	install -m 0755 libshared.so $(INSTALLDIR)/usr/share
 
 clean:

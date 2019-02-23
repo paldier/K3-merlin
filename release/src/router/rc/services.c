@@ -3054,7 +3054,7 @@ stop_telnetd(void)
 }
 
 #ifdef RTCONFIG_SOFTCENTER
-int
+void
 start_skipd(void)
 {
 	logmessage(LOGNAME, "start skipd");

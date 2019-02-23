@@ -127,4 +127,4 @@ obj_xref.o: ../../include/openssl/obj_mac.h ../../include/openssl/objects.h
 obj_xref.o: ../../include/openssl/opensslconf.h
 obj_xref.o: ../../include/openssl/opensslv.h ../../include/openssl/ossl_typ.h
 obj_xref.o: ../../include/openssl/safestack.h ../../include/openssl/stack.h
-obj_xref.o: ../../include/openssl/symhacks.h obj_xref.c obj_xref.h
+obj_xref.o: ../../include/openssl/symhacks.h obj_xref.c

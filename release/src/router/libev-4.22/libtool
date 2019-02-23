@@ -65,8 +65,8 @@ ECHO="printf %s\\n"
 PATH_SEPARATOR=":"
 
 # The host system.
-host_alias=mips-openwrt-linux
-host=mips-openwrt-linux-gnu
+host_alias=arm-linux
+host=arm-unknown-linux-gnu
 host_os=linux-gnu
 
 # The build system.
@@ -90,7 +90,7 @@ EGREP="/bin/grep -E"
 FGREP="/bin/grep -F"
 
 # A BSD- or MS-compatible name lister.
-NM="mips-openwrt-linux-uclibc-nm"
+NM="arm-brcm-linux-uclibcgnueabi-nm"
 
 # Whether we need soft or hard links.
 LN_S="ln -s"
@@ -120,7 +120,7 @@ to_host_file_cmd=func_convert_file_noop
 to_tool_file_cmd=func_convert_file_noop
 
 # An object symbol dumper.
-OBJDUMP="mips-openwrt-linux-uclibc-objdump"
+OBJDUMP="arm-brcm-linux-uclibcgnueabi-objdump"
 
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method="pass_all"
@@ -141,7 +141,7 @@ DLLTOOL="false"
 sharedlib_from_linklib_cmd="printf %s\\n"
 
 # The archiver.
-AR="mips-openwrt-linux-uclibc-ar"
+AR="arm-brcm-linux-uclibcgnueabi-ar"
 
 # Flags to create an archive.
 AR_FLAGS="cru"
@@ -150,10 +150,10 @@ AR_FLAGS="cru"
 archiver_list_spec="@"
 
 # A symbol stripping program.
-STRIP="mips-openwrt-linux-uclibc-strip -R .note -R .comment"
+STRIP="arm-brcm-linux-uclibcgnueabi-strip"
 
 # Commands used to install an old-style archive.
-RANLIB="mips-openwrt-linux-uclibc-ranlib"
+RANLIB="arm-brcm-linux-uclibcgnueabi-ranlib"
 old_postinstall_cmds="chmod 644 \$oldlib~\$RANLIB \$tool_oldlib"
 old_postuninstall_cmds=""
 
@@ -161,10 +161,10 @@ old_postuninstall_cmds=""
 lock_old_archive_extraction=no
 
 # A C compiler.
-LTCC="mips-openwrt-linux-uclibc-gcc"
+LTCC="arm-brcm-linux-uclibcgnueabi-gcc"
 
 # LTCC compiler flags.
-LTCFLAGS="-DBLUECAVE -DBLUECAVE -DBCMWPA2 -DCONFIG_LANTIQ -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -funit-at-a-time -Wno-pointer-sign -mips32r2 -mno-branch-likely -mtune=1004kc -DLINUX30 -DLINUX26 -DLINUX_KERNEL_VERSION=199272 --sysroot=/home/paldier/asuswrt/release/src-lantiq/tools/toolchain-mips_mips32_gcc-4.8-linaro_uClibc-0.9.33.2 -DBLUECAVE -DLANTIQ_BSD -D__CONFIG_EMF__ -D__CONFIG_WPS__"
+LTCFLAGS="-DBCMWPA2 -DBCMQOS -DEXT_ACS -DD11AC_IOTYPES -DPHYMON -DPROXYARP -DTRAFFIC_MGMT -DTRAFFIC_MGMT_RSSI_POLICY -DMFP -D__CONFIG_MFP__ -DLINUX26 -DCONFIG_BCMWL5 -DDEBUG_NOISY -DDEBUG_RCTEST -pipe -DBCMWPA2 -DBCMARM -fno-strict-aliasing -marm -DLINUX_KERNEL_VERSION=132644  -DRTAC3100 -O2 -D__CONFIG_DHDAP__ -D__CONFIG_GMAC3__ -DBCM_BSD -DBCM_DCS -D__CONFIG_EMF__ -D__CONFIG_WPS__"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="sed -n -e 's/^.*[	 ]\\([ABCDGIRSTW][ABCDGIRSTW]*\\)[	 ][	 ]*\\([_A-Za-z][_A-Za-z0-9]*\\)\$/\\1 \\2 \\2/p' | sed '/ __gnu_lto/d'"
@@ -272,7 +272,7 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/home/paldier/asuswrt/release/src-lantiq/tools/toolchain-mips_mips32_gcc-4.8-linaro_uClibc-0.9.33.2/lib/gcc/mips-openwrt-linux-uclibc/4.8.3 /home/paldier/asuswrt/release/src-lantiq/tools/toolchain-mips_mips32_gcc-4.8-linaro_uClibc-0.9.33.2/lib/gcc /home/paldier/asuswrt/release/src-lantiq/tools/toolchain-mips_mips32_gcc-4.8-linaro_uClibc-0.9.33.2/mips-openwrt-linux-uclibc/lib "
+sys_lib_search_path_spec="/home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/lib/gcc/arm-brcm-linux-uclibcgnueabi/4.5.3 /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/lib/gcc /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/lib /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/lib /home/paldier/k3/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib "
 
 # Run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/lib /usr/lib /var/lib/VBoxGuestAdditions/lib /usr/lib/x86_64-linux-gnu/libfakeroot /lib/i386-linux-gnu /usr/lib/i386-linux-gnu /lib/i686-linux-gnu /usr/lib/i686-linux-gnu /usr/local/lib /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/mesa-egl /usr/lib/x86_64-linux-gnu/mesa /lib32 /usr/lib32 /libx32 /usr/libx32 "
@@ -287,12 +287,12 @@ dlopen_self=unknown
 dlopen_self_static=unknown
 
 # Commands to strip libraries.
-old_striplib="mips-openwrt-linux-uclibc-strip -R .note -R .comment --strip-debug"
-striplib="mips-openwrt-linux-uclibc-strip -R .note -R .comment --strip-unneeded"
+old_striplib="arm-brcm-linux-uclibcgnueabi-strip --strip-debug"
+striplib="arm-brcm-linux-uclibcgnueabi-strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="mips-openwrt-linux-uclibc-ld"
+LD="arm-brcm-linux-uclibcgnueabi-ld"
 
 # How to create reloadable object files.
 reload_flag=" -r"
@@ -302,7 +302,7 @@ reload_cmds="\$LD\$reload_flag -o \$output\$reload_objs"
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$tool_oldlib"
 
 # A language specific compiler.
-CC="mips-openwrt-linux-uclibc-gcc"
+CC="arm-brcm-linux-uclibcgnueabi-gcc"
 
 # Is the compiler the GNU compiler?
 with_gcc=yes

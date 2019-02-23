@@ -197,7 +197,7 @@ mem_dbg.o: ../include/openssl/ossl_typ.h ../include/openssl/safestack.h
 mem_dbg.o: ../include/openssl/stack.h ../include/openssl/symhacks.h cryptlib.h
 mem_dbg.o: mem_dbg.c
 o_dir.o: ../e_os.h ../include/openssl/e_os2.h ../include/openssl/opensslconf.h
-o_dir.o: LPdir_unix.c o_dir.c o_dir.h
+o_dir.o: LPdir_nyi.c o_dir.c o_dir.h
 o_fips.o: ../e_os.h ../include/openssl/bio.h ../include/openssl/buffer.h
 o_fips.o: ../include/openssl/crypto.h ../include/openssl/e_os2.h
 o_fips.o: ../include/openssl/err.h ../include/openssl/lhash.h

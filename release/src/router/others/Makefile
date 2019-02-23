@@ -5,7 +5,7 @@ all:
 install:
 	install -d $(INSTALLDIR)/sbin
 	install -d $(INSTALLDIR)/usr/sbin
-	install -d $(INSTALLDIR)/lib/k3screenctrl
+	#install -d $(INSTALLDIR)/lib/k3screenctrl
 
 ifeq ($(TCONFIG_USB),y)
 # Optware perl symlink
@@ -38,11 +38,11 @@ endif
 
 # K3screenctrl setup script
 	install -m 0700 k3screenctrl $(INSTALLDIR)/usr/sbin
-	install -m 0700 basic.sh $(INSTALLDIR)/lib/k3screenctrl
-	install -m 0700 host.sh $(INSTALLDIR)/lib/k3screenctrl
-	install -m 0700 port.sh $(INSTALLDIR)/lib/k3screenctrl
-	install -m 0700 wan.sh $(INSTALLDIR)/lib/k3screenctrl
-	install -m 0700 wifi.sh $(INSTALLDIR)/lib/k3screenctrl
+	#install -m 0700 basic.sh $(INSTALLDIR)/lib/k3screenctrl
+	#install -m 0700 host.sh $(INSTALLDIR)/lib/k3screenctrl
+	#install -m 0700 port.sh $(INSTALLDIR)/lib/k3screenctrl
+	#install -m 0700 wan.sh $(INSTALLDIR)/lib/k3screenctrl
+	#install -m 0700 wifi.sh $(INSTALLDIR)/lib/k3screenctrl
 
 # K3 nvram & wl setup script
 	install -m 0700 k3nv.sh $(INSTALLDIR)/usr/sbin

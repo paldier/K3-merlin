@@ -14,7 +14,7 @@
 #define HAVE_EPOLL_CTL 1
 
 /* Define to 1 if you have the `eventfd' function. */
-#define HAVE_EVENTFD 1
+/* #undef HAVE_EVENTFD */
 
 /* Define to 1 if the floor function is available */
 #define HAVE_FLOOR 1
@@ -71,7 +71,7 @@
 #define HAVE_SYS_EPOLL_H 1
 
 /* Define to 1 if you have the <sys/eventfd.h> header file. */
-#define HAVE_SYS_EVENTFD_H 1
+/* #undef HAVE_SYS_EVENTFD_H */
 
 /* Define to 1 if you have the <sys/event.h> header file. */
 /* #undef HAVE_SYS_EVENT_H */

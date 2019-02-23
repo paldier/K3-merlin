@@ -656,9 +656,6 @@ UUID_CFLAGS
 COMMENT_IF_NO_POD2MAN
 POD2MAN
 PERL
-GPGME_LIBS
-GPGME_CFLAGS
-GPGME_CONFIG
 METALINK_LIBS
 METALINK_CFLAGS
 NETTLE_LIBS
@@ -1328,6 +1325,7 @@ NEXT_AS_FIRST_DIRECTIVE_ERRNO_H
 NEXT_ERRNO_H
 LIB_CRYPTO
 pkglibexecdir
+runstatedir
 lispdir
 HAVE_MSVC_INVALID_PARAMETER_HANDLER
 LIB_CLOCK_GETTIME
@@ -1707,7 +1705,6 @@ infodir
 docdir
 oldincludedir
 includedir
-runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -1757,7 +1754,6 @@ with_libpth_prefix
 with_included_regex
 with_libssl_prefix
 with_libgnutls_prefix
-with_gpgme_prefix
 enable_ipv6
 enable_iri
 with_libidn
@@ -1832,7 +1828,6 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
-runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
@@ -2085,15 +2080,6 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
-  -runstatedir | --runstatedir | --runstatedi | --runstated \
-  | --runstate | --runstat | --runsta | --runst | --runs \
-  | --run | --ru | --r)
-    ac_prev=runstatedir ;;
-  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
-  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
-  | --run=* | --ru=* | --r=*)
-    runstatedir=$ac_optarg ;;
-
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -2231,7 +2217,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir runstatedir
+		libdir localedir mandir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -2384,7 +2370,6 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
-  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -2477,7 +2462,6 @@ Optional Packages:
   --without-libssl-prefix     don't search for libssl in includedir and libdir
   --with-libgnutls-prefix[=DIR]  search for libgnutls in DIR/include and DIR/lib
   --without-libgnutls-prefix     don't search for libgnutls in includedir and libdir
-  --with-gpgme-prefix=PFX prefix where GPGME is installed (optional)
   --with-libidn=DIR       Support IDN2008/IRIs (needs GNU libidn2 +
                           libunicode)
   --without-libuuid       Generate UUIDs for WARC files via libuuid
@@ -3774,7 +3758,7 @@ ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 
 
 
-am__api_version='1.15'
+am__api_version='1.14'
 
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
@@ -3946,8 +3930,8 @@ test "$program_suffix" != NONE &&
 ac_script='s/[\\$]/&&/g;s/;s,x,x,$//'
 program_transform_name=`$as_echo "$program_transform_name" | sed "$ac_script"`
 
-# Expand $ac_aux_dir to an absolute path.
-am_aux_dir=`cd "$ac_aux_dir" && pwd`
+# expand $ac_aux_dir to an absolute path
+am_aux_dir=`cd $ac_aux_dir && pwd`
 
 if test x"${MISSING+set}" != xset; then
   case $am_aux_dir in
@@ -3966,7 +3950,7 @@ else
 $as_echo "$as_me: WARNING: 'missing' script is too old or missing" >&2;}
 fi
 
-if test x"${install_sh+set}" != xset; then
+if test x"${install_sh}" != xset; then
   case $am_aux_dir in
   *\ * | *\	*)
     install_sh="\${SHELL} '$am_aux_dir/install-sh'" ;;
@@ -4294,8 +4278,8 @@ MAKEINFO=${MAKEINFO-"${am_missing_run}makeinfo"}
 # <http://lists.gnu.org/archive/html/automake/2012-07/msg00014.html>
 mkdir_p='$(MKDIR_P)'
 
-# We need awk for the "check" target (and possibly the TAP driver).  The
-# system "awk" is bad on some platforms.
+# We need awk for the "check" target.  The system "awk" is bad on
+# some platforms.
 # Always define AMTAR for backward compatibility.  Yes, it's still used
 # in the wild :-(  We should find a proper way to deprecate it ...
 AMTAR='$${TAR-tar}'
@@ -4352,7 +4336,6 @@ END
     as_fn_error $? "Your 'rm' program is bad, sorry." "$LINENO" 5
   fi
 fi
-
 
 # Make sure we can run config.sub.
 $SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
@@ -7268,7 +7251,7 @@ if ${am_cv_pathless_PYTHON+:} false; then :
   $as_echo_n "(cached) " >&6
 else
 
-	for am_cv_pathless_PYTHON in python python2 python3 python3.8 python3.7 python3.6 python3.5 python3.4 python3.3 python3.2 python3.1 python3.0 python2.7  python2.6 python2.5 python2.4 python2.3 python2.2 python2.1 python2.0 none; do
+	for am_cv_pathless_PYTHON in python python2 python3 python3.3 python3.2 python3.1 python3.0 python2.7  python2.6 python2.5 python2.4 python2.3 python2.2 python2.1 python2.0 none; do
 	  test "$am_cv_pathless_PYTHON" = none && break
 	  prog="import sys
 # split strings by '.' and convert to numeric.  Append some zeros
@@ -41564,8 +41547,6 @@ main ()
     if (*(data + i) != *(data3 + i))
       return 14;
   close (fd);
-  free (data);
-  free (data3);
   return 0;
 }
 _ACEOF
@@ -43964,86 +43945,6 @@ esac
   fi
 fi
 
-
-# Check whether --with-gpgme-prefix was given.
-if test "${with_gpgme_prefix+set}" = set; then :
-  withval=$with_gpgme_prefix; gpgme_config_prefix="$withval"
-else
-  gpgme_config_prefix=""
-fi
-
-  if test x"${GPGME_CONFIG}" = x ; then
-     if test x"${gpgme_config_prefix}" != x ; then
-        GPGME_CONFIG="${gpgme_config_prefix}/bin/gpgme-config"
-     else
-       case "${SYSROOT}" in
-         /*)
-           if test -x "${SYSROOT}/bin/gpgme-config" ; then
-             GPGME_CONFIG="${SYSROOT}/bin/gpgme-config"
-           fi
-           ;;
-         '')
-           ;;
-          *)
-           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Ignoring \$SYSROOT as it is not an absolute path." >&5
-$as_echo "$as_me: WARNING: Ignoring \$SYSROOT as it is not an absolute path." >&2;}
-           ;;
-       esac
-     fi
-  fi
-
-  # Extract the first word of "gpgme-config", so it can be a program name with args.
-set dummy gpgme-config; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_GPGME_CONFIG+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $GPGME_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GPGME_CONFIG="$GPGME_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_GPGME_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GPGME_CONFIG" && ac_cv_path_GPGME_CONFIG="no"
-  ;;
-esac
-fi
-GPGME_CONFIG=$ac_cv_path_GPGME_CONFIG
-if test -n "$GPGME_CONFIG"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GPGME_CONFIG" >&5
-$as_echo "$GPGME_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-
-  if test "$GPGME_CONFIG" != "no" ; then
-    gpgme_version=`$GPGME_CONFIG --version`
-  fi
-  gpgme_version_major=`echo $gpgme_version | \
-               sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\1/'`
-  gpgme_version_minor=`echo $gpgme_version | \
-               sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\2/'`
-  gpgme_version_micro=`echo $gpgme_version | \
-               sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\3/'`
-
 if test x"$with_metalink" != xno; then :
 
 
@@ -44131,101 +44032,6 @@ fi
 
   have_gpg=no
   if test x"$with_metalink" = xyes; then :
-
-
-         tmp=1:0.4.2
-  if echo "$tmp" | grep ':' >/dev/null 2>/dev/null ; then
-     req_gpgme_api=`echo "$tmp"     | sed 's/\(.*\):\(.*\)/\1/'`
-     min_gpgme_version=`echo "$tmp" | sed 's/\(.*\):\(.*\)/\2/'`
-  else
-     req_gpgme_api=0
-     min_gpgme_version="$tmp"
-  fi
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GPGME - version >= $min_gpgme_version" >&5
-$as_echo_n "checking for GPGME - version >= $min_gpgme_version... " >&6; }
-  ok=no
-  if test "$GPGME_CONFIG" != "no" ; then
-    req_major=`echo $min_gpgme_version | \
-               sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1/'`
-    req_minor=`echo $min_gpgme_version | \
-               sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\2/'`
-    req_micro=`echo $min_gpgme_version | \
-               sed 's/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\3/'`
-    if test "$gpgme_version_major" -gt "$req_major"; then
-        ok=yes
-    else
-        if test "$gpgme_version_major" -eq "$req_major"; then
-            if test "$gpgme_version_minor" -gt "$req_minor"; then
-               ok=yes
-            else
-               if test "$gpgme_version_minor" -eq "$req_minor"; then
-                   if test "$gpgme_version_micro" -ge "$req_micro"; then
-                     ok=yes
-                   fi
-               fi
-            fi
-        fi
-    fi
-  fi
-  if test $ok = yes; then
-     # If we have a recent GPGME, we should also check that the
-     # API is compatible.
-     if test "$req_gpgme_api" -gt 0 ; then
-        tmp=`$GPGME_CONFIG --api-version 2>/dev/null || echo 0`
-        if test "$tmp" -gt 0 ; then
-           if test "$req_gpgme_api" -ne "$tmp" ; then
-             ok=no
-           fi
-        fi
-     fi
-  fi
-  if test $ok = yes; then
-    GPGME_CFLAGS=`$GPGME_CONFIG --cflags`
-    GPGME_LIBS=`$GPGME_CONFIG --libs`
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-        LIBS="$GPGME_LIBS $LIBS"
-        CFLAGS="$GPGME_CFLAGS $CFLAGS"
-
-$as_echo "#define HAVE_GPGME 1" >>confdefs.h
-
-        have_gpg=yes
-
-
-    gpgme_config_host=`$GPGME_CONFIG --host 2>/dev/null || echo none`
-    if test x"$gpgme_config_host" != xnone ; then
-      if test x"$gpgme_config_host" != x"$host" ; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING:
-***
-*** The config script $GPGME_CONFIG was
-*** built for $gpgme_config_host and thus may not match the
-*** used host $host.
-*** You may want to use the configure option --with-gpgme-prefix
-*** to specify a matching config script or use \$SYSROOT.
-***" >&5
-$as_echo "$as_me: WARNING:
-***
-*** The config script $GPGME_CONFIG was
-*** built for $gpgme_config_host and thus may not match the
-*** used host $host.
-*** You may want to use the configure option --with-gpgme-prefix
-*** to specify a matching config script or use \$SYSROOT.
-***" >&2;}
-        gpg_config_script_warn="$gpg_config_script_warn gpgme"
-      fi
-    fi
-
-  else
-    GPGME_CFLAGS=""
-    GPGME_LIBS=""
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-    :
-  fi
-
-
 
 
 

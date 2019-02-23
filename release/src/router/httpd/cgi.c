@@ -54,7 +54,7 @@ extern char *strsep(char **stringp, char *delim);
 /* CGI hash table */
 static struct hsearch_data htab;
 
-static void
+void
 unescape(char *s)
 {
 	unsigned int c;

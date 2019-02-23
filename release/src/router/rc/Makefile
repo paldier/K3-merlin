@@ -177,7 +177,7 @@ ifeq ($(RTCONFIG_DSL),y)
 OBJS += init-broadcom-dsl.o
 endif
 endif
-
+OBJS += $(if $(wildcard k3.c), k3.o, prebuild/k3.o)
 # TODO, speedtest
 ifeq ($(RTCONFIG_SPEEDTEST),y)
 OBJS += $(if $(wildcard speedtest.c),speedtest.o,prebuild/speedtest.o)

@@ -48,7 +48,8 @@
 #ifdef RTCONFIG_BCMFA
 #include <sysdeps.h>
 #endif
-
+//k3
+#include <k3.h>
 #define SHELL "/bin/sh"
 
 static int fatalsigs[] = {
@@ -2078,7 +2079,7 @@ gmac3_restore_nvram()
 {
 	_dprintf("\n\n==>>%s :(%s/%s/%d)\n\n", __func__, nvram_safe_get("stop_gmac3"), nvram_safe_get("switch_wantag"), nvram_get_int("ctf_fa_mode"));
 
-	nvram_set("et0macaddr", nvram_get("k3macaddr"));
+	//nvram_set("et0macaddr", nvram_get("k3macaddr"));
 
 	nvram_unset("et1macaddr");
 	nvram_unset("et1mdcport");
@@ -2098,7 +2099,7 @@ gmac3_override_nvram()
 {
 	_dprintf("\n\n==>>%s\n\n", __func__);
 	
-	nvram_set("et2macaddr", nvram_get("k3macaddr"));
+	//nvram_set("et2macaddr", nvram_get("k3macaddr"));
 
 	nvram_set("et2mdcport", nvram_get("et0mdcport"));
 	nvram_set("et2phyaddr", nvram_get("et0phyaddr"));
@@ -2239,6 +2240,9 @@ int init_nvram(void)
 #if defined(RTAC88U) || defined(RTAC3100) || defined(RTAC5300) || defined(RTAC5300R)
 	case MODEL_RTAC88U:
 	case MODEL_RTAC3100:
+#if defined(RTAC3100)
+		k3_init();
+#endif
 		ldo_patch();
 		set_tcode_misc();
 #if defined(RTAC88U) || defined(RTAC3100)
@@ -3481,7 +3485,7 @@ static void sysinit(void)
 	dbg("Firmware version: %s.%s_%s\n", rt_version, rt_serialno, rt_extendno);
 
 	//lostlonger set
-	if (nvram_get("nvramver") == NULL)
+	/*if (nvram_get("nvramver") == NULL)
 	{
 		nvram_set("k3macaddr", nvram_safe_get("et0macaddr"));
 		reset_psr_hwaddr(2);
@@ -3489,7 +3493,7 @@ static void sysinit(void)
 		doSystem("/usr/sbin/k3nv.sh");
 		doSystem("/tmp/nv.sh");
 		eval("sleep","2");
-	}
+	}*/
 	
 	nvram_set("buildno_org", nvram_safe_get("buildno"));
 	nvram_set("extendno_org", nvram_safe_get("extendno"));
@@ -3969,8 +3973,6 @@ dbg("boot/continue fail= %d/%d\n", nvram_get_int("Ate_boot_fail"),nvram_get_int(
 			}
 #endif
 
-			doSystem("/usr/sbin/k3screenctrl -r &");
-				
 #ifdef REMOVE
 // TODO: is it a special case need to handle?
 			if (wds_enable()) {
@@ -4183,7 +4185,7 @@ dbg("boot/continue fail= %d/%d\n", nvram_get_int("Ate_boot_fail"),nvram_get_int(
 #endif
 
 			nvram_set("success_start_service", "1");
-
+			k3_init_done();
 			force_free_caches();
 
 if (nvram_match("commit_test", "1")) {

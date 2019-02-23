@@ -9,7 +9,7 @@ fi
 
 [ $ACTION = stop -o $ACTION = restart -o $ACTION = kill ] && ORDER="-r"
 
-for i in $(find /softcenter/init.d/ -name 'S*' | sort $ORDER ) ;
+for i in $(find /jffs/softcenter/init.d/ -name 'S*' | sort $ORDER ) ;
 do
     case "$i" in
         S* | *.sh )

@@ -2299,8 +2299,9 @@ libusb-0.1.12-clean:
 	@rm -f libusb-0.1.12/stamp-h1
 
 libdaemon/stamp-h1:
-	cd libdaemon && $(CONFIGURE) ac_cv_func_setpgrp_void=yes \
-	--disable-dependency-tracking
+	cd libdaemon && autoreconf -i -f && $(CONFIGURE) --prefix=/usr \
+	--disable-dependency-tracking \
+	ac_cv_func_setpgrp_void=yes
 	touch $@
 
 libdaemon: libdaemon/stamp-h1
@@ -3820,7 +3821,7 @@ pcre-8.31-clean:
 	@rm -f pcre-8.31/stamp-h1
 
 libxml2/stamp-h1:
-	cd libxml2 && \
+	cd libxml2 && mkdir -p m4 && autoreconf -i -f && \
 	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" LDFLAGS=-ldl \
 	./$(CONFIGURE) --prefix=/usr --without-python --disable-dependency-tracking
 	touch $@

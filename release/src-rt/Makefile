@@ -60,22 +60,22 @@ include ./version.conf
 else
 include $(ASUSWRTVERSIONCONFDIR)/version.conf
 endif
-
+export MERLINVER := K3_R1
 export BRANCH := $(shell git branch)
 
-#ifeq ($(BRANCH),) 
-#include ./router/extendno.conf
-#else
-#ifeq ($(EXTENDTYPE),)
-#export EXTENDNO := $(shell git log --pretty=oneline asuswrt_$(KERNEL_VER).$(FS_VER).$(SERIALNO)..HEAD | wc -l)-g$(shell git log --pretty=format:'%h' -n 1)
-#else
-#export EXTENDNO := $(shell git log --pretty=oneline asuswrt_$(KERNEL_VER).$(FS_VER).$(SERIALNO)..HEAD | wc -l)-g$(shell git log --pretty=format:'%h' -n 1)-$(EXTENDTYPE)
-#endif
-#endif
+ifeq ($(BRANCH),) 
+include ./router/extendno.conf
+else
+ifeq ($(EXTENDTYPE),)
+export EXTENDNO := $(MERLINVER)-g$(shell git log --pretty=format:'%h' -n 1|sed -e "s,\([0-9a-z]\{7\}\)[0-9a-z]*,\1,")
+else
+export EXTENDNO := $(MERLINVER)-g$(shell git log --pretty=format:'%h' -n 1|sed -e "s,\([0-9a-z]\{7\}\)[0-9a-z]*,\1,")-$(EXTENDTYPE)
+endif
+endif
 
-#ifeq ($(EXTENDNO),)
-#export EXTENDNO := 0-g$(shell git log --pretty=format:'%h' -n 1)
-#endif
+ifeq ($(EXTENDNO),)
+export EXTENDNO := $(MERLINVER)-g$(shell git log --pretty=format:'%h' -n 1|sed -e "s,\([0-9a-z]\{7\}\)[0-9a-z]*,\1,")
+endif
 
 export SWPJNAME := $(shell git branch | grep "*" | grep "swpj-" | sed 's/.*swpj-//g')
 
@@ -1681,6 +1681,10 @@ define RouterOptions
 	if [ "$(LAN50)" = "y" ]; then \
 		sed -i "/RTCONFIG_DEFLAN50/d" $(1); \
 		echo "RTCONFIG_DEFLAN50=y" >>$(1); \
+	fi; \
+	if [ "$(SOFTCENTER)" = "y" ]; then \
+		sed -i "/RTCONFIG_SOFTCENTER/d" $(1); \
+		echo "RTCONFIG_SOFTCENTER=y" >>$(1); \
 	fi; \
 	)
 	$(call platformRouterOptions, $(1))

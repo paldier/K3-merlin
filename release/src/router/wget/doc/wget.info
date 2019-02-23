@@ -1,4 +1,4 @@
-This is wget.info, produced by makeinfo version 6.5 from wget.texi.
+This is wget.info, produced by makeinfo version 5.2 from wget.texi.
 
 This file documents the GNU Wget utility for downloading network data.
 
@@ -112,7 +112,7 @@ retrieval through HTTP proxies.
 
    • Most of the features are fully configurable, either through command
      line options, or via the initialization file ‘.wgetrc’ (*note
-     Startup File::).  Wget allows you to define “global” startup files
+     Startup File::).  Wget allows you to define "global" startup files
      (‘/usr/local/etc/wgetrc’ by default) for site settings.  You can
      also specify the location of a startup file with the –config
      option.  To disable the reading of config files, use –no-config.
@@ -132,10 +132,10 @@ File: wget.info,  Node: Invoking,  Next: Recursive Download,  Prev: Overview,  U
 
 By default, Wget is very simple to invoke.  The basic syntax is:
 
-     wget [OPTION]... [URL]...
+     wget [OPTION]… [URL]…
 
    Wget will simply download all the URLs specified on the command line.
-URL is a “Uniform Resource Locator”, as defined below.
+URL is a "Uniform Resource Locator", as defined below.
 
    However, you may wish to change some of the default parameters of
 Wget.  You can do it two ways: permanently, adding the appropriate
@@ -144,18 +144,18 @@ command line.
 
 * Menu:
 
-* URL Format::
-* Option Syntax::
-* Basic Startup Options::
-* Logging and Input File Options::
-* Download Options::
-* Directory Options::
-* HTTP Options::
-* HTTPS (SSL/TLS) Options::
-* FTP Options::
-* Recursive Retrieval Options::
-* Recursive Accept/Reject Options::
-* Exit Status::
+* URL Format::                  
+* Option Syntax::               
+* Basic Startup Options::       
+* Logging and Input File Options::  
+* Download Options::            
+* Directory Options::           
+* HTTP Options::                
+* HTTPS (SSL/TLS) Options::     
+* FTP Options::                 
+* Recursive Retrieval Options::  
+* Recursive Accept/Reject Options::  
+* Exit Status::                 
 
 
 File: wget.info,  Node: URL Format,  Next: Option Syntax,  Prev: Invoking,  Up: Invoking
@@ -163,7 +163,7 @@ File: wget.info,  Node: URL Format,  Next: Option Syntax,  Prev: Invoking,  Up: 
 2.1 URL Format
 ==============
 
-“URL” is an acronym for Uniform Resource Locator.  A uniform resource
+"URL" is an acronym for Uniform Resource Locator.  A uniform resource
 locator is a compact string representation for a resource available via
 the Internet.  Wget recognizes the URL syntax as per RFC1738.  This is
 the most widely used form (square brackets denote optional parts):
@@ -196,7 +196,7 @@ unsafe characters.
 
    Wget also supports the ‘type’ feature for FTP URLs.  By default, FTP
 documents are retrieved in the binary mode (type ‘i’), which means that
-they are downloaded unchanged.  Another useful mode is the ‘a’ (“ASCII”)
+they are downloaded unchanged.  Another useful mode is the ‘a’ ("ASCII")
 mode, which converts the line delimiters between the different operating
 systems, and is thus useful for text files.  Here is an example:
 
@@ -264,12 +264,12 @@ You can also clear the lists in ‘.wgetrc’ (*note Wgetrc Syntax::).
 
      wget -X '' -X /~nobody,/~somebody
 
-   Most options that do not accept arguments are “boolean” options, so
+   Most options that do not accept arguments are "boolean" options, so
 named because their state can be captured with a yes-or-no (“boolean”)
 variable.  For example, ‘--follow-ftp’ tells Wget to follow FTP links
 from HTML files and, on the other hand, ‘--no-glob’ tells it not to
 perform file globbing on FTP URLs.  A boolean option is either
-“affirmative” or “negative” (beginning with ‘--no’).  All such options
+"affirmative" or "negative" (beginning with ‘--no’).  All such options
 share several properties.
 
    Unless stated otherwise, it is assumed that the default behavior is
@@ -513,7 +513,7 @@ File: wget.info,  Node: Download Options,  Next: Directory Options,  Prev: Loggi
 ‘--no-clobber’
      If a file is downloaded more than once in the same directory,
      Wget’s behavior depends on a few options, including ‘-nc’.  In
-     certain cases, the local file will be “clobbered”, or overwritten,
+     certain cases, the local file will be "clobbered", or overwritten,
      upon repeated download.  In other cases it will be preserved.
 
      When running Wget without ‘-N’, ‘-nc’, ‘-r’, or ‘-p’, downloading
@@ -648,7 +648,7 @@ File: wget.info,  Node: Download Options,  Next: Directory Options,  Prev: Loggi
      passed by appending them to the type sperated by a colon (:) like
      this: ‘--progress=TYPE:PARAMETER1:PARAMETER2’.
 
-     When using the dotted retrieval, you may set the “style” by
+     When using the dotted retrieval, you may set the "style" by
      specifying the type as ‘dot:STYLE’.  Different styles assign
      different meaning to one dot.  With the ‘default’ style each dot
      represents 1K, there are ten dots in a cluster and 50 dots in a
@@ -721,7 +721,7 @@ File: wget.info,  Node: Download Options,  Next: Directory Options,  Prev: Loggi
      servers.
 
 ‘--spider’
-     When invoked with this option, Wget will behave as a Web “spider”,
+     When invoked with this option, Wget will behave as a Web "spider",
      which means that it will not download the pages, just check that
      they are there.  For example, you can use Wget to check your
      bookmarks:
@@ -762,7 +762,7 @@ File: wget.info,  Node: Download Options,  Next: Directory Options,  Prev: Loggi
 
 ‘--read-timeout=SECONDS’
      Set the read (and write) timeout to SECONDS seconds.  The “time” of
-     this timeout refers to “idle time”: if, at any point in the
+     this timeout refers to "idle time": if, at any point in the
      download, no data is received for more than the specified number of
      seconds, reading fails and the download is restarted.  This option
      does not directly affect the duration of the entire download.
@@ -808,7 +808,7 @@ File: wget.info,  Node: Download Options,  Next: Directory Options,  Prev: Loggi
 ‘--waitretry=SECONDS’
      If you don’t want Wget to wait between _every_ retrieval, but only
      between retries of failed downloads, you can use this option.  Wget
-     will use “linear backoff”, waiting 1 second after the first failure
+     will use "linear backoff", waiting 1 second after the first failure
      on a given file, then waiting 2 seconds after the second failure on
      that file, up to the maximum number of SECONDS you specify.
 
@@ -876,7 +876,7 @@ File: wget.info,  Node: Download Options,  Next: Directory Options,  Prev: Loggi
 
 ‘--restrict-file-names=MODES’
      Change which characters found in remote URLs must be escaped during
-     generation of local filenames.  Characters that are “restricted” by
+     generation of local filenames.  Characters that are "restricted" by
      this option are escaped, i.e.  replaced with ‘%HH’, where ‘HH’ is
      the hexadecimal number that corresponds to the restricted
      character.  This option may also be used to force all alphabetical
@@ -964,7 +964,7 @@ File: wget.info,  Node: Download Options,  Next: Directory Options,  Prev: Loggi
      Unlike ‘-4’ and ‘-6’, this option doesn’t inhibit access to any
      address family, it only changes the _order_ in which the addresses
      are accessed.  Also note that the reordering performed by this
-     option is “stable”—it doesn’t affect order of addresses of the same
+     option is "stable"—it doesn’t affect order of addresses of the same
      family.  That is, the relative order of all IPv4 addresses and of
      all IPv6 addresses remains intact in all cases.
 
@@ -1103,7 +1103,7 @@ File: wget.info,  Node: Directory Options,  Next: HTTP Options,  Prev: Download 
 
 ‘-P PREFIX’
 ‘--directory-prefix=PREFIX’
-     Set directory prefix to PREFIX.  The “directory prefix” is the
+     Set directory prefix to PREFIX.  The "directory prefix" is the
      directory where all other files and subdirectories will be saved
      to, i.e.  the top of the retrieval tree.  The default is ‘.’ (the
      current directory).
@@ -1400,7 +1400,7 @@ File: wget.info,  Node: HTTP Options,  Next: HTTPS (SSL/TLS) Options,  Prev: Dir
      regular file; specifying a FIFO or something like ‘/dev/stdin’
      won’t work.  It’s not quite clear how to work around this
      limitation inherent in HTTP/1.0.  Although HTTP/1.1 introduces
-     “chunked” transfer that doesn’t require knowing the request length
+     "chunked" transfer that doesn’t require knowing the request length
      in advance, a client can’t use chunked unless it knows it’s talking
      to an HTTP/1.1 server.  And it can’t know that until it receives a
      response, which in turn requires the request to have been completed
@@ -1655,8 +1655,8 @@ compiled without SSL support, none of these options are available.
      described above.
 
 ‘--egd-file=FILE’
-     [OpenSSL only] Use FILE as the EGD socket.  EGD stands for “Entropy
-     Gathering Daemon”, a user-space program that collects data from
+     [OpenSSL only] Use FILE as the EGD socket.  EGD stands for "Entropy
+     Gathering Daemon", a user-space program that collects data from
      various unpredictable system sources and makes it available to
      other programs that might need it.  Encryption software, such as
      the SSL library, needs sources of non-repeating randomness to seed
@@ -1827,7 +1827,7 @@ File: wget.info,  Node: FTP Options,  Next: Recursive Retrieval Options,  Prev: 
 
 ‘--no-glob’
      Turn off FTP globbing.  Globbing refers to the use of shell-like
-     special characters (“wildcards”), like ‘*’, ‘?’, ‘[’ and ‘]’ to
+     special characters ("wildcards"), like ‘*’, ‘?’, ‘[’ and ‘]’ to
      retrieve more than one file from the same directory at once, like:
 
           wget ftp://gnjilux.srk.fer.hr/*.msg
@@ -1842,7 +1842,7 @@ File: wget.info,  Node: FTP Options,  Next: Recursive Retrieval Options,  Prev: 
      Unix FTP servers (and the ones emulating Unix ‘ls’ output).
 
 ‘--no-passive-ftp’
-     Disable the use of the “passive” FTP transfer mode.  Passive FTP
+     Disable the use of the "passive" FTP transfer mode.  Passive FTP
      mandates that the client connect to the server to establish the
      data connection rather than the other way around.
 
@@ -2091,7 +2091,7 @@ File: wget.info,  Node: Recursive Retrieval Options,  Next: Recursive Accept/Rej
      terminate comments at the first occurrence of ‘-->’.
 
      According to specifications, HTML comments are expressed as SGML
-     “declarations”.  Declaration is special markup that begins with
+     "declarations".  Declaration is special markup that begins with
      ‘<!’ and ends with ‘>’, such as ‘<!DOCTYPE ...>’, that may contain
      comments between a pair of ‘--’ delimiters.  HTML comments are
      “empty declarations”, SGML declarations without any non-comment
@@ -2272,7 +2272,7 @@ File: wget.info,  Node: Recursive Download,  Next: Following Links,  Prev: Invok
 
 GNU Wget is capable of traversing parts of the Web (or a single HTTP or
 FTP server), following links and directory structure.  We refer to this
-as to “recursive retrieval”, or “recursion”.
+as to "recursive retrieval", or "recursion".
 
    With HTTP URLs, Wget retrieves and parses the HTML or CSS from the
 given URL, retrieving the files the document refers to, through markup
@@ -2281,13 +2281,13 @@ functional notation.  If the freshly downloaded file is also of type
 ‘text/html’, ‘application/xhtml+xml’, or ‘text/css’, it will be parsed
 and followed further.
 
-   Recursive retrieval of HTTP and HTML/CSS content is “breadth-first”.
+   Recursive retrieval of HTTP and HTML/CSS content is "breadth-first".
 This means that Wget first downloads the requested document, then the
 documents linked from that document, then the documents linked by them,
 and so on.  In other words, Wget first downloads the documents at depth
 1, then those at depth 2, and so on until the specified maximum depth.
 
-   The maximum “depth” to which the retrieval may descend is specified
+   The maximum "depth" to which the retrieval may descend is specified
 with the ‘-l’ option.  The default maximum depth is five layers.
 
    When retrieving an FTP URL recursively, Wget will retrieve all the
@@ -2364,7 +2364,7 @@ than the one you specified on the command line.  This is a reasonable
 default; without it, every retrieval would have the potential to turn
 your Wget into a small version of google.
 
-   However, visiting different hosts, or “host spanning,” is sometimes a
+   However, visiting different hosts, or "host spanning," is sometimes a
 useful option.  Maybe the images are served from a different server.
 Maybe you’re mirroring a site that consists of pages interlinked between
 three servers.  Maybe the server has two equivalent names, and the HTML
@@ -2552,7 +2552,7 @@ equivalent command in ‘.wgetrc’.
 ‘no_parent = on’
      The simplest, and often very useful way of limiting directories is
      disallowing retrieval of the links that refer to the hierarchy
-     “above” than the beginning directory, i.e.  disallowing ascent to
+     "above" than the beginning directory, i.e.  disallowing ascent to
      the parent directory/directories.
 
      The ‘--no-parent’ option (short ‘-np’) is useful in this case.
@@ -2639,7 +2639,7 @@ and the time to do the update.  This is why all the mirroring tools
 offer the option of incremental updating.
 
    Such an updating mechanism means that the remote server is scanned in
-search of “new” files.  Only those new files will be downloaded in the
+search of "new" files.  Only those new files will be downloaded in the
 place of the old ones.
 
    A file is considered new if one of these two conditions are met:
@@ -2651,7 +2651,7 @@ place of the old ones.
 
    To implement this, the program needs to be aware of the time of last
 modification of both local and remote files.  We call this information
-the “time-stamp” of a file.
+the "time-stamp" of a file.
 
    The time-stamping in GNU Wget is turned on using ‘--timestamping’
 (‘-N’) option, or through ‘timestamping = on’ directive in ‘.wgetrc’.
@@ -2665,9 +2665,9 @@ say.
 
 * Menu:
 
-* Time-Stamping Usage::
-* HTTP Time-Stamping Internals::
-* FTP Time-Stamping Internals::
+* Time-Stamping Usage::         
+* HTTP Time-Stamping Internals::  
+* FTP Time-Stamping Internals::  
 
 
 File: wget.info,  Node: Time-Stamping Usage,  Next: HTTP Time-Stamping Internals,  Prev: Time-Stamping,  Up: Time-Stamping
@@ -2813,7 +2813,7 @@ File: wget.info,  Node: Wgetrc Location,  Next: Wgetrc Syntax,  Prev: Startup Fi
 6.1 Wgetrc Location
 ===================
 
-When initializing, Wget will look for a “global” startup file,
+When initializing, Wget will look for a "global" startup file,
 ‘/usr/local/etc/wgetrc’ by default (or some prefix other than
 ‘/usr/local’, if Wget was not installed there) and read commands from
 there, if it exists.
@@ -2839,7 +2839,7 @@ The syntax of a wgetrc command is simple:
 
      variable = value
 
-   The “variable” will also be called “command”.  Valid “values” are
+   The "variable" will also be called "command".  Valid "values" are
 different for different commands.
 
    The commands are case-, underscore- and minus-insensitive.  Thus
@@ -2992,7 +2992,7 @@ dot_bytes = N
      throughout the retrieval (1024 by default).  You can postfix the
      value with ‘k’ or ‘m’, representing kilobytes and megabytes,
      respectively.  With dot settings you can tailor the dot retrieval
-     to suit your needs, or you can use the predefined “styles” (*note
+     to suit your needs, or you can use the predefined "styles" (*note
      Download Options::).
 
 dot_spacing = N
@@ -3711,7 +3711,7 @@ File: wget.info,  Node: Proxies,  Next: Distribution,  Prev: Various,  Up: Vario
 8.1 Proxies
 ===========
 
-“Proxies” are special-purpose HTTP servers designed to transfer data
+"Proxies" are special-purpose HTTP servers designed to transfer data
 from remote servers to local clients.  One typical use of proxies is
 lightening network load for users behind a slow connection.  This is
 achieved by channeling all HTTP and FTP requests through the proxy which
@@ -3759,7 +3759,7 @@ may be specified from within Wget itself.
      settings specified by the environment.
 
    Some proxy servers require authorization to enable you to use them.
-The authorization consists of “username” and “password”, which must be
+The authorization consists of "username" and "password", which must be
 sent by Wget.  As with HTTP authorization, several authentication
 schemes exist.  For proxy authorization only the ‘Basic’ authentication
 scheme is currently implemented.
@@ -3992,7 +3992,7 @@ software on a system is available from the ‘info’ command).
 
    To avoid this kind of accident, as well as to preserve privacy for
 documents that need to be protected from well-behaved robots, the
-concept of “robot exclusion” was invented.  The idea is that the server
+concept of "robot exclusion" was invented.  The idea is that the server
 administrators and document authors can specify which portions of the
 site they wish to protect from robots and those they will permit access.
 
@@ -4058,7 +4058,7 @@ main issues, and some solutions.
      Another workaround is to use ‘.netrc’ to store passwords; however,
      storing unencrypted passwords is also considered a security risk.
 
-  2. Using the insecure “basic” authentication scheme, unencrypted
+  2. Using the insecure "basic" authentication scheme, unencrypted
      passwords are transmitted through the network routers and gateways.
 
   3. The FTP passwords are also in no way encrypted.  There is no good
@@ -4221,7 +4221,7 @@ A.1 GNU Free Documentation License
   0. PREAMBLE
 
      The purpose of this License is to make a manual, textbook, or other
-     functional and useful document “free” in the sense of freedom: to
+     functional and useful document "free" in the sense of freedom: to
      assure everyone the effective freedom to copy and redistribute it,
      with or without modifying it, either commercially or
      noncommercially.  Secondarily, this License preserves for the
@@ -4671,7 +4671,7 @@ notices just after the title page:
        Free Documentation License''.
 
    If you have Invariant Sections, Front-Cover Texts and Back-Cover
-Texts, replace the “with...Texts.” line with this:
+Texts, replace the “with…Texts.” line with this:
 
          with the Invariant Sections being LIST THEIR TITLES, with
          the Front-Cover Texts being LIST, and with the Back-Cover Texts
@@ -4987,57 +4987,57 @@ Concept Index
 Tag Table:
 Node: Top823
 Node: Overview2234
-Node: Invoking5926
-Node: URL Format6786
-Ref: URL Format-Footnote-19465
-Node: Option Syntax9571
-Node: Basic Startup Options12349
-Node: Logging and Input File Options13207
-Node: Download Options18591
-Node: Directory Options48157
-Node: HTTP Options51008
-Node: HTTPS (SSL/TLS) Options71376
-Node: FTP Options83909
-Node: Recursive Retrieval Options90971
-Node: Recursive Accept/Reject Options100228
-Node: Exit Status104433
-Node: Recursive Download105468
-Node: Following Links108707
-Node: Spanning Hosts109673
-Node: Types of Files111942
-Node: Directory-Based Limits116836
-Node: Relative Links120103
-Node: FTP Links120953
-Node: Time-Stamping121844
-Node: Time-Stamping Usage123516
-Node: HTTP Time-Stamping Internals125388
-Ref: HTTP Time-Stamping Internals-Footnote-1126736
-Node: FTP Time-Stamping Internals126939
-Node: Startup File128426
-Node: Wgetrc Location129366
-Node: Wgetrc Syntax130220
-Node: Wgetrc Commands130985
-Node: Sample Wgetrc147578
-Node: Examples153606
-Node: Simple Usage153967
-Node: Advanced Usage155416
-Node: Very Advanced Usage159232
-Node: Various160776
-Node: Proxies161485
-Node: Distribution164442
-Node: Web Site164786
-Node: Mailing Lists165086
-Node: Internet Relay Chat166823
-Node: Reporting Bugs167118
-Node: Portability169687
-Node: Signals171334
-Node: Appendices172041
-Node: Robot Exclusion172389
-Node: Security Considerations176251
-Node: Contributors177461
-Node: Copying this manual183191
-Node: GNU Free Documentation License183431
-Node: Concept Index208785
+Node: Invoking5922
+Node: URL Format6902
+Ref: URL Format-Footnote-19573
+Node: Option Syntax9679
+Node: Basic Startup Options12445
+Node: Logging and Input File Options13303
+Node: Download Options18687
+Node: Directory Options48225
+Node: HTTP Options51072
+Node: HTTPS (SSL/TLS) Options71436
+Node: FTP Options83965
+Node: Recursive Retrieval Options91019
+Node: Recursive Accept/Reject Options100272
+Node: Exit Status104477
+Node: Recursive Download105512
+Node: Following Links108735
+Node: Spanning Hosts109701
+Node: Types of Files111966
+Node: Directory-Based Limits116860
+Node: Relative Links120123
+Node: FTP Links120973
+Node: Time-Stamping121864
+Node: Time-Stamping Usage123541
+Node: HTTP Time-Stamping Internals125413
+Ref: HTTP Time-Stamping Internals-Footnote-1126761
+Node: FTP Time-Stamping Internals126964
+Node: Startup File128451
+Node: Wgetrc Location129391
+Node: Wgetrc Syntax130241
+Node: Wgetrc Commands130994
+Node: Sample Wgetrc147583
+Node: Examples153611
+Node: Simple Usage153972
+Node: Advanced Usage155421
+Node: Very Advanced Usage159237
+Node: Various160781
+Node: Proxies161490
+Node: Distribution164435
+Node: Web Site164779
+Node: Mailing Lists165079
+Node: Internet Relay Chat166816
+Node: Reporting Bugs167111
+Node: Portability169680
+Node: Signals171327
+Node: Appendices172034
+Node: Robot Exclusion172382
+Node: Security Considerations176240
+Node: Contributors177446
+Node: Copying this manual183176
+Node: GNU Free Documentation License183416
+Node: Concept Index208766
 
 End Tag Table
 
