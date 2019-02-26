@@ -29,40 +29,9 @@ struct nvram_tuple router_defaults[] = {
 
 	{ "preferred_lang", "CN" },
 	
-	//lostlonger
-	{ "xunlei_enable", "0" },
-	{ "xunlei_dir", "" },
-	
-	{ "script_name", "" },
-	{ "script_content", "" },
-	
-	{ "kms_enable", "0" },
-	{ "kms_auto", "0" },
-	
-	{ "ssr_enable", "0" },
-	{ "ssr_udp_enable", "0" },
-	{ "ssr_mode", "1" },
-	{ "ssr_dnsmode", "1" },
-	{ "ssr_index", "0" },
-	{ "ssr_server_alias", "" },//name
-	{ "ssr_server_enable", "0" },
-	{ "ssr_server_type", "" },//ss or ssr
-	{ "ssr_server_ip", "" },
-	{ "ssr_server_port", "" },
-	{ "ssr_server_timeout", "" },
-	{ "ssr_server_passwd", "" },
-	{ "ssr_server_encrypt", "" },
-	{ "ssr_server_protocol", "" },
-	{ "ssr_server_protocolpara", "" },
-	{ "ssr_server_obfs", "" },
-	{ "ssr_server_obfspara", "" },
-	//{ "ssr_server_ssencrypt", "" },
 	{ "save_name", "" },
 	{ "save_content", "" },
 	
-	//{ "ssr_server_protocol", "/jffs" },
-	//{ "ssr_server_obfs", "" },
-	//{ "ssr_server_obfspara", "" },
 
 	// NVRAM from init_nvram: system wide parameters accodring to model and mode
 	//{ "wan_ifnames", "" },

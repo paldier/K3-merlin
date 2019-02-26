@@ -26,4 +26,4 @@
 
 extern void k3_init(void);
 extern void k3_init_done(void);
-extern int k3screen(void);
+extern int start_k3screen(void);

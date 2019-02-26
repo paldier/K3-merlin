@@ -891,7 +891,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 	else if(!strcmp(base, "k3screen")) {
-		k3screen();
+		start_k3screen();
 		return 0;
 	}
 #ifdef RTCONFIG_SSH
