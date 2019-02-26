@@ -434,6 +434,7 @@ endif
 	@cd $(INSTALLDIR)/sbin && ln -sf rc led_ctrl
 	@cd $(INSTALLDIR)/sbin && ln -sf rc reboot
 	@cd $(INSTALLDIR)/sbin && ln -sf rc halt
+	@cd $(INSTALLDIR)/sbin && ln -sf rc k3screen
 ifeq ($(RTCONFIG_BCMARM),y)
 	@cd $(INSTALLDIR)/sbin && ln -sf rc gpio
 	@cd $(INSTALLDIR)/sbin && ln -sf rc mtd-write2

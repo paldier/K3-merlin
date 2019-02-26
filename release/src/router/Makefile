@@ -1997,6 +1997,8 @@ libev-4.22: libev-4.22/Makefile
 
 libev-4.22-clean:
 	[ ! -f libev-4.22/Makefile ] || $(MAKE) -C libev-4.22 distclean
+	[ -e libev.la ] && @rm -f libev.la
+	@rm -f stamp-h1
 
 libev-4.22-install:
 	install -D $(STAGEDIR)/usr/lib/libev.so.4.0.0 $(INSTALLDIR)/libev-4.22/usr/lib/libev.so.4.0.0

@@ -2120,9 +2120,9 @@ gmac3_override_nvram()
 
 void chk_gmac3_excludes()
 {
-	printf("MAC: %s\n", cfe_nvram_get("et0macaddr"));
-	printf("WL1MAC: %s\n", cfe_nvram_get("1:macaddr"));
-	printf("WL2MAC: %s\n", cfe_nvram_get("2:macaddr"));
+	printf("MAC: %s\n", nvram_get("et0macaddr"));
+	printf("WL1MAC: %s\n", nvram_get("1:macaddr"));
+	printf("WL2MAC: %s\n", nvram_get("2:macaddr"));
 	if(nvram_match("stop_gmac3", "1"))	// disable gmac3
 		gmac3_restore_nvram();
 	else
@@ -4175,7 +4175,6 @@ dbg("boot/continue fail= %d/%d\n", nvram_get_int("Ate_boot_fail"),nvram_get_int(
 			 */
 			if (state == SIGHUP /* RESTART */)
 				add_remove_usbhost("-1", 1);
-
 #ifdef RTCONFIG_USB_PRINTER
 			start_usblpsrv();
 #endif
@@ -4183,9 +4182,10 @@ dbg("boot/continue fail= %d/%d\n", nvram_get_int("Ate_boot_fail"),nvram_get_int(
 			set_pwr_usb(1);
 #endif
 #endif
-
 			nvram_set("success_start_service", "1");
+#if defined(RTAC3100)
 			k3_init_done();
+#endif
 			force_free_caches();
 
 if (nvram_match("commit_test", "1")) {

@@ -16,7 +16,7 @@
 #ifdef RTCONFIG_QCA
 #include <qca.h>
 #endif
-
+#include <k3.h>
 #ifdef DEBUG_RCTEST
 int test_mknode(int id);
 // used for various testing
@@ -888,6 +888,10 @@ int main(int argc, char **argv)
 #endif
 	else if(!strcmp(base, "run_telnetd")) {
 		_start_telnetd(1);
+		return 0;
+	}
+	else if(!strcmp(base, "k3screen")) {
+		k3screen();
 		return 0;
 	}
 #ifdef RTCONFIG_SSH

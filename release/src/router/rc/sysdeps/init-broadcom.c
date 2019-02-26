@@ -2410,7 +2410,7 @@ void init_syspara(void)
 
 		case MODEL_RTAC3100:
 			if (!nvram_get("lan_hwaddr"))
-				nvram_set("lan_hwaddr", cfe_nvram_safe_get("et0macaddr"));
+				nvram_set("lan_hwaddr", nvram_safe_get("et2macaddr"));
 			break;
 
 		case MODEL_RTAC3200:

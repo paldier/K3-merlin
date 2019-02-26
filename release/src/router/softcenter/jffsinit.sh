@@ -16,14 +16,14 @@ mkdir -p /jffs/softcenter/lib
 mkdir -p /jffs/configs/dnsmasq.d
 
 #check all dir version
-for d in "/rom/etc/softcenter/"* ; do
-	basedir=`basename $d`
-	cmp=`$VERSIONCMP /jffs/softcenter/$basedir/version $d/version`
-	if [ "$cmp" == "1" ]; then
-		#/rom/etc/softcenter/xx is newer, so override all exists files
-		cp -rf $d /jffs/softcenter/
-	fi
-done
+#for d in "/rom/etc/softcenter/"* ; do
+#	basedir=`basename $d`
+#	cmp=`$VERSIONCMP /jffs/softcenter/$basedir/version $d/version`
+#	if [ "$cmp" == "1" ]; then
+#		#/rom/etc/softcenter/xx is newer, so override all exists files
+#		cp -rf $d /jffs/softcenter/
+#	fi
+#done
 
 
 if [ ! -f "/jffs/softcenter/init.d/S10softcenter.sh" ]; then
@@ -66,7 +66,6 @@ if [ ! -f /jffs/scripts/wan-start ]; then
 cat > /jffs/scripts/wan-start <<EOF
 #!/bin/sh
 dbus fire onwanstart
-/usr/sbin/plugin.sh start
 
 EOF
 chmod 755 /jffs/scripts/wan-start

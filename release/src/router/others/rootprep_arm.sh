@@ -10,7 +10,7 @@ mkdir -p -m 0755 jffs
 # mkdir -p -m 0755 cifs2
 mkdir -p -m 0755 sysroot
 ln -sf /jffs/opt opt
-ln -sf /lib/k3screenctrl /tmp/k3screenctrl
+
 # tmp
 mkdir -p -m 0755 tmp
 ln -sf tmp/var var
