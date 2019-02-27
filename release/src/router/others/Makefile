@@ -37,7 +37,7 @@ ifeq ($(RTCONFIG_OPENVPN),y)
 endif
 
 # K3screenctrl setup script
-	install -m 0700 k3screenctrl $(INSTALLDIR)/usr/sbin
+	#install -m 0700 k3screenctrl $(INSTALLDIR)/usr/sbin
 	#install -m 0700 basic.sh $(INSTALLDIR)/lib/k3screenctrl
 	#install -m 0700 host.sh $(INSTALLDIR)/lib/k3screenctrl
 	#install -m 0700 port.sh $(INSTALLDIR)/lib/k3screenctrl

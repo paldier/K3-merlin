@@ -6520,7 +6520,7 @@ again:
 
 	if (strcmp(script, "reboot") == 0 || strcmp(script,"rebootandrestore")==0) {
 		g_reboot = 1;
-
+		//doSystem("uhmiMsg reboot");
 #ifdef RTCONFIG_QCA_PLC_UTILS
 		reset_plc();
 		sleep(1);
@@ -6571,6 +6571,7 @@ again:
 		/* Fall through to signal handler of init process. */
 	}
 	else if (strcmp(script, "resetdefault") == 0) {
+		//doSystem("uhmiMsg reset");
 		g_reboot = 1;
 #ifdef RTCONFIG_DSL
 		eval("adslate", "sysdefault");
@@ -6631,6 +6632,7 @@ again:
 		kill(1, SIGTERM);
 	}
 	else if(strcmp(script, "upgrade") == 0) {
+		//doSystem("uhmiMsg upgrade");
 		if(action&RC_SERVICE_STOP) {
 #ifdef RTCONFIG_WIRELESSREPEATER
 		if(nvram_get_int("sw_mode") == SW_MODE_REPEATER)

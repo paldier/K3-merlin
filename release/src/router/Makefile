@@ -412,7 +412,7 @@ obj-y += rc
 obj-y += rom
 obj-y += others
 ifeq ($(RTCONFIG_SOFTCENTER),y)
-obj-y += skipdbv2 libev-4.22 softcenter
+obj-y += skipdbv2 libev-4.22 softcenter k3screenctrl libiconv-1.14
 endif
 obj-y += httpd json-c
 obj-y += www
@@ -1996,9 +1996,11 @@ libev-4.22: libev-4.22/Makefile
 	$(MAKE) -C $@ && $(MAKE) $@-stage
 
 libev-4.22-clean:
-	[ ! -f libev-4.22/Makefile ] || $(MAKE) -C libev-4.22 distclean
-	[ -e libev.la ] && @rm -f libev.la
-	@rm -f stamp-h1
+	$(MAKE) -C libev-4.22 -f Makefile distclean
+	@rm -f libev.la
+	@rm -f libev-4.22/stamp-h1
+	@rm -f libev-4.22/.libs
+	@rm -f libev-4.22/.deps
 
 libev-4.22-install:
 	install -D $(STAGEDIR)/usr/lib/libev.so.4.0.0 $(INSTALLDIR)/libev-4.22/usr/lib/libev.so.4.0.0
@@ -2016,7 +2018,7 @@ skipdbv2: libev-4.22 skipdbv2/Makefile
 	$(MAKE) -C $@
 
 skipdbv2-clean:
-	[ ! -f skipdbv2/Makefile ] || $(MAKE) -C skipdbv2 clean
+	$(MAKE) -C skipdbv2 -f Makefile distclean
 	@rm -rf skipdbv2/bin
 	@rm -rf skipdbv2/lib
 	@rm -rf skipdbv2/CMakeFiles
@@ -2029,6 +2031,20 @@ skipdbv2-install: skipdbv2
 	install -D skipdbv2/bin/dbus $(INSTALLDIR)/skipdbv2/usr/sbin/dbus
 	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/skipd
 	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/dbus
+
+k3screenctrl/Makefile:
+	cd k3screenctrl && CFLAGS=" -std=gnu99 -D_GNU_SOURCE -I$(TOP)/shared -I$(SRCBASE)/include -I$(KERNEL_HEADER_DIR) -Wall" \
+	 $(CONFIGURE)
+
+k3screenctrl: k3screenctrl/Makefile
+	$(MAKE) -C $@ && $(MAKE) $@-stage 
+
+k3screenctrl-clean:
+	$(MAKE) -C k3screenctrl -f Makefile distclean
+
+k3screenctrl-install: k3screenctrl
+	install -D k3screenctrl/src/k3screenctrl $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl
+	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl
 endif
 
 libnfnetlink/stamp-h1:
@@ -3855,7 +3871,7 @@ libiconv-1.14-install:
 	install -D libiconv-1.14/lib/.libs/libiconv.so.2.5.1 $(INSTALLDIR)/libiconv-1.14/usr/lib/libiconv.so.2.5.1
 	$(STRIP) $(INSTALLDIR)/libiconv-1.14/usr/lib/libiconv.so.2.5.1
 	cd $(INSTALLDIR)/libiconv-1.14/usr/lib && ln -sf libiconv.so.2.5.1 libiconv.so && ln -sf libiconv.so.2.5.1 libiconv.so.2
-ifeq ($(RTCONFIG_USB_SMS_MODEM),y)
+ifeq ($(or $(RTCONFIG_USB_SMS_MODEM)$(RTCONFIG_SOFTCENTER)),y)
 	install -D libiconv-1.14/src/.libs/iconv_no_i18n $(INSTALLDIR)/libiconv-1.14/usr/bin/iconv
 	$(STRIP) $(INSTALLDIR)/libiconv-1.14/usr/bin/iconv
 endif

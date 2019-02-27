@@ -45,7 +45,6 @@ install:
 	install -m 0755 weather $(INSTALLDIR)/usr/sbin
 	install -m 0755 wl_cr $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
-	install -m 0755 libshared.so $(INSTALLDIR)/usr/share
 	install -m 0755 libwlcr.so $(INSTALLDIR)/usr/share
 
 clean:
