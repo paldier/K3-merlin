@@ -50,7 +50,7 @@ typedef enum _event {
     EVENT_UPGRADE,
     EVENT_REBOOT,
     EVENT_RESET,
-    EVENT_WIFI_ON_2, /* Not known */
+    EVENT_WIFI_ON_2 /* Not known */
 } EVENT;
 
 typedef enum _response_type {

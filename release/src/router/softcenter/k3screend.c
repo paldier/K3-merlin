@@ -1,0 +1,118 @@
+/*
+* 作者：杨志永
+* 日期：2012-04-17 10:10 
+* Email:ljy520zhiyong@163.com
+* ＱＱ：929168233
+* 
+* 文件名: watch_network_speed.c
+* 编译环境：Debian 6.0.4 Testing, GCC 4.6.3 X86_64
+* 
+* 功能：获取Linux系统下的下载和上传的网速
+* 修改：paldier
+*/
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <unistd.h>
+ 
+#define BUFFER 1024
+#define SECOND 1
+int get_net_work_download_speed(int * download_speed, int * upload_speed, char * download_type, char * upload_type);
+ 
+int main(int argc, char * argv[])
+{
+	int start_download_speed;
+	int end_download_speed;
+	int start_upload_speed;
+	int end_upload_speed;
+	int result_of_download;
+	int result_of_upload;
+	FILE *fpup, *fpdo;
+	while (1)
+	{
+		get_net_work_download_speed(&start_download_speed, &start_upload_speed, "RX bytes:", "TX bytes:");
+		sleep(SECOND);
+		get_net_work_download_speed(&end_download_speed, &end_upload_speed, "RX bytes:", "TX bytes:");
+		result_of_download = (end_download_speed-start_download_speed);
+		result_of_upload = (end_upload_speed-start_upload_speed);
+		if (fpup = fopen("/tmp/k3screenctrl/upspeed", "w")){
+			fprintf(fpup, "%d\n", result_of_upload);
+			fclose(fpup);
+		}
+		if (fpdo = fopen("/tmp/k3screenctrl/downspeed", "w")){
+			fprintf(fpdo, "%d\n", result_of_download);
+			fclose(fpdo);
+		}
+	}
+}
+ 
+int get_net_work_download_speed(int * download_speed, int * upload_speed, char * download_type, char * upload_type)
+{
+	FILE * pipo_stream;
+	size_t bytes_read;
+	char buffer[BUFFER];
+	char * match;
+	int wan;
+
+	if ((pipo_stream=popen("ifconfig", "r")) == NULL )
+	{
+		printf("K3SCREEND:not found any wan!\n");
+		return -1;
+	}
+	fread(buffer, 1, sizeof(buffer), pipo_stream);
+	fclose(pipo_stream);
+
+	if (strstr(buffer, "ppp0"))
+		wan=1;
+	else if (strstr(buffer, "vlan2"))
+		wan=2;
+	else if (strstr(buffer, "eth0"))
+		wan=3;
+	else
+		wan=0;
+	if (wan==1)
+		pipo_stream=popen("ifconfig ppp0", "r");
+	else if (wan==2)
+		pipo_stream=popen("ifconfig vlan2", "r");
+	else if (wan==3)
+		pipo_stream=popen("ifconfig eth0", "r");
+	else {
+		upload_speed=0;
+		download_speed=0;
+		return 0;
+	}
+	bytes_read = fread(buffer, 1, sizeof(buffer), pipo_stream);
+ 
+	if ( (fclose(pipo_stream)) != 0 )
+	{
+		printf("fclose error!\n");
+		return -1;
+	}
+ 
+	if ( bytes_read == 0 )
+	{
+		printf("bytes_read == 0\n");
+		return -1;
+	}	
+ 
+	match = strstr(buffer, download_type);
+ 
+	if (match == NULL)
+	{
+		printf("NO Keyword %s To Find!\n", download_type);
+		return -1;
+	}
+ 
+	sscanf(match, "RX bytes:%ld", download_speed);
+ 
+	match = strstr(buffer, upload_type);
+	if (match == NULL)
+	{
+		printf("No Keyword %s To Find!\n", upload_type);
+		return -1;
+	}
+	sscanf(match, "TX bytes:%ld", upload_speed);
+	return 0;	
+ 
+}

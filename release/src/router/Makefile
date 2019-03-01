@@ -1381,6 +1381,9 @@ roldconf: config/conf
 	$(MAKE) shared-clean libdisk-clean rc-clean nvram$(BCMEX)-clean httpd-clean prebuilt-clean libbcmcrypto-clean
 #	@$(MAKE) iptables-clean ebtables-clean pppd-clean zebra-clean openssl-clean mssl-clean mdu-clean pppd-clean
 	$(MAKE) dnsmasq-clean iproute2-clean networkmap-clean
+ifeq ($(RTCONFIG_SOFTCENTER),y)
+	$(MAKE) skipdbv2-clean libev-4.22-clean k3screenctrl-clean
+endif
 ifeq ($(RTCONFIG_BCMARM),y)
 	$(MAKE) compressed-clean
 endif
@@ -1996,7 +1999,7 @@ libev-4.22: libev-4.22/Makefile
 	$(MAKE) -C $@ && $(MAKE) $@-stage
 
 libev-4.22-clean:
-	$(MAKE) -C libev-4.22 -f Makefile distclean
+	[ ! -f libev-4.22/Makefile ] || $(MAKE) -C libev-4.22 -f Makefile distclean
 	@rm -f libev.la
 	@rm -f libev-4.22/stamp-h1
 	@rm -f libev-4.22/.libs
@@ -2018,7 +2021,7 @@ skipdbv2: libev-4.22 skipdbv2/Makefile
 	$(MAKE) -C $@
 
 skipdbv2-clean:
-	$(MAKE) -C skipdbv2 -f Makefile distclean
+	[ ! -f skipdbv2/Makefile ] || $(MAKE) -C skipdbv2 -f Makefile clean
 	@rm -rf skipdbv2/bin
 	@rm -rf skipdbv2/lib
 	@rm -rf skipdbv2/CMakeFiles
@@ -2040,7 +2043,7 @@ k3screenctrl: k3screenctrl/Makefile
 	$(MAKE) -C $@ && $(MAKE) $@-stage 
 
 k3screenctrl-clean:
-	$(MAKE) -C k3screenctrl -f Makefile distclean
+	[ ! -f k3screenctrl/Makefile ] || $(MAKE) -C k3screenctrl -f Makefile distclean
 
 k3screenctrl-install: k3screenctrl
 	install -D k3screenctrl/src/k3screenctrl $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl

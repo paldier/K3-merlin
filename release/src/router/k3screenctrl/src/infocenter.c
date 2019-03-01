@@ -109,7 +109,6 @@ static int update_storage_from_script(const char *script,
     if (out == NULL) {
         return FAILURE;
     }
-
     /* If the tokenizer stopped at \0, the entire output should have been
      * procesed successfully.
      * If it did not (there is something left in the output), the output may
