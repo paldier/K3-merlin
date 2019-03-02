@@ -27,7 +27,7 @@ void get_time()
 		fclose(fptime);
 	}
 	if (fpdate = fopen("/tmp/k3screenctrl/date", "w")){
-		fprintf(fpdate, "%d-%02d-%02d\n", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
+		fprintf(fpdate, "%d-%d-%d\n", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
 		fclose(fpdate);
 	}
 }
@@ -41,6 +41,7 @@ int main(int argc, char * argv[])
 	int result_of_download;
 	int result_of_upload;
 	FILE *fpup, *fpdo;
+
 	while (1)
 	{
 		get_net_work_download_speed(&start_download_speed, &start_upload_speed, "RX bytes:", "TX bytes:");
@@ -57,6 +58,7 @@ int main(int argc, char * argv[])
 			fclose(fpdo);
 		}
 		get_time();
+		sleep(SECOND*5);
 	}
 }
  
@@ -70,8 +72,8 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 
 	if ((pipo_stream=popen("ifconfig", "r")) == NULL )
 	{
-		printf("K3SCREEND:not found any wan!\n");
-		return -1;
+		printf("K3SCREEND:not found any wan!\n");//reboot/upgrade? exit
+		exit(1);
 	}
 	fread(buffer, 1, sizeof(buffer), pipo_stream);
 	fclose(pipo_stream);
@@ -91,6 +93,7 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 	else if (wan==3)
 		pipo_stream=popen("ifconfig eth0", "r");
 	else {
+GETERR:
 		upload_speed=0;
 		download_speed=0;
 		return 0;
@@ -100,13 +103,13 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 	if ( (fclose(pipo_stream)) != 0 )
 	{
 		printf("fclose error!\n");
-		return -1;
+goto GETERR;
 	}
  
 	if ( bytes_read == 0 )
 	{
 		printf("bytes_read == 0\n");
-		return -1;
+goto GETERR;
 	}	
  
 	match = strstr(buffer, download_type);
@@ -114,7 +117,7 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 	if (match == NULL)
 	{
 		printf("NO Keyword %s To Find!\n", download_type);
-		return -1;
+goto GETERR;
 	}
  
 	sscanf(match, "RX bytes:%ld", download_speed);
@@ -123,7 +126,7 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 	if (match == NULL)
 	{
 		printf("No Keyword %s To Find!\n", upload_type);
-		return -1;
+goto GETERR;
 	}
 	sscanf(match, "TX bytes:%ld", upload_speed);
 	return 0;	
