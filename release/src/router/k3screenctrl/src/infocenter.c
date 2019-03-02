@@ -277,14 +277,14 @@ int update_page_info(PAGE page) {
     case PAGE_WAN:
         updater = update_wan_info;
         break;
+    case PAGE_WEATHER:
+        updater = update_weather_info;
+        break;
     case PAGE_WIFI:
         updater = update_wifi_info;
         break;
     case PAGE_HOSTS:
         updater = update_host_info;
-        break;
-    case PAGE_WEATHER:
-        updater = update_weather_info;
         break;
     }
 

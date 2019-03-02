@@ -2,12 +2,6 @@
 * 作者：杨志永
 * 日期：2012-04-17 10:10 
 * Email:ljy520zhiyong@163.com
-* ＱＱ：929168233
-* 
-* 文件名: watch_network_speed.c
-* 编译环境：Debian 6.0.4 Testing, GCC 4.6.3 X86_64
-* 
-* 功能：获取Linux系统下的下载和上传的网速
 * 修改：paldier
 */
 #include <stdio.h>
@@ -15,11 +9,29 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
  
 #define BUFFER 1024
 #define SECOND 1
 int get_net_work_download_speed(int * download_speed, int * upload_speed, char * download_type, char * upload_type);
- 
+
+void get_time()
+{
+	time_t tmpcal_ptr;
+	FILE *fptime, *fpdate;
+	struct tm *tmp_ptr = NULL;
+	time(&tmpcal_ptr);
+	tmp_ptr = localtime(&tmpcal_ptr);
+	if (fptime = fopen("/tmp/k3screenctrl/time", "w")){
+		fprintf(fptime, "%02d:%02d\n", tmp_ptr->tm_hour, tmp_ptr->tm_min);
+		fclose(fptime);
+	}
+	if (fpdate = fopen("/tmp/k3screenctrl/date", "w")){
+		fprintf(fpdate, "%d-%02d-%02d\n", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
+		fclose(fpdate);
+	}
+}
+
 int main(int argc, char * argv[])
 {
 	int start_download_speed;
@@ -44,6 +56,7 @@ int main(int argc, char * argv[])
 			fprintf(fpdo, "%d\n", result_of_download);
 			fclose(fpdo);
 		}
+		get_time();
 	}
 }
  
