@@ -31,8 +31,7 @@ void get_time()
 		fclose(fpdate);
 	}
 }
-
-int main(int argc, char * argv[])
+void get_speed()
 {
 	int start_download_speed;
 	int end_download_speed;
@@ -41,22 +40,25 @@ int main(int argc, char * argv[])
 	int result_of_download;
 	int result_of_upload;
 	FILE *fpup, *fpdo;
-
+	get_net_work_download_speed(&start_download_speed, &start_upload_speed, "RX bytes:", "TX bytes:");
+	sleep(SECOND);
+	get_net_work_download_speed(&end_download_speed, &end_upload_speed, "RX bytes:", "TX bytes:");
+	result_of_download = (end_download_speed-start_download_speed);
+	result_of_upload = (end_upload_speed-start_upload_speed);
+	if (fpup = fopen("/tmp/k3screenctrl/upspeed", "w")){
+		fprintf(fpup, "%d\n", result_of_upload);
+		fclose(fpup);
+	}
+	if (fpdo = fopen("/tmp/k3screenctrl/downspeed", "w")){
+		fprintf(fpdo, "%d\n", result_of_download);
+		fclose(fpdo);
+	}
+}
+int main(int argc, char * argv[])
+{
 	while (1)
 	{
-		get_net_work_download_speed(&start_download_speed, &start_upload_speed, "RX bytes:", "TX bytes:");
-		sleep(SECOND);
-		get_net_work_download_speed(&end_download_speed, &end_upload_speed, "RX bytes:", "TX bytes:");
-		result_of_download = (end_download_speed-start_download_speed);
-		result_of_upload = (end_upload_speed-start_upload_speed);
-		if (fpup = fopen("/tmp/k3screenctrl/upspeed", "w")){
-			fprintf(fpup, "%d\n", result_of_upload);
-			fclose(fpup);
-		}
-		if (fpdo = fopen("/tmp/k3screenctrl/downspeed", "w")){
-			fprintf(fpdo, "%d\n", result_of_download);
-			fclose(fpdo);
-		}
+		get_speed();
 		get_time();
 		sleep(SECOND*5);
 	}
@@ -76,7 +78,7 @@ int get_net_work_download_speed(int * download_speed, int * upload_speed, char *
 		exit(1);
 	}
 	fread(buffer, 1, sizeof(buffer), pipo_stream);
-	fclose(pipo_stream);
+	pclose(pipo_stream);
 
 	if (strstr(buffer, "ppp0"))
 		wan=1;
@@ -100,9 +102,9 @@ GETERR:
 	}
 	bytes_read = fread(buffer, 1, sizeof(buffer), pipo_stream);
  
-	if ( (fclose(pipo_stream)) != 0 )
+	if ( (pclose(pipo_stream)) != 0 )
 	{
-		printf("fclose error!\n");
+		printf("pclose error!\n");
 goto GETERR;
 	}
  
@@ -120,7 +122,7 @@ goto GETERR;
 goto GETERR;
 	}
  
-	sscanf(match, "RX bytes:%ld", download_speed);
+	sscanf(match, "RX bytes:%d", download_speed);
  
 	match = strstr(buffer, upload_type);
 	if (match == NULL)
@@ -128,7 +130,7 @@ goto GETERR;
 		printf("No Keyword %s To Find!\n", upload_type);
 goto GETERR;
 	}
-	sscanf(match, "TX bytes:%ld", upload_speed);
+	sscanf(match, "TX bytes:%d", upload_speed);
 	return 0;	
  
 }
