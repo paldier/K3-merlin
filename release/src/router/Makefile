@@ -2036,8 +2036,10 @@ skipdbv2-install: skipdbv2
 	$(STRIP) $(INSTALLDIR)/skipdbv2/usr/sbin/dbus
 
 k3screenctrl/Makefile:
-	cd k3screenctrl && CFLAGS=" -std=gnu99 -D_GNU_SOURCE -I$(TOP)/shared -I$(SRCBASE)/include -I$(KERNEL_HEADER_DIR) -Wall" \
-	 $(CONFIGURE)
+	cd k3screenctrl && autoreconf -i -f && CC=$(CC) STRIP=$(STRIP) \
+		CFLAGS=" -std=gnu99 -D_GNU_SOURCE $(EXTRACFLAGS) -I$(TOP)/nvram${BCMEX} -I$(TOP)/shared -I$(SRCBASE)/include -I$(KERNEL_HEADER_DIR)" \
+		LDFLAGS="$(EXTRALDFLAGS) -L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared" \
+		$(CONFIGURE) --target=arm-linux --host=arm-linux --build=x86_64-linux-gnu --prefix="" --enable-shared --enable-static
 
 k3screenctrl: k3screenctrl/Makefile
 	$(MAKE) -C $@ && $(MAKE) $@-stage 
@@ -2047,7 +2049,9 @@ k3screenctrl-clean:
 
 k3screenctrl-install: k3screenctrl
 	install -D k3screenctrl/src/k3screenctrl $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl
+	install -D k3screenctrl/src/k3screend $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
 	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screenctrl
+	$(STRIP) $(INSTALLDIR)/k3screenctrl/usr/sbin/k3screend
 endif
 
 libnfnetlink/stamp-h1:

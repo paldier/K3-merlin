@@ -1,9 +1,6 @@
 include ../common.mak
 
-all: k3screend
-
-k3screend:
-	$(CC) k3screend.c -o k3screend
+all:
 
 install:
 	install -d $(INSTALLDIR)/usr/sbin
@@ -51,6 +48,5 @@ install:
 	install -m 0755 wl_cr $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 libwlcr.so $(INSTALLDIR)/usr/share
-	install -m 0755 k3screend $(INSTALLDIR)/usr/sbin
 
-clean: k3screend
+clean:

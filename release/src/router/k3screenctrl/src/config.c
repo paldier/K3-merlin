@@ -35,7 +35,9 @@ static void config_show_help() {
         "\t-e, --weather-script <PATH>\tUse this script to gather "
         "weather info\n"
         "\nThe defaults are /lib/k3screenctrl/{host,wifi,port,wan,basic,weather}.sh "
-        "with an interval of 2 seconds\n");
+        "with an interval of 2 seconds\n"
+        "\t-u, --upgrade <PATH>\tUpgrade MCU with this iHex file. KILL ALL "
+		"RUNNING INSTANCES OF THIS PROGRAM BEFORE ATTEMPTING!\n");
     exit(1);
 }
 
@@ -53,8 +55,9 @@ void config_parse_cmdline(int argc, char *argv[]) {
         {"port-script", required_argument, NULL, 'p'},
         {"wan-script", required_argument, NULL, 'n'},
         {"basic-info-script", required_argument, NULL, 'i'},
+        {"upgrade", required_argument, NULL, 'u'},
         {0, 0, 0, 0}};
-    static const char *short_opts = "hfrtd:m:e:s:w:p:n:i:";
+    static const char *short_opts = "hfrtd:m:e:s:w:p:n:i:u:";
 
     int opt_index;
     signed char result;
@@ -103,6 +106,10 @@ void config_parse_cmdline(int argc, char *argv[]) {
             free(g_config.basic_info_script);
             g_config.basic_info_script = strdup(optarg);
             break;
+        case 'u':
+            free(g_config.firmware_path);
+            g_config.firmware_path = strdup(optarg);
+            break;
         }
     }
 }
@@ -119,6 +126,7 @@ void config_load_defaults() {
     g_config.port_script = strdup(DEFAULT_PORT_SCRIPT);
     g_config.wan_script = strdup(DEFAULT_WAN_SCRIPT);
     g_config.basic_info_script = strdup(DEFAULT_BASIC_INFO_SCRIPT);
+	g_config.firmware_path = strdup(DEFAULT_FIRMWARE_PATH);
 }
 
 void config_free() {
@@ -128,6 +136,7 @@ void config_free() {
     free(g_config.port_script);
     free(g_config.wan_script);
     free(g_config.basic_info_script);
+	free(g_config.firmware_path);
 }
 
 CONFIG *config_get() { return &g_config; }
