@@ -170,13 +170,13 @@ typedef struct _config {
      * pages require only 1 each.
      */
     int update_interval;
-#define DEFAULT_UPDATE_INTERVAL 2
+#define DEFAULT_UPDATE_INTERVAL 3
 
     /**
      * Turn off screen after this time (seconds). 0 to disable.
      */
     int screen_timeout;
-#define DEFAULT_SCREEN_TIMEOUT 10
+#define DEFAULT_SCREEN_TIMEOUT 30
 } CONFIG;
 
 void config_parse_cmdline(int argc, char *argv[]);

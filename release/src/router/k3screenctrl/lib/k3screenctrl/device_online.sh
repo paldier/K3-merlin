@@ -24,7 +24,7 @@ if [ $# -eq 0 ]; then
     # rm $pid_file
 else
     device=$1
-    arping -f -q -w 3 -I br-lan $device
+    arping -f -q -w 3 -I br0 $device
     c=$?
     i="$(grep $device $file)"
     if [ -z "$i" ]; then
