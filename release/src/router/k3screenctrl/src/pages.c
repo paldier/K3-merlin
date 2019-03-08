@@ -28,8 +28,8 @@ static void send_page_data(PAGE page) {
         request_update_ports(&g_port_info);
         break;
     case PAGE_WAN:
-        request_update_wan(g_wan_info.is_connected, g_wan_info.tx_bytes_per_sec,
-                           g_wan_info.rx_bytes_per_sec);
+        request_update_wan(g_wan_info.is_connected, g_wan_info.ip,g_wan_info.tx_bytes_per_sec,
+                           g_wan_info.rx_bytes_per_sec, g_wan_info.flag, g_wan_info.mode);
         break;
     case PAGE_WIFI:
         request_update_wifi(&g_wifi_info);

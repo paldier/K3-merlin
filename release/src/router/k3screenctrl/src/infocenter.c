@@ -150,8 +150,11 @@ WAN_INFO g_wan_info;
 static int update_wan_info() {
     static const struct _token_store stores[] = {
         TOKEN_UINT_STORE(g_wan_info.is_connected),
+        TOKEN_STRING_OVERWRITE_STORE(g_wan_info.ip),
         TOKEN_UINT_STORE(g_wan_info.tx_bytes_per_sec),
         TOKEN_UINT_STORE(g_wan_info.rx_bytes_per_sec),
+        TOKEN_UINT_STORE(g_wan_info.flag),
+        TOKEN_UINT_STORE(g_wan_info.mode),
     };
     return update_storage_from_script(CFG->wan_script, stores,
                                       sizeof(stores) / sizeof(stores[0]));

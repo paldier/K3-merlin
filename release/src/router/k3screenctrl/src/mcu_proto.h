@@ -110,8 +110,11 @@ typedef struct _port_info {
 /* REQUEST_UPDATE_WAN */
 typedef struct _wan_info {
     unsigned int is_connected;
+    char ip[16];
     unsigned int tx_bytes_per_sec;
     unsigned int rx_bytes_per_sec;
+    unsigned int flag;
+    unsigned int mode;
 } WAN_INFO;
 
 struct _wifi_radio_info {

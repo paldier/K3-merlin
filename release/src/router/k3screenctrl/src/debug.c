@@ -16,9 +16,12 @@ void print_port_info(PORT_INFO *info) {
 void print_wan_info(WAN_INFO *info) {
     printf("WAN_INFO at %p:\n"
            "  Connnected = %u\n"
+           "  flag = %u\n"
+           "  mode = %u\n"
+           "  ip = %s\n"
            "  Upload = %u B/s\n"
            "  Download = %u B/s\n",
-           info, info->is_connected, info->tx_bytes_per_sec,
+           info, info->is_connected, info->flag, info->mode, info->ip, info->tx_bytes_per_sec,
            info->rx_bytes_per_sec);
 }
 
