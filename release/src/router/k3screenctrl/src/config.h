@@ -47,18 +47,18 @@ typedef struct _config {
      *
      * Expected output format (one line for each field):
      * Internet connected? (0 or 1)
-     * flag? (ure_disable/0 or 1)
-     * mode? (sw_mode/0 1 2 3 4)
      * Upload speed (integer, in Bytes per sec)
      * Download speed (integer, in Bytes per sec)
+     * flag? (ure_disable/0 or 1)
+     * mode? (sw_mode/0 or 1,router=0,ap=1)
      *
      * Example:
-     * 1
-     * 1
      * 1
      * 192.168.50.1
      * 10240000
      * 2048000
+     * 1
+     * 1
      */
     char *wan_script;
 #define DEFAULT_WAN_SCRIPT "/lib/k3screenctrl/wan.sh"
