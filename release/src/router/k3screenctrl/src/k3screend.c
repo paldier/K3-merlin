@@ -212,8 +212,9 @@ void online()
 	unsigned int expires;
 	int ret = 0;
 	char buffer[4096],strTmp[10];
-	int i=0, l=0;
-
+	int i, l;
+	i=0;
+	l=0;
 	memset(buffer, 0, sizeof(buffer));
 	memset(strTmp, 0, sizeof(strTmp));
 	if (!(rip = fopen("/var/lib/misc/dnsmasq.leases", "r")))
@@ -254,7 +255,8 @@ void online()
 	if (wonline = fopen("/tmp/k3screenctrl/device_online", "w"))
 	{
 		fprintf(wonline, "%d\n", i);
-		fprintf(wonline, "%s", buffer);
+		if (i > 0)
+			fprintf(wonline, "%s", buffer);
 	}
 	fclose(wonline);
 }
