@@ -2687,7 +2687,7 @@ void k3screen_check()
 	{
 		if (!pids("k3screend"))
 			doSystem("/usr/sbin/k3screend &");
-		if (!pids("k3screend")){
+		if (!pids("k3screenctrl")){
 			char *timeout;
 			if (nvram_get_int("k3screen_timeout")==1)
 				timeout = "-m0";
