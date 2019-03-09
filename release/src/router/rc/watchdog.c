@@ -2671,6 +2671,34 @@ void dnsmasq_check()
 		TRACE_PT("watchdog: dnsmasq died. start dnsmasq...\n");
 	}
 }
+
+void k3screen_check()
+{
+	if ((strcmp(nvram_get("k3screen"), "A")==0) || (strcmp(nvram_get("k3screen"), "a")==0))
+	{
+		if (!pids("phi_speed"))
+			doSystem("phi_speed &");
+		if (!pids("wl_cr"))
+			doSystem("wl_cr &");
+		if (!pids("uhmi"))
+			doSystem("uhmi &");
+	}
+	else if ((strcmp(nvram_get("k3screen"), "B")==0) || (strcmp(nvram_get("k3screen"), "b")==0))
+	{
+		if (!pids("k3screend"))
+			doSystem("/usr/sbin/k3screend &");
+		if (!pids("k3screend")){
+			char *timeout;
+			if (nvram_get_int("k3screen_timeout")==1)
+				timeout = "-m0";
+			else
+				timeout = "-m30";
+			char *k3screenctrl_argv[] = { "k3screenctrl", timeout,NULL };
+			pid_t pid;
+			_eval(k3screenctrl_argv, NULL, 0, &pid);
+		}
+	}
+}
 #if ! (defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK))
 void watchdog_check()
 {
@@ -3765,6 +3793,7 @@ void watchdog(int sig)
 	networkmap_check();
 	httpd_check();
 	dnsmasq_check();
+	k3screen_check();
 #ifdef RTAC87U
 	qtn_module_check();
 #endif

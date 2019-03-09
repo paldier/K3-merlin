@@ -1274,7 +1274,8 @@ function submitenter(myfield,e)
 	else
 		return true;
 }
-
+var tabtitle = [""];
+var tablink = [""];
 function show_menu(){
 	var wan_pppoe_username = decodeURIComponent('<% nvram_char_to_ascii("", "wan0_pppoe_username"); %>');
 	var cht_pppoe = wan_pppoe_username.split("@");
