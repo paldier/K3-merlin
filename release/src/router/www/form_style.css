@@ -397,6 +397,19 @@
 	border-width:0;
 	color:#FFFFFF;
 }
+.input_ss_table{
+	margin-left:2px;
+	padding-left:0.4em;
+	height:21px;
+	width:158.2px;
+	line-height:23px \9;	/*IE*/
+	font-size:13px;
+	font-family:'Courier New', Courier, mono;
+	background-image:none;
+	background-color: #576d73;
+	border:1px solid gray;
+	color:#FFFFFF;
+}
 .input_18_table{
 	margin-left:2px;
 	padding-left:0.4em;
@@ -948,16 +961,44 @@ form{
 }
 
 /* btns in table */
+.ss_list_btn{
+  background: transparent url(/images/New_ui/ss_list.png) no-repeat scroll center top;
+  border:0;
+	height:30px;
+ 	width:35px;
+ 	cursor:pointer;
+}
+.ss_list_btn:hover, .save_btn:active{
+ 	/*background: transparent url(/images/New_ui/UserSav.png) no-repeat scroll center top;*/
+ 	border:0;
+	height:30px;
+ 	width:35px;
+ 	cursor:pointer;
+}
+.save_btn{
+  background: transparent url(/images/New_ui/accountsave.png) no-repeat scroll center top;
+  border:0;
+	height:30px;
+ 	width:35px;
+ 	cursor:pointer;
+}
+.save_btn:hover, .save_btn:active{
+ 	/*background: transparent url(/images/New_ui/UserSav_0.png) no-repeat scroll center top;*/
+ 	border:0;
+	height:30px;
+ 	width:35px;
+ 	cursor:pointer;
+}
 .add_btn{
  	background: transparent url(images/New_ui/accountadd.png) no-repeat scroll center top;
  	border:0;
-	height:34px;
+	height:30px;
  	width:35px;
  	cursor:pointer;
 }
 .add_btn:hover, .add_btn:active{
  	border:0;
-	height:34px;
+	height:30px;
  	width:35px;
  	cursor:pointer;
 }
@@ -987,13 +1028,13 @@ form{
 .edit_btn{
   background: transparent url(images/New_ui/accountedit.png) no-repeat scroll center top;
   border:0;
-	height:34px;
+	height:30px;
  	width:35px;
  	cursor:pointer;
 }
 .edit_btn:hover, .edit_btn:active{
  	border:0;
-	height:34px;
+	height:30px;
  	width:35px;
  	cursor:pointer;
 }
@@ -2246,6 +2287,65 @@ padding-top:1px;
 	text-decoration:underline !important;
 }
 
+/*  For Shadowsocks  */
+.KoolshareBottom {
+    width: 230px;
+    height: 100px;
+    background: url(/images/New_ui/koolshare.png) 0px 3px no-repeat;
+    text-align: left;
+	padding-left:120px;
+	margin-top:30px;
+	float:right;
+}
+
+.ss_node_list_viewlist {
+	position: absolute;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	z-index: 200;
+	background-color:#444f53;
+	margin-left: 140px;
+	margin-top: -1100px;
+	width:950px;
+	height:auto;
+	box-shadow: 3px 3px 10px #000;
+	display:block;
+	overflow: auto;
+}
+
+.FormTitle i {
+    color: #FC0;
+    font-style: normal;
+}
+.FormTitle em {
+    color: #00ffe4;
+    font-style: normal;
+}
+.FormTitle b {
+    color: #1cfe16;
+    font-style: normal;
+	font-weight:normal;
+}
+.FormTitle_firefox i {
+    color: #FC0;
+    font-style: normal;
+}
+.FormTitle_firefox em {
+    color: #00ffe4;
+    font-style: normal;
+}
+.FormTitle_firefox b {
+    color: #1cfe16;
+    font-style: normal;
+	font-weight:normal;
+}
+.SimpleNote { padding:5px 10px;}
+.NoteButton { padding:5px 10px; margin:10px 0}
+#NoteBox { padding:10px}
+.FormTable h2,#NoteBox h2 { font-size:16px; border-bottom:1px #AAA dashed; height:26px; color:#1cfe16; margin-top:20px;}
+.FormTable h3,#NoteBox h3,
+.FormTable h4,#NoteBox h4 { color:#FC0;}
 .IE8HACK{
 	display: none \9;
 }
@@ -2275,7 +2375,7 @@ padding-top:1px;
 	border-color:#444F53 #444F53 #93E7FF #444F53;
 }
 .arrow_down{
-< 	border-color:#93E7FF #444F53 #444F53 #444F53;
+	border-color:#93E7FF #444F53 #444F53 #444F53;
 }
 #sortable div table tr:hover{
 	cursor: pointer;

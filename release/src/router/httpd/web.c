@@ -604,29 +604,26 @@ ej_dbus_get_def(int eid, webs_t wp, int argc, char_t **argv)
 {
 	char *name, c[512], *output;
 	int ret = 0;
-//	char sid_dummy = "",
 
 	if (ejArgs(argc, argv, "%s %s", &name, &output) < 2) {
 		websError(wp, 400, "Insufficient args\n");
 		return -1;
 	}
+
 	doSystem("dbus get %s > /tmp/dbusxxx", name);
 	char *buffer = read_whole_file("/tmp/dbusxxx");
 	if (buffer) {
-		sscanf(buffer, "%[^\n]", c);
-		if (strcasecmp(c, ""))
+		sscanf(buffer, "%[^\r]", c);
+		if (c[0]!='\n') {
+			c[strlen(c)-1]='\0';
 			ret += websWrite(wp, c);
-		else
+		} else
 			ret += websWrite(wp, output);
 		free(buffer);
 	} else {
 		ret += websWrite(wp, output);
 	}
 	unlink("/tmp/dbusxxx");
-	//doSystem("rm -rf /tmp/dbusxxx");
-	//for (; *c; c++) {
-			//ret += websWrite(wp, c);
-	//}
 
 	return ret;
 }
@@ -8418,8 +8415,8 @@ do_dbconf(char *url, FILE *stream)
 		for(name = strsep(&sepstr, delim); name != NULL; name = strsep(&sepstr, delim)) {
 			//logmessage("HTTPD", "dbconf: %s name: %s", pattern, name);
 			websWrite(stream,"var db_%s=(function() {\nvar o={};\n", name);
-			doSystem("dbus list %s > /tmp/dbusxxx", name);
-			if((fp = fopen("/tmp/dbusxxx", "r")) == NULL)
+			doSystem("dbus list %s > /tmp/dbuslistxxx", name);
+			if((fp = fopen("/tmp/dbuslistxxx", "r")) == NULL)
 				printf("No \"name\"!\n");
 			while(fgets(substr, sizeof(substr),fp) != NULL)
 			{
@@ -8439,8 +8436,8 @@ do_dbconf(char *url, FILE *stream)
 	} else {
 		name= strdup(pattern);
 		websWrite(stream,"var db_%s=(function() {\nvar o={};\n", name);
-		doSystem("dbus list %s > /tmp/dbusxxx", name);
-		if((fp = fopen("/tmp/dbusxxx", "r")) == NULL)
+		doSystem("dbus list %s > /tmp/dbuslistxxx", name);
+		if((fp = fopen("/tmp/dbuslistxxx", "r")) == NULL)
 			printf("No \"name\"!\n");
 		while(fgets(substr, sizeof(substr),fp) != NULL)
 		{
@@ -8458,6 +8455,7 @@ do_dbconf(char *url, FILE *stream)
 		websWrite(stream,"return o;\n})();\n" );
 	}
 	free(dup_pattern);
+	unlink("/tmp/dbuslistxxx");
 }
 
 static void

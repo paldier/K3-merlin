@@ -550,9 +550,15 @@ function openLink(s){
 			tourl = "https://www.namecheap.com";
 		else if (document.form.ddns_server_x.value == 'WWW.ORAY.COM')
 			tourl = "http://www.oray.com/";
+		else if (document.form.ddns_server_x.value == '3322')
+			tourl = "http://www.pubyun.com/";
+		else if (document.form.ddns_server_x.value == 'oray')
+			tourl = "http://www.oray.com/";
+		else if (document.form.ddns_server_x.value == 'changeip')
+			tourl = "https://www.changeip.com/";
 		else if (document.form.ddns_server_x.value == 'DOMAINS.GOOGLE.COM')
 			tourl = "https://domains.google/";
-		else	tourl = "";
+		else tourl = "";
 		link = window.open(tourl, "DDNSLink","toolbar=yes,location=yes,directories=no,status=yes,menubar=yes,scrollbars=yes,resizable=yes,copyhistory=no,width=640,height=480");
 	}
 	else if (s=='x_NTPServer1'){

@@ -116,6 +116,10 @@ body {
 	border-bottom-color:#5C5C5C;
 	border-right-color:#6D6D6D;
 }
+.menu_Softcenter{
+	background: url(images/New_ui/softcenter.png);
+	background-position: 0px 0px;
+}
 
 .menu_QIS_title:hover {
 	background: #B9D8E6; /* Old browsers */
