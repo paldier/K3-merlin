@@ -37,21 +37,11 @@ ifeq ($(RTCONFIG_OPENVPN),y)
 endif
 
 # K3screenctrl setup script
-	#install -m 0700 k3screenctrl $(INSTALLDIR)/usr/sbin
-	#install -m 0700 basic.sh $(INSTALLDIR)/lib/k3screenctrl
-	#install -m 0700 host.sh $(INSTALLDIR)/lib/k3screenctrl
-	#install -m 0700 port.sh $(INSTALLDIR)/lib/k3screenctrl
-	#install -m 0700 wan.sh $(INSTALLDIR)/lib/k3screenctrl
-	#install -m 0700 wifi.sh $(INSTALLDIR)/lib/k3screenctrl
 	ln -sf /tmp/k3screenctrl $(INSTALLDIR)/lib/k3screenctrl
 
 # K3 nvram & wl setup script
 	install -m 0700 k3nv.sh $(INSTALLDIR)/usr/sbin
 	install -m 0700 k3wl $(INSTALLDIR)/usr/sbin
-
-# K3 lostlonger
-	install -m 0700 base64 $(INSTALLDIR)/usr/sbin
-	install -m 0700 vlmcsd $(INSTALLDIR)/usr/sbin
 
 # Entware setup script
 	install -m 0700 entware_install.sh $(INSTALLDIR)/usr/sbin

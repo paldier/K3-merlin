@@ -8325,14 +8325,12 @@ applydb_cgi(webs_t wp, char_t *urlPrefix, char_t *webDir, int arg,
 	for (j =0; j < i; j++)
 	{
 		if(!strncasecmp(dbjson[j], name, strlen(name))){
-
-		temp = strtok( dbjson[j], "=" );
-		strcpy (dbvar, temp);
-		while( temp != NULL ) {
-			strcpy(dbval, temp);
+				memset(dbvar,'\0',sizeof(dbvar));
+				memset(dbval,'\0',sizeof(dbval));
+				temp=strstr(dbjson[j], "=");
+				strcpy(dbval, temp+1);
+				strncpy(dbvar, dbjson[j], strlen(dbjson[j])-strlen(temp));
 			//logmessage("HTTPD", "name: %s post: %s", dbvar, dbval);
-			temp = strtok(NULL,"=");
-		}
 			if(userm)
 				doSystem("dbus remove %s", dbvar);
 			else
@@ -8359,14 +8357,12 @@ applydb_cgi(webs_t wp, char_t *urlPrefix, char_t *webDir, int arg,
 	for (j =0; j < i; j++)
 	{
 		if(!strncasecmp(dbjson[j], name, strlen(name))){
-
-		temp = strtok( dbjson[j], "=" );
-		strcpy (dbvar, temp);
-		while( temp != NULL ) {
-			strcpy(dbval, temp);
+				memset(dbvar,'\0',sizeof(dbvar));
+				memset(dbval,'\0',sizeof(dbval));
+				temp=strstr(dbjson[j], "=");
+				strcpy(dbval, temp+1);
+				strncpy(dbvar, dbjson[j], strlen(dbjson[j])-strlen(temp));
 			//logmessage("HTTPD", "name: %s post: %s", dbvar, dbval);
-			temp = strtok(NULL,"=");
-		}
 			if(userm)
 				doSystem("dbus remove %s", dbvar);
 			else
