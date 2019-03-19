@@ -48,7 +48,7 @@ endif
 	install -m 0700 entware-setup.sh $(INSTALLDIR)/usr/sbin
 
 # Postconf helper script
-	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
+	#install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
 
 ifeq ($(RTN14U)$(RTAC52U)$(RTAC51U)$(RTN11P)$(RTN300)$(RTN54U)$(RTAC1200HP)$(RTN56UB1)$(RTN56UB2)$(RTAC54U),y)
 # for read/write Ralink PHY registers

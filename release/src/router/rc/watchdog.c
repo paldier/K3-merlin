@@ -2685,8 +2685,12 @@ void k3screen_check()
 	}
 	else if ((strcmp(nvram_get("k3screen"), "B")==0) || (strcmp(nvram_get("k3screen"), "b")==0))
 	{
-		if (!pids("k3screend"))
-			doSystem("/usr/sbin/k3screend &");
+		if (!pids("k3screend")){
+			char *k3screend_argv[] = { "k3screend",NULL };
+			pid_t pid;
+			_eval(k3screend_argv, NULL, 0, &pid);
+			logmessage("watchdog", "restart k3screend");
+		}
 		if (!pids("k3screenctrl")){
 			char *timeout;
 			if (nvram_get_int("k3screen_timeout")==1)
@@ -2696,6 +2700,7 @@ void k3screen_check()
 			char *k3screenctrl_argv[] = { "k3screenctrl", timeout,NULL };
 			pid_t pid;
 			_eval(k3screenctrl_argv, NULL, 0, &pid);
+			logmessage("watchdog", "restart k3screenctrl");
 		}
 	}
 }

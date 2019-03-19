@@ -175,7 +175,7 @@ typedef struct _config {
      * pages require only 1 each.
      */
     int update_interval;
-#define DEFAULT_UPDATE_INTERVAL 3
+#define DEFAULT_UPDATE_INTERVAL 2
 
     /**
      * Turn off screen after this time (seconds). 0 to disable.
