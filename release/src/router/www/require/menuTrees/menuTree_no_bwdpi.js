@@ -117,23 +117,6 @@
 					{url: "NULL", tabName: "__INHERIT__"}
 				] 
 			},
-			{
-				menuName: "工具箱",
-				index: "menu_Tools",
-				tab: [
-					{url: "Tools_Sysinfo.asp", tabName: "系统信息"},
-					{url: "Tools_OtherSettings.asp", tabName: "其他设置"},
-					{url: "Tools_customSc.asp", tabName: "用户脚本"},
-					{url: "Tools_Kms.asp", tabName: "KMS服务"},
-					{url: "Tools_SSR.asp", tabName: "SSR服务_"},
-					{url: "Tools_xunlei.asp", tabName: "迅雷远程_"},
-					{url: "Tools_Koolproxy.asp", tabName: "广告过滤_"},
-					{url: "Tools_ngrok.asp", tabName: "内网穿透_"},
-					{url: "Tools_filemanage.asp", tabName: "文件管理_"},
-					{url: "Tools_RunCmd.asp", tabName: "WEB控制台_"},
-					{url: "NULL", tabName: "__INHERIT__"}
-				]
-			},
 			/* ============================================================================================================ */
 			{
 				menuName: "<#menu5#>",

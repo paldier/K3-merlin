@@ -2682,9 +2682,7 @@ void k3screen_check()
 			doSystem("wl_cr &");
 		if (!pids("uhmi"))
 			doSystem("uhmi &");
-	}
-	else if ((strcmp(nvram_get("k3screen"), "B")==0) || (strcmp(nvram_get("k3screen"), "b")==0))
-	{
+	} else {
 		if (!pids("k3screend")){
 			char *k3screend_argv[] = { "k3screend",NULL };
 			pid_t pid;
