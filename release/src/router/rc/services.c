@@ -2501,8 +2501,18 @@ start_ddns(void)
 	else if (strcmp(server, "WWW.ASUS.COM")==0) {
 		service = "dyndns", asus_ddns = 1;
 	}
-	else if (strcmp(server, "DOMAINS.GOOGLE.COM") == 0)
+	else if (strcmp(server, "DOMAINS.GOOGLE.COM")==0) {
 		service = "dyndns", asus_ddns=3;
+	}
+	else if (strcmp(server, "3322")==0) {
+		service = "3322", asus_ddns=4;
+	}
+	else if (strcmp(server, "oray")==0) {
+		service = "oray", asus_ddns=4;
+	}
+	else if (strcmp(server, "changeip")==0) {
+		service = "changeip", asus_ddns=4;
+	}
 	else if (strcmp(server, "WWW.ORAY.COM")==0) {
 		service = "peanuthull", asus_ddns = 2;
 	} else {
@@ -2553,6 +2563,14 @@ start_ddns(void)
 
 			eval("phddns", "-c", "/etc/phddns.conf", "-d");
 		}
+	}
+	else if (asus_ddns == 4) {
+		if((time_fp=fopen("/tmp/ddns.cache","w")))
+		{
+			fprintf(time_fp,"%ld,%s",time(&now),wan_ip);
+			fclose(time_fp);
+		}
+		eval("ddns.sh", user, passwd, host, wan_ip);
 	}
 	else if (asus_ddns == 1) {
 		char *nserver = nvram_invmatch("ddns_serverhost_x", "") ?
