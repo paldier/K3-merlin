@@ -414,7 +414,7 @@ function onSubmitApply(s){
 								<option value="3322" <% nvram_match("ddns_server_x", "3322","selected");  %>>www.3322.org(公云)</option>
                     						<option value="oray" <% nvram_match("ddns_server_x", "oray","selected");  %>>花生壳(修改)</option>
                     						<option value="changeip" <% nvram_match("ddns_server_x", "changeip","selected");  %>>ChangeIP</option>
-								<option value="WWW.NO-IP.COM" <% nvram_match("ddns_server_x", "WWW.NO-IP.COM","selected"); %>>WWW.NO-IP.COM
+								<option value="WWW.NO-IP.COM" <% nvram_match("ddns_server_x", "WWW.NO-IP.COM","selected"); %>>WWW.NO-IP.COM</option>
 								<option value="WWW.ORAY.COM" <% nvram_match("ddns_server_x", "WWW.ORAY.COM","selected"); %>>WWW.ORAY.COM(花生壳)</option>                    			<option value="WWW.NAMECHEAP.COM" <% nvram_match("ddns_server_x", "WWW.NAMECHEAP.COM","selected"); %>>WWW.NAMECHEAP.COM</option>
 					<option value="CUSTOM" <% nvram_match("ddns_server_x", "CUSTOM","selected");  %>>Custom</option>
                   		</select>
