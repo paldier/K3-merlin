@@ -13,6 +13,10 @@ ifeq ($(TCONFIG_USB),y)
 	ln -sf /opt/bin/perl $(INSTALLDIR)/usr/bin/perl
 endif
 
+# add ddns
+	install -d $(INSTALLDIR)/usr/bin
+	install -m 0755 ddns.sh $(INSTALLDIR)/usr/bin
+
 # cron helper
 	install -m 0700 cru $(INSTALLDIR)/usr/sbin
 
