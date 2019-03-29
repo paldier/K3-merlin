@@ -128,6 +128,7 @@ int livetest(char* ip) {
     int size = 50*1024;
     if((sockfd = socket(AF_INET, SOCK_RAW, protocol->p_proto)) < 0) {
         perror("socket error");
+	return 0;
     }
     setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &size, sizeof(size) );
     
@@ -152,6 +153,7 @@ int livetest(char* ip) {
 
     if(sendto(sockfd, sendpacket, packsize, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr)) < 0){
         perror("sendto error");
+	return 0;
     }
     //printf("send %d, send done\n",1 );
     int n;
@@ -171,11 +173,16 @@ int livetest(char* ip) {
         //printf("timeout\n");
         return 0;
     }else{
-        if( FD_ISSET(sockfd, &set) ){
-            //printf("host is live\n");
+        n = recvfrom(sockfd, recvpacket,sizeof(recvpacket), 0, (struct sockaddr *)&from, (socklen_t *)&fromlen);
+        if(n<0) {
+           //perror("recvfrom error");
+            return 0;
+        }else{
+           //printf("%d\n",n);
             return 1;
         }
     }
+    return 0;
 }
 int find_logo(char *mac)
 {
@@ -202,6 +209,23 @@ int find_logo(char *mac)
 	}
 	return 0;
 }
+void lanip_speed(char *ip, char lan[2])
+{
+	//iptables -nvx -L FORWARD |grep 192.168.2.162 |awk '{print $2}'
+	FILE * pipt;
+	char *lanipt, iptchk;
+	char buffer[BUFFER];
+	fprintf(iptchk, "iptables -nvx -L FORWARD |grep K3_SEREEN_D");
+	fprintf(lanipt, "iptables -nvx -L FORWARD |grep -w \"%s\" |awk '{print $2}'", ip);
+	if ((pipt=popen(lanipt, "r")) == NULL )
+	{
+		lan[0]="0";
+		lan[1]="0";
+	}
+	fread(buffer, 1, sizeof(buffer), pipt);
+	pclose(pipt);
+
+}
 void online()
 {
 	FILE *wonline, *ronline, *rip;
@@ -212,11 +236,13 @@ void online()
 	unsigned int expires;
 	int ret = 0;
 	char buffer[4096],strTmp[10];
+	char lanip[2];
 	int i, l;
 	i=0;
 	l=0;
 	memset(buffer, 0, sizeof(buffer));
 	memset(strTmp, 0, sizeof(strTmp));
+	memset(lanip, 0, sizeof(lanip));
 	if (!(rip = fopen("/var/lib/misc/dnsmasq.leases", "r")))
 	{
 		printf("dnsmasq not run\n");
@@ -246,6 +272,7 @@ void online()
 			if (!strcmp(name, "*") || !strcmp(name, "?") || !strcmp(name, ""))
 				strcpy(name, " Unknown");
 			l=find_logo(hwaddr);
+			//lanip_speed(ipaddr, lanip);
 			strcat(buffer, name);
 			//strcat(buffer, "\n0\n0\n0\n");
 			strcat(buffer, "\n0\n0\n");
@@ -311,36 +338,29 @@ GETERR:
 		return 0;
 	}
 	bytes_read = fread(buffer, 1, sizeof(buffer), pipo_stream);
- 
 	if ( (pclose(pipo_stream)) != 0 )
 	{
 		printf("pclose error!\n");
-goto GETERR;
+		goto GETERR;
 	}
- 
 	if ( bytes_read == 0 )
 	{
 		printf("bytes_read == 0\n");
-goto GETERR;
+		goto GETERR;
 	}	
- 
 	match = strstr(buffer, download_type);
- 
 	if (match == NULL)
 	{
 		printf("NO Keyword %s To Find!\n", download_type);
-goto GETERR;
+		goto GETERR;
 	}
- 
 	sscanf(match, "RX bytes:%d", download_speed);
- 
 	match = strstr(buffer, upload_type);
 	if (match == NULL)
 	{
 		printf("No Keyword %s To Find!\n", upload_type);
-goto GETERR;
+		goto GETERR;
 	}
 	sscanf(match, "TX bytes:%d", upload_speed);
-	return 0;	
- 
+	return 0;
 }
