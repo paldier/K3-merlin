@@ -209,6 +209,7 @@ int find_logo(char *mac)
 	}
 	return 0;
 }
+#if 0
 void lanip_speed(char *ip, char lan[2])
 {
 	//iptables -nvx -L FORWARD |grep 192.168.2.162 |awk '{print $2}'
@@ -226,6 +227,7 @@ void lanip_speed(char *ip, char lan[2])
 	pclose(pipt);
 
 }
+#endif
 void online()
 {
 	FILE *wonline, *ronline, *rip;

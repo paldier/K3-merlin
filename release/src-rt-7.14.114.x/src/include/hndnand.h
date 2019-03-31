@@ -40,7 +40,7 @@
 #if CONFIG_LINUX_MTD == 32
  #define NFL_BOOT_OS_SIZE       0x2000000
 #elif CONFIG_LINUX_MTD == 64
-#define NFL_BOOT_OS_SIZE        0x2600000
+#define NFL_BOOT_OS_SIZE        0x4000000
 #elif CONFIG_LINUX_MTD == 128
 #define NFL_BOOT_OS_SIZE        0x2200000
 #else
@@ -50,7 +50,7 @@
 
 #ifdef __ARM_ARCH_7A__
 #define NFL_BIG_BOOT_SIZE		0x400000	/* 8 MB */
-#define NFL_BIG_BOOT_OS_SIZE	0x3000000	/* 38 MB */
+#define NFL_BIG_BOOT_OS_SIZE	0x2600000	/* 38 MB */
 #define NFL_1M_BLOCK_SIZE		1024		/* KB */
 
 #define nfl_boot_size(nfl)		((((nfl)->blocksize >> 10) >= NFL_1M_BLOCK_SIZE) ? \
