@@ -1040,6 +1040,14 @@ init_nflash_mtd_partitions(hndnand_t *nfl, struct mtd_info *mtd, size_t size)
 		offset += bcm947xx_nflash_parts[nparts].size;
 		nparts++;
 
+		/* Setup NVRAM MTD partition */
+		//bcm947xx_nflash_parts[nparts].name = "base";
+		//bcm947xx_nflash_parts[nparts].size = 0x100000;
+		//bcm947xx_nflash_parts[nparts].offset = offset;
+
+		//offset += bcm947xx_nflash_parts[nparts].size;
+		//nparts++;
+
 		/* Setup phicomm partition */
 		bcm947xx_nflash_parts[nparts].name = "phicomm";
 		bcm947xx_nflash_parts[nparts].size = nfl_boot_size(nfl) - offset;

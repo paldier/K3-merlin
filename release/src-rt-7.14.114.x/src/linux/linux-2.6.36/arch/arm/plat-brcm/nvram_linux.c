@@ -409,9 +409,9 @@ found:
 	for (; i < header->len && i < MAX_NVRAM_SPACE; i += 4)
 		*dst++ = ltoh32(*src++);
 
-	nvram_space_str = early_nvram_get("nvram_space");
-	if (nvram_space_str)
-		nvram_space = bcm_strtoul(nvram_space_str, NULL, 0);
+	//nvram_space_str = early_nvram_get("nvram_space");
+	//if (nvram_space_str)
+		//nvram_space = bcm_strtoul(nvram_space_str, NULL, 0);
 
 	return 0;
 }
