@@ -77,7 +77,8 @@ static char *defenv[] = {
 	"TERM=vt100",
 	"HOME=/",
 	//"PATH=/usr/bin:/bin:/usr/sbin:/sbin",
-	"PATH=/opt/usr/bin:/opt/bin:/opt/usr/sbin:/opt/sbin:/usr/bin:/bin:/usr/sbin:/sbin",
+	"PATH=/opt/usr/bin:/opt/bin:/opt/usr/sbin:/opt/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/jffs/softcenter/bin:/jffs/softcenter/scripts",
+	"LD_LIBRARY_PATH=/lib:/usr/lib:/jffs/softcenter/lib",
 	"SHELL=" SHELL,
 	"USER=root",
 #ifdef RTCONFIG_DMALLOC
