@@ -1,3 +1,6 @@
+move to [https://github.com/paldier/K3-merlin.ng](https://github.com/paldier/K3-merlin.ng)
+
+
 asuswrt-merlin
 ==============
 
